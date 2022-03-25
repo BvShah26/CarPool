@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32126.315
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAcessLayer", "DataAcessLayer\DataAcessLayer.csproj", "{C1BDB64A-60A3-4BA0-B3B0-F7FF2ABC5C48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarPoolApis", "CarPoolApis\CarPoolApis.csproj", "{1B74C132-2478-4873-A588-2BC8871CCB37}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1BDB64A-60A3-4BA0-B3B0-F7FF2ABC5C48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1BDB64A-60A3-4BA0-B3B0-F7FF2ABC5C48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1BDB64A-60A3-4BA0-B3B0-F7FF2ABC5C48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1BDB64A-60A3-4BA0-B3B0-F7FF2ABC5C48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B74C132-2478-4873-A588-2BC8871CCB37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B74C132-2478-4873-A588-2BC8871CCB37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B74C132-2478-4873-A588-2BC8871CCB37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B74C132-2478-4873-A588-2BC8871CCB37}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5BA4B7F0-F6ED-4B0A-9AC9-9FC33F9CE787}
+	EndGlobalSection
+EndGlobal
