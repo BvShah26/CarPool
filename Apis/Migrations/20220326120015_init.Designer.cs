@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Apis.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20220326105617_initial")]
-    partial class initial
+    [Migration("20220326120015_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -444,7 +444,7 @@ namespace Apis.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAcessLayer.Models.Users.User", "User")
+                    b.HasOne("DataAcessLayer.Models.Users.User", "UserOwner")
                         .WithMany("Vehicles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

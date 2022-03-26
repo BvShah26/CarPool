@@ -442,7 +442,7 @@ namespace Apis.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAcessLayer.Models.Users.User", "User")
+                    b.HasOne("DataAcessLayer.Models.Users.User", "UserOwner")
                         .WithMany("Vehicles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
