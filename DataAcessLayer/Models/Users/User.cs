@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using DataAcessLayer.Models.Booking;
 using DataAcessLayer.Models.Location;
+using DataAcessLayer.Models.Rides;
 
 namespace DataAcessLayer.Models.Users
 {
@@ -27,7 +29,14 @@ namespace DataAcessLayer.Models.Users
         public string Bio { get; set; }
         public DateTime RegistrationDate { get; set; } //DateTime.Now()
 
-        public ICollection<Uservehicle> Vehicles { get; set; }
+        public ICollection<Uservehicle> Vehicles { get; set; } = new HashSet<Uservehicle>();
+
+        public ICollection<User_TravelPreference> UserPreference { get; set; } = new HashSet<User_TravelPreference>();
+
+        public ICollection<PublishRide> Published_Rides{ get; set; } = new HashSet<PublishRide>();
+        public ICollection<Book> BookingDetails { get; set; } = new HashSet<Book>();
+
+        public ICollection<RideApproval> RideApprovals { get; set; } = new HashSet<RideApproval>();
     }
 
     public enum Gender

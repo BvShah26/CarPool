@@ -11,11 +11,11 @@ namespace DataAcessLayer.Models.Booking
         public int Id { get; set; }
         
         
-        public PublishRide Ride{ get; set; }
-        public int RideId { get; set; }
+        public PublishRide Publish_Ride{ get; set; }
+        public int Publish_RideId { get; set; }
 
-        public User User{ get; set; }
-        public int UserId { get; set; }
+        public User Rider{ get; set; }
+        public int RiderId { get; set; }
 
         public int SeatQty { get; set; }
         public int TotalPrice { get; set; }

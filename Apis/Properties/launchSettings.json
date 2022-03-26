@@ -4,8 +4,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:26750",
-      "sslPort": 44339
+      "applicationUrl": "http://localhost:47993",
+      "sslPort": 44372
     }
   },
   "profiles": {
@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "CarPoolApis": {
+    "Apis": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",

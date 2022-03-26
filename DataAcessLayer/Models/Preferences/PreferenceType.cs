@@ -8,6 +8,6 @@ namespace DataAcessLayer.Models.Preferences
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public ICollection<TravelPreference> Preferences { get; set; }
+        public ICollection<TravelPreference> Preferences { get; set; } = new HashSet<TravelPreference>();
     }
 }

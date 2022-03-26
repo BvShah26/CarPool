@@ -16,6 +16,6 @@ namespace DataAcessLayer.Models.VehicleModels
         public int VehicleTypeId { get; set; }
         public VehicleType VehicleType { get; set; } //SUV
 
-        public ICollection<Uservehicle> Uservehicles { get; set; }
+        public ICollection<Uservehicle> Uservehicles { get; set; } = new HashSet<Uservehicle>();
     }
 }

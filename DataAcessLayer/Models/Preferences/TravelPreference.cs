@@ -16,6 +16,7 @@ namespace DataAcessLayer.Models.Preferences
 
         public string Title { get; set; }
 
-        public User_TravelPreference UserPreference{ get; set; }
+
+        public ICollection<User_TravelPreference> User_preference { get; set; } = new HashSet<User_TravelPreference>();
     }
 }

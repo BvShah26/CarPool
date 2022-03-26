@@ -8,6 +8,6 @@ namespace DataAcessLayer.Models.VehicleModels
     {
         public int Id { get; set; } //200
         public string Title { get; set; } //SUV
-        public ICollection<Vehicle> Vehicles { get; set; } //Seltos, Creta
+        public ICollection<Vehicle> Vehicles { get; set; } = new HashSet<Vehicle>(); //Seltos, Creta
     }
 }

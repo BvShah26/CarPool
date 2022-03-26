@@ -12,8 +12,8 @@ namespace DataAcessLayer.Models.Users
         public int Id { get; set; }
 
 
-        public int travelPreferenceId { get; set; }
-        public TravelPreference travelPreference { get; set; }
+        public int Travel_PreferenceId { get; set; }
+        public TravelPreference Travel_Preference { get; set; }
 
 
 

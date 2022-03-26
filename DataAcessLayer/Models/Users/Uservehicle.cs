@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using DataAcessLayer.Models.Rides;
 using DataAcessLayer.Models.VehicleModels;
 
 namespace DataAcessLayer.Models.Users
@@ -13,7 +14,7 @@ namespace DataAcessLayer.Models.Users
         public string CarNumber { get; set; }
 
 
-        public Vehicle Vehicle { get; set; }
+        public Vehicle Vehicle { get; set; } //seltos,creta...
         public int VehicleId { get; set; }
 
 
@@ -25,6 +26,11 @@ namespace DataAcessLayer.Models.Users
         public User User { get; set; }
 
         public DateTime Manufacture_Year { get; set; }
+
+        //Collections
+
+        //One user's vehicle can be used by his multipled Published Rides
+        public ICollection<PublishRide> Published_Rides { get; set; } = new HashSet<PublishRide>();
 
     }
 }

@@ -9,6 +9,6 @@ namespace DataAcessLayer.Models.VehicleModels
     {
         public int Id { get; set; } //300
         public string Color { get; set; } //Red
-        public ICollection<Uservehicle> Uservehicles { get; set; }
+        public ICollection<Uservehicle> Uservehicles { get; set; } = new HashSet<Uservehicle>();
     }
 }

@@ -1,6 +1,6 @@
 using System;
 
-namespace CarPoolApis
+namespace Apis
 {
     public class WeatherForecast
     {
