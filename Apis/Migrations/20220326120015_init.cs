@@ -237,6 +237,7 @@ namespace Apis.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
+
                     table.ForeignKey(
                         name: "FK_Publish_Rides_Uservehicles_VehicleId",
                         column: x => x.VehicleId,

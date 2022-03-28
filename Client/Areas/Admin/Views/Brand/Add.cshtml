@@ -1,0 +1,31 @@
+﻿@model DataAcessLayer.Models.VehicleModels.VehicleBrand
+@{
+    ViewData["Title"] = "AddType";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section PageTitle{
+    Add Vehicle Brand
+}
+
+<div class="card-body">
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Add" method="post">
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Brand</span>
+                    <input asp-for="Name" class="form-control" placeholder="Enter Brand Name">
+                </div>
+
+                <div class="col-sm-12 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                    <button type="reset"
+                            class="btn btn-light-secondary me-1 mb-1">
+                        Reset
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
