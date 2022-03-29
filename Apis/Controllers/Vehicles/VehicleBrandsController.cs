@@ -43,12 +43,20 @@ namespace Apis.Controllers.Vehicles
             return vehicleBrand;
         }
 
-        [HttpGet("{PageSize:int}")]
-        public async Task<ActionResult<IEnumerable<VehicleBrand>>> Vehicle_pages(int PageSize,string SearchValue)
+        [HttpGet("Search_Vehicles/{PageSize}/{SearchValue?}")]
+        public async Task<ActionResult<IEnumerable<VehicleBrand>>> Search_Vehicles(int PageSize, string SearchValue)
         {
-            return await _context.Vehcile_Brand.ToListAsync();
+            int PageNumber = 1;
+            var searchResult = _context.Vehcile_Brand.AsNoTracking();
+            if (!String.IsNullOrEmpty(SearchValue))
+            {
+                searchResult = _context.Vehcile_Brand.Where(item => item.Name.Contains(SearchValue));
+            }
+            return await Paginated<VehicleBrand>.CreateAsync(searchResult, PageNumber, PageSize);
 
         }
+
+
 
         // PUT: api/VehicleBrands/5
 
