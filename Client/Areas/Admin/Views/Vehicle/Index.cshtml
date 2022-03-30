@@ -1,0 +1,68 @@
+﻿@model IEnumerable<DataAcessLayer.Models.VehicleModels.Vehicle>;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section PageTitle{
+    Vehicles
+}
+
+@section Headers{
+    <link rel="stylesheet" href="assets/vendors/jquery-datatables/jquery.dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="assets/vendors/fontawesome/all.min.css">
+    <style>
+        table.dataTable td {
+            padding: 15px 8px;
+        }
+
+        .fontawesome-icons .the-icon svg {
+            font-size: 24px;
+        }
+    </style>
+
+}
+<a asp-area="Admin" asp-controller="Vehicle" asp-action="Add" class="btn btn-primary ms-3">Add</a>
+
+<section class="section">
+    <div class="card">
+        <div class="card-header">
+            Jquery Datatable
+        </div>
+        <div class="card-body">
+            <table class="table" id="table1">
+                <thead>
+                    <tr>
+                        <th>Brand</th>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.VehicleBrand.Name</td>
+
+                            <td>@item.VehicleType.Title</td>
+                            <td>@item.Name</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+
+<script src="assets/vendors/jquery/jquery.min.js"></script>
+<script src="assets/vendors/jquery-datatables/jquery.dataTables.min.js"></script>
+<script src="assets/vendors/jquery-datatables/custom.jquery.dataTables.bootstrap5.min.js"></script>
+<script src="assets/vendors/fontawesome/all.min.js"></script>
+<script>
+    // Jquery Datatable
+    let jquery_datatable = $("#table1").DataTable()
+</script>
+
+

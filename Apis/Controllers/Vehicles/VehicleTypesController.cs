@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Apis.Data;
 using DataAcessLayer.Models.VehicleModels;
+using Apis.Infrastructure.Vehicles;
 
 namespace Apis.Controllers.Vehicles
 {
@@ -14,25 +14,25 @@ namespace Apis.Controllers.Vehicles
     [ApiController]
     public class VehicleTypesController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
+        private readonly IVehicleType_repo _vehicleType_Repo;
 
-        public VehicleTypesController(ApplicationDBContext context)
+        public VehicleTypesController(IVehicleType_repo vehicleType_Repo)
         {
-            _context = context;
+            _vehicleType_Repo = vehicleType_Repo;
         }
 
         // GET: api/VehicleTypes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VehicleType>>> GetVehicleTypes()
         {
-            return await _context.VehicleTypes.ToListAsync();
+            return await _vehicleType_Repo.GetVehicleTypes();
         }
 
         // GET: api/VehicleTypes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<VehicleType>> GetVehicleType(int id)
         {
-            var vehicleType = await _context.VehicleTypes.FindAsync(id);
+            var vehicleType = await _vehicleType_Repo.GetVehicleType_ById(id);
 
             if (vehicleType == null)
             {
@@ -42,9 +42,13 @@ namespace Apis.Controllers.Vehicles
             return vehicleType;
         }
 
+        [HttpGet("Search/{SearchValue}")]
+        public async Task<List<VehicleType>> Search(string SearchValue)
+        {
+            return await _vehicleType_Repo.Search_vehicleType(SearchValue);
+        }
+
         // PUT: api/VehicleTypes/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
         public async Task<IActionResult> PutVehicleType(int id, VehicleType vehicleType)
         {
@@ -53,11 +57,11 @@ namespace Apis.Controllers.Vehicles
                 return BadRequest();
             }
 
-            _context.Entry(vehicleType).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _vehicleType_Repo.Update_vehicleType(id, vehicleType);
+                return CreatedAtAction("GetVehicleType", new { id = vehicleType.Id }, vehicleType);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -75,13 +79,11 @@ namespace Apis.Controllers.Vehicles
         }
 
         // POST: api/VehicleTypes
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        
         [HttpPost]
         public async Task<ActionResult<VehicleType>> PostVehicleType(VehicleType vehicleType)
         {
-            _context.VehicleTypes.Add(vehicleType);
-            await _context.SaveChangesAsync();
+            await _vehicleType_Repo.Add_vehicleType(vehicleType);
 
             return CreatedAtAction("GetVehicleType", new { id = vehicleType.Id }, vehicleType);
         }
@@ -90,21 +92,19 @@ namespace Apis.Controllers.Vehicles
         [HttpDelete("{id}")]
         public async Task<ActionResult<VehicleType>> DeleteVehicleType(int id)
         {
-            var vehicleType = await _context.VehicleTypes.FindAsync(id);
+            var vehicleType = await _vehicleType_Repo.Delete_vehicleType(id);
             if (vehicleType == null)
             {
                 return NotFound();
             }
-
-            _context.VehicleTypes.Remove(vehicleType);
-            await _context.SaveChangesAsync();
-
             return vehicleType;
         }
 
+        
+
         private bool VehicleTypeExists(int id)
         {
-            return _context.VehicleTypes.Any(e => e.Id == id);
+            return _vehicleType_Repo.Type_Exists(id);
         }
     }
 }

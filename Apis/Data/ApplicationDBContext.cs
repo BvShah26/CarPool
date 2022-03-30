@@ -19,7 +19,7 @@ namespace Apis.Data
 
 
         // Vehciles
-        public DbSet<Vehicle> Vehciles { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<VehicleBrand> Vehcile_Brand { get; set; }
         public DbSet<VehicleColor> Vehicle_Color { get; set; }
         public DbSet<VehicleType> VehicleTypes { get; set; }
@@ -50,6 +50,7 @@ namespace Apis.Data
         {
             //base.OnModelCreating(modelBuilder);
             //modelBuilder.Entity<PublishRide>().HasOne(item => item.Vehicle).WithMany().OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Vehicle>().ToTable("Vehicles");
         }
 
     }

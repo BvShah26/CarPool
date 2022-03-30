@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Apis.Data;
+using Apis.Infrastructure.Vehicles;
+using Apis.Repos.Vehicles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +31,15 @@ namespace Apis
         {
             services.AddControllers();
             services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CarPoolCN")));
+
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            //Adding Dependencies For Repos
+            services.AddTransient<IVehcileBrand, VehicleBrandRepo>();
+            services.AddTransient<IVehicleType_repo, VehicleType_Repo>();
+            services.AddTransient<IVehicleColor_repo, VehicleColor_Repo>();
+            services.AddTransient<IVehicle_repo, Vehicle_Repo>();
 
         }
 

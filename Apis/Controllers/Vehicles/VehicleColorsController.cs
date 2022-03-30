@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Apis.Data;
 using DataAcessLayer.Models.VehicleModels;
+using Apis.Infrastructure.Vehicles;
 
 namespace Apis.Controllers.Vehicles
 {
@@ -14,25 +15,25 @@ namespace Apis.Controllers.Vehicles
     [ApiController]
     public class VehicleColorsController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
+        private readonly IVehicleColor_repo _vehicleColor_Repo;
 
-        public VehicleColorsController(ApplicationDBContext context)
+        public VehicleColorsController( IVehicleColor_repo vehicleColor_Repo)
         {
-            _context = context;
+            _vehicleColor_Repo = vehicleColor_Repo;
         }
 
         // GET: api/VehicleColors
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VehicleColor>>> GetVehicle_Color()
         {
-            return await _context.Vehicle_Color.ToListAsync();
+            return await _vehicleColor_Repo.GetVehicleColors();
         }
 
         // GET: api/VehicleColors/5
         [HttpGet("{id}")]
         public async Task<ActionResult<VehicleColor>> GetVehicleColor(int id)
         {
-            var vehicleColor = await _context.Vehicle_Color.FindAsync(id);
+            var vehicleColor = await _vehicleColor_Repo.GetVehicleColor_ById(id);
 
             if (vehicleColor == null)
             {
@@ -42,9 +43,13 @@ namespace Apis.Controllers.Vehicles
             return vehicleColor;
         }
 
+        [HttpGet("Search/{SearchValue}")]
+        public async Task<List<VehicleColor>> Search(string SearchValue)
+        {
+            return await _vehicleColor_Repo.Search_vehicleColor(SearchValue);
+        }
+
         // PUT: api/VehicleColors/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
         public async Task<IActionResult> PutVehicleColor(int id, VehicleColor vehicleColor)
         {
@@ -53,15 +58,15 @@ namespace Apis.Controllers.Vehicles
                 return BadRequest();
             }
 
-            _context.Entry(vehicleColor).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _vehicleColor_Repo.Update_vehicleColor(id, vehicleColor);
+                return CreatedAtAction("GetVehicleColor", new { id = vehicleColor.Id }, vehicleColor);
+
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!VehicleColorExists(id))
+                if (!_vehicleColor_Repo.Color_Exists(id))
                 {
                     return NotFound();
                 }
@@ -75,13 +80,10 @@ namespace Apis.Controllers.Vehicles
         }
 
         // POST: api/VehicleColors
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<VehicleColor>> PostVehicleColor(VehicleColor vehicleColor)
         {
-            _context.Vehicle_Color.Add(vehicleColor);
-            await _context.SaveChangesAsync();
+            await _vehicleColor_Repo.Add_vehicleColor(vehicleColor);
 
             return CreatedAtAction("GetVehicleColor", new { id = vehicleColor.Id }, vehicleColor);
         }
@@ -90,21 +92,13 @@ namespace Apis.Controllers.Vehicles
         [HttpDelete("{id}")]
         public async Task<ActionResult<VehicleColor>> DeleteVehicleColor(int id)
         {
-            var vehicleColor = await _context.Vehicle_Color.FindAsync(id);
+            var vehicleColor = await _vehicleColor_Repo.Delete_vehicleColor(id);
             if (vehicleColor == null)
             {
                 return NotFound();
             }
 
-            _context.Vehicle_Color.Remove(vehicleColor);
-            await _context.SaveChangesAsync();
-
             return vehicleColor;
-        }
-
-        private bool VehicleColorExists(int id)
-        {
-            return _context.Vehicle_Color.Any(e => e.Id == id);
         }
     }
 }

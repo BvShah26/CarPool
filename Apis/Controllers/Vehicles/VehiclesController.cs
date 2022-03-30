@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Apis.Data;
 using DataAcessLayer.Models.VehicleModels;
+using Apis.Infrastructure.Vehicles;
 
 namespace Apis.Controllers.Vehicles
 {
@@ -14,25 +15,26 @@ namespace Apis.Controllers.Vehicles
     [ApiController]
     public class VehiclesController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
+        private readonly IVehicle_repo _vehicle_Repo;
 
-        public VehiclesController(ApplicationDBContext context)
+        public VehiclesController(IVehicle_repo vehicle_Repo)
         {
-            _context = context;
+            _vehicle_Repo = vehicle_Repo;
         }
 
         // GET: api/Vehicles
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehciles()
+        public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehicles()
         {
-            return await _context.Vehciles.ToListAsync();
+            //return await _context.Vehicles.Include(item => item.VehicleBrand).Select(item => new { Vehicle = item. }).ToListAsync();
+            return await _vehicle_Repo.GetVehicles();
         }
 
         // GET: api/Vehicles/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Vehicle>> GetVehicle(int id)
         {
-            var vehicle = await _context.Vehciles.FindAsync(id);
+            var vehicle = await _vehicle_Repo.GetVehicle_ById(id);
 
             if (vehicle == null)
             {
@@ -42,9 +44,13 @@ namespace Apis.Controllers.Vehicles
             return vehicle;
         }
 
+        [HttpGet("search/{SearchValue}")]
+        public async Task<List<Vehicle>> search(string SearchValue)
+        {
+            return await _vehicle_Repo.Search_Vehicle(SearchValue);
+        }
+
         // PUT: api/Vehicles/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
         public async Task<IActionResult> PutVehicle(int id, Vehicle vehicle)
         {
@@ -53,15 +59,15 @@ namespace Apis.Controllers.Vehicles
                 return BadRequest();
             }
 
-            _context.Entry(vehicle).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _vehicle_Repo.Update_Vehicle(id, vehicle);
+                return CreatedAtAction("GetVehicle", new { id = vehicle.Id }, vehicle);
+
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!VehicleExists(id))
+                if (!_vehicle_Repo.Vehicle_Exists(id))
                 {
                     return NotFound();
                 }
@@ -71,17 +77,13 @@ namespace Apis.Controllers.Vehicles
                 }
             }
 
-            return NoContent();
         }
 
         // POST: api/Vehicles
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<Vehicle>> PostVehicle(Vehicle vehicle)
         {
-            _context.Vehciles.Add(vehicle);
-            await _context.SaveChangesAsync();
+            await _vehicle_Repo.Add_Vehicle(vehicle);
 
             return CreatedAtAction("GetVehicle", new { id = vehicle.Id }, vehicle);
         }
@@ -90,21 +92,12 @@ namespace Apis.Controllers.Vehicles
         [HttpDelete("{id}")]
         public async Task<ActionResult<Vehicle>> DeleteVehicle(int id)
         {
-            var vehicle = await _context.Vehciles.FindAsync(id);
+            var vehicle = await _vehicle_Repo.Delete_Vehicle(id);
             if (vehicle == null)
             {
                 return NotFound();
             }
-
-            _context.Vehciles.Remove(vehicle);
-            await _context.SaveChangesAsync();
-
             return vehicle;
-        }
-
-        private bool VehicleExists(int id)
-        {
-            return _context.Vehciles.Any(e => e.Id == id);
         }
     }
 }

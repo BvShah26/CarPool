@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Apis.Data;
 using DataAcessLayer.Models.VehicleModels;
 using Apis.Helper;
+using Apis.Infrastructure.Vehicles;
 
 namespace Apis.Controllers.Vehicles
 {
@@ -15,25 +16,25 @@ namespace Apis.Controllers.Vehicles
     [ApiController]
     public class VehicleBrandsController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
+        private readonly IVehcileBrand _vehicleBrandRepo;
 
-        public VehicleBrandsController(ApplicationDBContext context)
+        public VehicleBrandsController(IVehcileBrand vehicleBrandRepo)
         {
-            _context = context;
+            _vehicleBrandRepo = vehicleBrandRepo;
         }
 
         // GET: api/VehicleBrands
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<VehicleBrand>>> GetVehcile_Brand()
+        public async Task<List<VehicleBrand>> GetVehcile_Brand()
         {
-            return await _context.Vehcile_Brand.ToListAsync();
+            return await _vehicleBrandRepo.GetVehicleBrands();
         }
 
         // GET: api/VehicleBrands/5
         [HttpGet("{id}")]
         public async Task<ActionResult<VehicleBrand>> GetVehicleBrand(int id)
         {
-            var vehicleBrand = await _context.Vehcile_Brand.FindAsync(id);
+            var vehicleBrand = await _vehicleBrandRepo.GetVehicleBrand_ById(id);
 
             if (vehicleBrand == null)
             {
@@ -43,17 +44,12 @@ namespace Apis.Controllers.Vehicles
             return vehicleBrand;
         }
 
+
+
         [HttpGet("Search_Vehicles/{PageSize}/{SearchValue?}")]
         public async Task<ActionResult<IEnumerable<VehicleBrand>>> Search_Vehicles(int PageSize, string SearchValue)
         {
-            int PageNumber = 1;
-            var searchResult = _context.Vehcile_Brand.AsNoTracking();
-            if (!String.IsNullOrEmpty(SearchValue))
-            {
-                searchResult = _context.Vehcile_Brand.Where(item => item.Name.Contains(SearchValue));
-            }
-            return await Paginated<VehicleBrand>.CreateAsync(searchResult, PageNumber, PageSize);
-
+            return await _vehicleBrandRepo.Serahc_VehicleBrand(PageSize, SearchValue);
         }
 
 
@@ -68,13 +64,16 @@ namespace Apis.Controllers.Vehicles
                 return BadRequest();
             }
 
-            _context.Entry(vehicleBrand).State = EntityState.Modified;
+
+            //_context.Entry(vehicleBrand).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _vehicleBrandRepo.Update_Brand(id, vehicleBrand);
+                return CreatedAtAction("GetVehicleBrand", new { id = vehicleBrand.Id }, vehicleBrand);
+
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception)
             {
                 if (!VehicleBrandExists(id))
                 {
@@ -85,8 +84,6 @@ namespace Apis.Controllers.Vehicles
                     throw;
                 }
             }
-
-            return NoContent();
         }
 
         // POST: api/VehicleBrands
@@ -94,8 +91,7 @@ namespace Apis.Controllers.Vehicles
         [HttpPost]
         public async Task<ActionResult<VehicleBrand>> PostVehicleBrand(VehicleBrand vehicleBrand)
         {
-            _context.Vehcile_Brand.Add(vehicleBrand);
-            await _context.SaveChangesAsync();
+            await _vehicleBrandRepo.Add_Brand(vehicleBrand);
 
             return CreatedAtAction("GetVehicleBrand", new { id = vehicleBrand.Id }, vehicleBrand);
         }
@@ -104,21 +100,18 @@ namespace Apis.Controllers.Vehicles
         [HttpDelete("{id}")]
         public async Task<ActionResult<VehicleBrand>> DeleteVehicleBrand(int id)
         {
-            var vehicleBrand = await _context.Vehcile_Brand.FindAsync(id);
+            var vehicleBrand = await _vehicleBrandRepo.Delete_Brand(id);
             if (vehicleBrand == null)
             {
                 return NotFound();
             }
-
-            _context.Vehcile_Brand.Remove(vehicleBrand);
-            await _context.SaveChangesAsync();
 
             return vehicleBrand;
         }
 
         private bool VehicleBrandExists(int id)
         {
-            return _context.Vehcile_Brand.Any(e => e.Id == id);
+            return _vehicleBrandRepo.Brand_Exists(id);
         }
     }
 }
