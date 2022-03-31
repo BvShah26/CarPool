@@ -1,0 +1,261 @@
+﻿@model IEnumerable<DataAcessLayer.Models.Preferences.TravelPreference>;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@section PageTitle{
+    Preference Sub-Type
+}
+
+@section Headers{
+    <link rel="stylesheet" href="assets/vendors/jquery-datatables/jquery.dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="assets/vendors/fontawesome/all.min.css">
+    <style>
+        table.dataTable td {
+            padding: 15px 8px;
+        }
+
+        .fontawesome-icons .the-icon svg {
+            font-size: 24px;
+        }
+    </style>
+
+}
+<a asp-area="Admin" asp-controller="Preference_SubType" id="btnAdd" asp-action="Create" class="btn btn-primary">
+    Add
+</a>
+
+@* Delete Modal *@
+<div class="modal modal-borderless fade text-left modal" id="delete-modal" tabindex="-1"
+     role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title"> Are You want to Delete This Record</p>
+                <button type="button" class="close rounded-pill" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary" data-bs-dismiss="modal">
+                    <i class="bx bx-x d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Close</span>
+                </button>
+
+                <a id="PrefId" href="" class="btn btn-primary ml-1">
+                    <i class="bx bx-check d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Accept</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Update Modal *@
+<div class="modal fade text-left" id="update-modal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel33" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+         role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel33">Edit Sub-Type</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <form asp-action="Edit" method="post">
+                <div class="modal-body">
+                    <label>Preference Type</label>
+                    <div class="form-group">
+
+                        <select id="TypeId" class="form-control" >
+                        </select>
+                    </div>
+                    <label>Sub-Type</label>
+                    <div class="form-group">
+                        <input type="text" id="Title" placeholder="Sub-Type"
+                               class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary"
+                            data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <button class="btn btn-primary ml-1"
+                            data-bs-dismiss="modal">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">login</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<section class="section">
+    <div class="card">
+        <div class="card-header">
+            Jquery Datatable
+        </div>
+        <div class="card-body">
+            <div class="dataTables_wrapper dt-bootstrap5 no-footer">
+                <form asp-action="Index" method="post">
+                    <div class="row mb-3">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="dataTables_length" id="table1_length">
+                                <label>
+                                    Show
+                                    <select id="pageSize" name="table1_length" aria-controls="table1" class="form-select form-select-sm rounded-pill px-4 py-2">
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select> entries
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div id="table1_filter" class="dataTables_filter">
+                                <label>
+                                    Search:<input id="searchData" type="search" class="form-control form-control-sm rounded-pill px-3 py-2" placeholder="" aria-controls="table1">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="row mb-3">
+                    <table class="table" id="table1">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Sub-Type</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table1body">
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Type.Title</td>
+                                    <td>@item.Title</td>
+                                    <td>
+                                        <span class="hideMe open-EditDialog" data-bs-toggle="modal" data-id="@item.Id"
+                                              data-bs-target="#update-modal">
+                                            <i class="bi bi-pencil-square" style="color: #435ebe"></i>
+                                        </span>
+                                        <span class="hideMe open-DeleteDialog" data-bs-toggle="modal" data-id="@item.Id"
+                                              data-bs-target="#delete-modal">
+                                            <i class="bi bi-trash text-danger "></i>
+                                        </span>
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row mb-3">
+
+                    <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info" id="table1_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers" id="table1_paginate">
+                            <ul class="pagination">
+                                <li class="paginate_button page-item previous disabled" id="table1_previous">
+                                    <a href="#" aria-controls="table1" data-dt-idx="0" tabindex="0" class="page-link rounded-circle d-inline-block ms-1">
+                                        <i class="fas fa-angle-left"></i>
+                                    </a>
+                                </li>
+                                <li class="paginate_button page-item active">
+                                    <a href="#" aria-controls="table1" data-dt-idx="1" tabindex="0" class="page-link rounded-circle d-inline-block ms-1">
+                                        1
+                                    </a>
+                                </li>
+                                <li class="paginate_button page-item next disabled" id="table1_next">
+                                    <a href="#" aria-controls="table1" data-dt-idx="2" tabindex="0" class="page-link rounded-circle d-inline-block ms-1 disabled">
+                                        <i class="fas fa-angle-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+
+
+    $(document).on("click", ".open-DeleteDialog", function () {
+
+        var PrefSubTypeId = $(this).data('id');
+        var redirect = `Preference_SubType/Delete/${PrefSubTypeId}`;
+        $("#PrefId").attr("href", redirect);
+    });
+
+    $(document).on("click", ".open-EditDialog", function () {
+
+        var PrefSubType_Id = $(this).data('id');
+
+        $.ajax({
+            type: "GET",
+            url: `Preference_SubType/Details/${PrefSubType_Id}`,
+
+            success: function (res) {
+                console.log(res);
+
+                $.ajax({
+                    type: "GET",
+                    url: "PreferenceType/GetAllPreference",
+
+                    success: function (rec) {
+                        $("#TypeId").empty();
+                        $.each(rec, (i, val) => {
+                            $("#TypeId").append(`<option value=${val.id} >${val.title}</option>`);
+                        });
+
+                        $("#TypeId").val(`${res.typeId}`);
+
+                    },
+                    error: function (req) {
+                        alert("Failed Fetching Preference Types");
+                    }
+                });
+
+
+                $("#Title").val(res.title);
+            },
+            error: function (req) {
+                alert("Data Fetching Failed")
+            }
+        });
+
+        //var redirect = `Preference_SubType/Delete/${myBookId}`;
+        //$("#PrefId").attr("href", redirect);
+    });
+
+
+</script>
+<style>
+    .hideMe {
+        opacity: 0.6
+    }
+
+        .hideMe:hover {
+            opacity: 1;
+            cursor: pointer
+        }
+</style>
+
+<script src="assets/js/mazer.js"></script>

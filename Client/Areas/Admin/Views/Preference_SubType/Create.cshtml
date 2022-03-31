@@ -1,0 +1,86 @@
+﻿@model DataAcessLayer.Models.Preferences.TravelPreference;
+@{
+    ViewData["Title"] = "Add Sub-Types";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section PageTitle{
+    Add Sub-Types
+}
+<div class="row">
+    <div class="col-8">
+        <div class="card">
+            <div class="card-content">
+                <div class="card-body">
+                    <form class="form form-horizontal" id="__AjaxAntiForgeryForm" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>Type</label>
+                                </div>
+                                <div class="col-md-8 form-group">
+                                    <select class="form-control dropdown-toggle" asp-for="TypeId" asp-items="ViewBag.Types">
+                                        <option value="-1">Select Preference Type</option>
+                                    </select>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Sub-Type</label>
+                                </div>
+                                <div class="col-md-8 form-group">
+                                    <input asp-for="Title" class="form-control"
+                                           placeholder="Sub-Type">
+                                </div>
+                                <div class="col-sm-12 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary me-1 mb-1">Add</button>
+                                    <button type="reset"
+                                            class="btn btn-light-secondary me-1 mb-1">
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("form").submit(function (event) {
+            event.preventDefault();
+
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+            var objToSend = {
+                __RequestVerificationToken: token,
+                TypeId: $("#TypeId").val(),
+                Title: $("#Title").val(),
+            }
+
+            console.log("ajax calling")
+            $.ajax({
+                type: "POST",
+                url: "Create",
+                data: objToSend,
+
+                success: function (r) {
+                    console.log(r);
+                    window.location.href = "Index";
+                },
+                error: function (req) {
+                    console.log("fail")
+                    window.location.href = "Create";
+                }
+            });
+
+            console.log("Submitted");
+        })
+    })
+</script>

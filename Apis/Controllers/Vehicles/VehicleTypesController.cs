@@ -63,9 +63,9 @@ namespace Apis.Controllers.Vehicles
                 await _vehicleType_Repo.Update_vehicleType(id, vehicleType);
                 return CreatedAtAction("GetVehicleType", new { id = vehicleType.Id }, vehicleType);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception)
             {
-                if (!VehicleTypeExists(id))
+                if (!_vehicleType_Repo.Type_Exists(id))
                 {
                     return NotFound();
                 }
@@ -75,7 +75,6 @@ namespace Apis.Controllers.Vehicles
                 }
             }
 
-            return NoContent();
         }
 
         // POST: api/VehicleTypes
@@ -100,11 +99,5 @@ namespace Apis.Controllers.Vehicles
             return vehicleType;
         }
 
-        
-
-        private bool VehicleTypeExists(int id)
-        {
-            return _vehicleType_Repo.Type_Exists(id);
-        }
     }
 }

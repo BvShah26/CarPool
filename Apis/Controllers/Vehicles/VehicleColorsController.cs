@@ -64,7 +64,7 @@ namespace Apis.Controllers.Vehicles
                 return CreatedAtAction("GetVehicleColor", new { id = vehicleColor.Id }, vehicleColor);
 
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception)
             {
                 if (!_vehicleColor_Repo.Color_Exists(id))
                 {
@@ -76,7 +76,6 @@ namespace Apis.Controllers.Vehicles
                 }
             }
 
-            return NoContent();
         }
 
         // POST: api/VehicleColors

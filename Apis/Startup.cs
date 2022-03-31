@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Apis.Data;
+using Apis.Infrastructure.Preference;
 using Apis.Infrastructure.Vehicles;
+using Apis.Repos.Preference;
 using Apis.Repos.Vehicles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,6 +43,8 @@ namespace Apis
             services.AddTransient<IVehicleColor_repo, VehicleColor_Repo>();
             services.AddTransient<IVehicle_repo, Vehicle_Repo>();
 
+            services.AddTransient<IPreferenceType_Repo, PreferenceType_Repo>();
+            services.AddTransient<IPreferenceSubType_Repo, PreferenceSubType_Repo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
