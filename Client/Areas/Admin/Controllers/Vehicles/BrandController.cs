@@ -23,17 +23,25 @@ namespace Client.Areas.Admin.Controllers.Vehicles
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
+        public List<VehicleBrand> GetAllBrands()
         {
-            HttpResponseMessage responseMessage = httpClient.GetAsync($"VehicleBrands/Search_Vehicles/{5}/").Result;
+            //HttpResponseMessage responseMessage = httpClient.GetAsync($"VehicleBrands/Search_Vehicles/{5}/").Result;
+
+            List<VehicleBrand> obj = null;
+
+            HttpResponseMessage responseMessage = httpClient.GetAsync($"VehicleBrands").Result;
             if (responseMessage.IsSuccessStatusCode)
             {
                 var data = responseMessage.Content.ReadAsStringAsync().Result;
-                List<VehicleBrand> obj = JsonConvert.DeserializeObject<List<VehicleBrand>>(data);
-                return View(obj);
+                obj = JsonConvert.DeserializeObject<List<VehicleBrand>>(data);
             }
-            return View();
+            return obj;
+        }
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View(GetAllBrands());
         }
 
         [HttpGet]
@@ -50,17 +58,6 @@ namespace Client.Areas.Admin.Controllers.Vehicles
             return null;
         }
 
-        /// <summary>
-        /// Add New Record
-        /// </summary>
-        /// <returns></returns>
-
-        [HttpGet]
-        public IActionResult Add()
-        {
-            return View();
-        }
-
 
         [HttpPost]
         public async Task<IActionResult> Add(VehicleBrand brand)
@@ -75,28 +72,24 @@ namespace Client.Areas.Admin.Controllers.Vehicles
         }
 
 
-        /// <summary>
-        /// Edit record Section
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+
         [HttpGet]
-        public IActionResult Edit(int id)
+        public VehicleBrand Details(int id)
         {
+            VehicleBrand record = null;
             HttpResponseMessage responseMessage = httpClient.GetAsync($"VehicleBrands/{id}").Result;
-            if(responseMessage.IsSuccessStatusCode)
+            if (responseMessage.IsSuccessStatusCode)
             {
                 string result = responseMessage.Content.ReadAsStringAsync().Result;
-                VehicleBrand vehicleBrand = JsonConvert.DeserializeObject<VehicleBrand>(result);
-                return View(vehicleBrand);
+                record = JsonConvert.DeserializeObject<VehicleBrand>(result);
             }
-            return RedirectToAction("Index");
+            return record;
         }
 
         [HttpPost]
         public IActionResult Edit(VehicleBrand vehicleBrand)
         {
-            HttpResponseMessage responseMessage = httpClient.PutAsJsonAsync($"VehicleBrands/{vehicleBrand.Id}",vehicleBrand).Result;
+            HttpResponseMessage responseMessage = httpClient.PutAsJsonAsync($"VehicleBrands/{vehicleBrand.Id}", vehicleBrand).Result;
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
@@ -104,8 +97,19 @@ namespace Client.Areas.Admin.Controllers.Vehicles
             return View(vehicleBrand);
         }
 
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            HttpResponseMessage responseMessage = httpClient.DeleteAsync($"VehicleBrands/{id}").Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            return BadRequest();
+        }
 
-        
+
+
 
 
     }

@@ -10,9 +10,10 @@
 }
 
 @section Headers{
-    <link rel="stylesheet" href="assets/vendors/jquery-datatables/jquery.dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="assets/vendors/fontawesome/all.min.css">
+    <link rel="stylesheet" href="~/assets/vendors/jquery-datatables/jquery.dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="~/assets/vendors/fontawesome/all.min.css">
     <style>
+
         table.dataTable td {
             padding: 15px 8px;
         }
@@ -23,14 +24,118 @@
     </style>
 
 }
-<a asp-area="Admin" asp-controller="Type" asp-action="Create" class="btn btn-primary">Add</a>
 
+@* Add Modal *@
+<div class="modal fade text-left" id="add-modal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel33" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+         role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel33">Add Vehicle Type</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
 
+            <form asp-action="Create" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" name="Title" id="AddType" placeholder="Title"
+                               class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary"
+                            data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <button class="btn btn-primary ml-1">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Add</span>
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@* Delete Modal *@
+<div class="modal modal-borderless fade text-left modal" id="delete-modal" tabindex="-1"
+     role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title"> Are You want to Delete This Record</p>
+                <button type="button" class="close rounded-pill" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary" data-bs-dismiss="modal">
+                    <i class="bx bx-x d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Close</span>
+                </button>
+
+                <a id="DeleteType" href="" class="btn btn-danger ml-1">
+                    <i class="bx bx-check d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Accept</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Update Modal *@
+<div class="modal fade text-left" id="update-modal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel33" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+         role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel33">Edit Vehicle Type</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <form asp-action="Edit" method="post">
+                <div class="modal-body">
+                    <input type="hidden" id="BrandId" name="Id" value="" />
+                    <div class="form-group">
+                        <input type="text" name="Title" id="EditType" placeholder="Type"
+                               class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary"
+                            data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <button class="btn btn-primary ml-1">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Submit</span>
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
 
 <section class="section">
     <div class="card">
         <div class="card-header">
-            Jquery Datatable
+            <button type="button" class=" btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#add-modal">
+                Add
+            </button>
         </div>
         <div class="card-body">
             <div class="dataTables_wrapper dt-bootstrap5 no-footer">
@@ -63,7 +168,7 @@
                     <table class="table" id="table1">
                         <thead>
                             <tr>
-                                <th>Type</th>
+                                <th>Vehicle Type</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -72,7 +177,17 @@
                             {
                                 <tr>
                                     <td>@item.Title</td>
-                                    <td>@Html.ActionLink("Edit", "Edit", new { id = item.Id })</td>
+                                    <td>
+                                        <span class="hideMe open-EditDialog" data-bs-toggle="modal" data-id="@item.Id"
+                                              data-bs-target="#update-modal">
+                                            <i class="bi bi-pencil-square" style="color: #435ebe"></i>
+                                        </span>
+                                        <span class="hideMe open-DeleteDialog" data-bs-toggle="modal" data-id="@item.Id"
+                                              data-bs-target="#delete-modal">
+                                            <i class="bi bi-trash text-danger "></i>
+                                        </span>
+
+                                    </td>
                                 </tr>
                             }
                         </tbody>
@@ -110,13 +225,43 @@
     </div>
 </section>
 
-<script src="assets/vendors/jquery/jquery.min.js"></script>
-<script src="assets/vendors/jquery-datatables/jquery.dataTables.min.js"></script>
-<script src="assets/vendors/jquery-datatables/custom.jquery.dataTables.bootstrap5.min.js"></script>
-<script src="assets/vendors/fontawesome/all.min.js"></script>
 <script>
-    // Jquery Datatable
-    let jquery_datatable = $("#table1").DataTable()
-</script>
+    $(document).on("click", ".open-DeleteDialog", function () {
+        console.log("Delete")
+        var Id = $(this).data('id');
+        var redirect = `Type/Delete/${Id}`;
+        console.log(redirect)
+        $("#DeleteType").attr("href", redirect);
+    });
 
-<script src="assets/js/mazer.js"></script>
+    $(document).on("click", ".open-EditDialog", function () {
+        var Id = $(this).data('id');
+
+        $.ajax({
+            type: "GET",
+            url: `Type/Details/${Id}`,
+
+            success: function (res) {
+                console.log(res);
+
+                $("#EditType").val(res.title);
+                $("#BrandId").val(res.id);
+            },
+            error: function (req) {
+                alert("Data Fetching Failed")
+            }
+        });
+    });
+
+
+</script>
+<style>
+    .hideMe {
+        opacity: 0.6
+    }
+
+        .hideMe:hover {
+            opacity: 1;
+            cursor: pointer
+        }
+</style>

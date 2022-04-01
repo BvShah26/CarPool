@@ -20,35 +20,73 @@ namespace Client.Areas.Admin.Controllers.Vehicles
             httpClient.BaseAddress = new Uri("https://localhost:44372/api/");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
+        public List<VehicleType> GetVehicleTypes()
         {
+            List<VehicleType> records = null;
             HttpResponseMessage responseMessage = httpClient.GetAsync("VehicleTypes").Result;
-            if(responseMessage.IsSuccessStatusCode)
+            if (responseMessage.IsSuccessStatusCode)
             {
                 string result = responseMessage.Content.ReadAsStringAsync().Result;
-                List<VehicleType> records = JsonConvert.DeserializeObject<List<VehicleType>>(result);
-                return View(records);
+                records = JsonConvert.DeserializeObject<List<VehicleType>>(result);
             }
-            return View();
+            return records;
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            
+            return View(GetVehicleTypes());
+        }
+
+        [HttpGet]
+        public VehicleType Details(int id)
+        {
+            VehicleType record = null;
+
+            HttpResponseMessage responseMessage = httpClient.GetAsync($"VehicleTypes/{id}").Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string result = responseMessage.Content.ReadAsStringAsync().Result;
+                record = JsonConvert.DeserializeObject<VehicleType>(result);
+            }
+            return record;
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            HttpResponseMessage responseMessage = httpClient.DeleteAsync($"VehicleTypes/{id}").Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return BadRequest();
         }
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(VehicleType vehicleType)
         {
-            HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("VehicleTypes",vehicleType).Result;
+            HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("VehicleTypes", vehicleType).Result;
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, VehicleType vehicleType)
+        {
+            HttpResponseMessage responseMessage = httpClient.PutAsJsonAsync($"VehicleTypes/{id}", vehicleType).Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return BadRequest();
         }
 
     }

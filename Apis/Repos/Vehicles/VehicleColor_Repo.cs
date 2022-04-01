@@ -72,6 +72,7 @@ namespace Apis.Repos.Vehicles
             if (record != null)
             {
                 record.Color = vehicleColor.Color;
+                record.ColorCode = vehicleColor.ColorCode;
             }
             _context.Vehicle_Color.Update(record);
             await _context.SaveChangesAsync();

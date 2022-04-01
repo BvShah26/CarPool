@@ -82,24 +82,24 @@ namespace Client.Areas.Admin.Controllers.Preferences
             }
         }
 
-        // GET: Preference_SubTypeController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
         // POST: Preference_SubTypeController/Edit/5
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public ActionResult Edit(TravelPreference travelPreference)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int Id,TravelPreference travelPreference)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                HttpResponseMessage responseMessage = httpClient.PutAsJsonAsync($"PreferenceSubType/{Id}", travelPreference).Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return BadRequest();
+
             }
             catch
             {
-                return View();
+                return BadRequest();
             }
         }
 

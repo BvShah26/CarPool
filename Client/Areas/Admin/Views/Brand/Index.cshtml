@@ -1,18 +1,19 @@
 ﻿@model IEnumerable<DataAcessLayer.Models.VehicleModels.VehicleBrand>;
-@*@model Apis.Helper.Paginated<DataAcessLayer.Models.VehicleModels.VehicleBrand>;*@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+
 
 @section PageTitle{
     Vehicle Brand
 }
 
 @section Headers{
-    <link rel="stylesheet" href="assets/vendors/jquery-datatables/jquery.dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="assets/vendors/fontawesome/all.min.css">
+    <link rel="stylesheet" href="~/assets/vendors/jquery-datatables/jquery.dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="~/assets/vendors/fontawesome/all.min.css">
     <style>
+
         table.dataTable td {
             padding: 15px 8px;
         }
@@ -23,18 +24,122 @@
     </style>
 
 }
-<a asp-area="Admin" asp-controller="Brand" asp-action="Add" class="btn btn-primary">Add</a>
 
+@* Add Modal *@
+<div class="modal fade text-left" id="add-modal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel33" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+         role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel33">Add Brand Name</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
 
+            <form asp-action="Add" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" name="Name" id="AddBrand" placeholder="Name"
+                               class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary"
+                            data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <button class="btn btn-primary ml-1">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Add</span>
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@* Delete Modal *@
+<div class="modal modal-borderless fade text-left modal" id="delete-modal" tabindex="-1"
+     role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title"> Are You want to Delete This Record</p>
+                <button type="button" class="close rounded-pill" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary" data-bs-dismiss="modal">
+                    <i class="bx bx-x d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Close</span>
+                </button>
+
+                <a id="DeleteBrand" href="" class="btn btn-danger ml-1">
+                    <i class="bx bx-check d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Accept</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Update Modal *@
+<div class="modal fade text-left" id="update-modal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel33" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+         role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel33">Edit Brand</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <form asp-action="Edit" method="post">
+                <div class="modal-body">
+                    <input type="hidden" id="BrandId" name="Id" value="" />
+                    <div class="form-group">
+                        <input type="text" name="Name" id="EditBrand" placeholder="Brand name"
+                               class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary"
+                            data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <button class="btn btn-primary ml-1">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Submit</span>
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
 
 <section class="section">
     <div class="card">
         <div class="card-header">
-            Jquery Datatable
+            <button type="button" class=" btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#add-modal">
+                Add
+            </button>
         </div>
         <div class="card-body">
             <div class="dataTables_wrapper dt-bootstrap5 no-footer">
-                <form asp-action="Index" method="post" >
+                <form asp-action="Index" method="post">
                     <div class="row mb-3">
                         <div class="col-sm-12 col-md-6">
                             <div class="dataTables_length" id="table1_length">
@@ -67,12 +172,22 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody id="table1body" >
+                        <tbody id="table1body">
                             @foreach (var item in Model)
                             {
                                 <tr>
                                     <td>@item.Name</td>
-                                    <td>@Html.ActionLink("Edit", "Edit", new { id = item.Id})</td>
+                                    <td>
+                                        <span class="hideMe open-EditDialog" data-bs-toggle="modal" data-id="@item.Id"
+                                              data-bs-target="#update-modal">
+                                            <i class="bi bi-pencil-square" style="color: #435ebe"></i>
+                                        </span>
+                                        <span class="hideMe open-DeleteDialog" data-bs-toggle="modal" data-id="@item.Id"
+                                              data-bs-target="#delete-modal">
+                                            <i class="bi bi-trash text-danger "></i>
+                                        </span>
+
+                                    </td>
                                 </tr>
                             }
                         </tbody>
@@ -97,7 +212,7 @@
                                     </a>
                                 </li>
                                 <li class="paginate_button page-item next disabled" id="table1_next">
-                                    <a href="#"  aria-controls="table1" data-dt-idx="2" tabindex="0" class="page-link rounded-circle d-inline-block ms-1 disabled">
+                                    <a href="#" aria-controls="table1" data-dt-idx="2" tabindex="0" class="page-link rounded-circle d-inline-block ms-1 disabled">
                                         <i class="fas fa-angle-right"></i>
                                     </a>
                                 </li>
@@ -111,45 +226,42 @@
 </section>
 
 <script>
-    $(document).ready(() => {
+    $(document).on("click", ".open-DeleteDialog", function () {
+        console.log("Delete")
+        var Id = $(this).data('id');
+        var redirect = `Brand/Delete/${Id}`;
+        console.log(redirect)
+        $("#DeleteBrand").attr("href", redirect);
+    });
 
+    $(document).on("click", ".open-EditDialog", function () {
+        var Id = $(this).data('id');
 
+        $.ajax({
+            type: "GET",
+            url: `Brand/Details/${Id}`,
 
-        function GetData() {
-            var PageSize = $("#pageSize").val()
-            var SearchValue = $("#searchData").val();
-            SearchValue = SearchValue ?? "Bhavya"
-            console.log(SearchValue)
+            success: function (res) {
+                console.log(res);
 
-            var DataToSend = {
-                PageSize,
-                SearchValue
+                $("#EditBrand").val(res.name);
+                $("#BrandId").val(res.id);
+            },
+            error: function (req) {
+                alert("Data Fetching Failed")
             }
-
-            console.log(DataToSend)
-
-            $.ajax({
-                type: "Get",
-                url: `Admin/Brand/Pages`,
-                data: DataToSend,
-                success: function (res) {
-
-                    console.log(res);
-                    $("#table1body").empty();
-                    $.each(res, (i, val) => {
-                        $("#table1body").append(`<tr><td>${val.name}</td><td> <a href="Admin/Brand/Edit/${val.id}">Edit</a></td></tr>`)
-                    })
-
-                }
-            })
-        }
-
-        $("#pageSize").change(function () {
-            GetData()
         });
+    });
 
-        $("#searchData").change(function () {
-            GetData()
-        })
-    })
+
 </script>
+<style>
+    .hideMe {
+        opacity: 0.6
+    }
+
+        .hideMe:hover {
+            opacity: 1;
+            cursor: pointer
+        }
+</style>

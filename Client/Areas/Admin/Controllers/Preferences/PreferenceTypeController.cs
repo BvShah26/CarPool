@@ -22,12 +22,13 @@ namespace Client.Areas.Admin.Controllers.Preferences
         // GET: PreferenceTypeController
         public ActionResult Index()
         {
-            return View();
+            var data = GetAllPreference();
+            return View(data);
         }
 
         public List<PreferenceType> GetAllPreference()
         {
-             HttpResponseMessage responseMessage = httpClient.GetAsync("PreferenceType").Result;
+            HttpResponseMessage responseMessage = httpClient.GetAsync("PreferenceType").Result;
             List<PreferenceType> records = null;
             if (responseMessage.IsSuccessStatusCode)
             {
@@ -38,9 +39,16 @@ namespace Client.Areas.Admin.Controllers.Preferences
         }
 
         // GET: PreferenceTypeController/Details/5
-        public ActionResult Details(int id)
+        public PreferenceType Details(int id)
         {
-            return View();
+            PreferenceType record = null;
+            HttpResponseMessage responseMessage = httpClient.GetAsync($"PreferenceType/{id}").Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string result = responseMessage.Content.ReadAsStringAsync().Result;
+                record = JsonConvert.DeserializeObject<PreferenceType>(result);
+            }
+            return record;
         }
 
         // GET: PreferenceTypeController/Create
@@ -52,58 +60,53 @@ namespace Client.Areas.Admin.Controllers.Preferences
         // POST: PreferenceTypeController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(PreferenceType preferenceType)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("PreferenceType", preferenceType).Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return BadRequest();
             }
             catch
             {
-                return View();
+                return BadRequest();
             }
-        }
-
-        // GET: PreferenceTypeController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
         }
 
         // POST: PreferenceTypeController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, TravelPreference preference)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                HttpResponseMessage responseMessage = httpClient.PutAsJsonAsync($"PreferenceType/{id}", preference).Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+                return BadRequest();
             }
             catch
             {
-                return View();
+                return BadRequest();
             }
         }
 
         // GET: PreferenceTypeController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
-        }
+            HttpResponseMessage responseMessage = httpClient.DeleteAsync($"PreferenceType/{id}").Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
 
-        // POST: PreferenceTypeController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return BadRequest();
         }
     }
 }

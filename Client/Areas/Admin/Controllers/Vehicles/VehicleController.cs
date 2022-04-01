@@ -53,7 +53,21 @@ namespace Client.Areas.Admin.Controllers.Vehicles
             return View();
         }
 
+        [HttpGet]
+        public Vehicle Details(int id)
+        {
+            Vehicle record = null;
+            HttpResponseMessage responseMessage = httpClient.GetAsync($"Vehicles/{id}").Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string result = responseMessage.Content.ReadAsStringAsync().Result;
+                record = JsonConvert.DeserializeObject<Vehicle>(result);
+            }
+            return record;
+        }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Add(Vehicle vehicle)
         {
             HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("Vehicles",vehicle).Result;
@@ -62,6 +76,19 @@ namespace Client.Areas.Admin.Controllers.Vehicles
                 //return to details page
             }
             return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id,Vehicle vehicle)
+        {
+            HttpResponseMessage responseMessage = httpClient.PutAsJsonAsync($"Vehicles/{id}",vehicle).Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return BadRequest();
         }
     }
 }
