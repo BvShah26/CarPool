@@ -7,7 +7,7 @@ using DataAcessLayer.Models.Rides;
 
 namespace DataAcessLayer.Models.Users
 {
-    public class Users
+    public class Users1
     {
         public int Id { get; set; }
 
@@ -34,6 +34,7 @@ namespace DataAcessLayer.Models.Users
         public ICollection<User_TravelPreference> UserPreference { get; set; } = new HashSet<User_TravelPreference>();
 
         public ICollection<PublishRide> Published_Rides{ get; set; } = new HashSet<PublishRide>();
+
         public ICollection<Book> BookingDetails { get; set; } = new HashSet<Book>();
 
         public ICollection<RideApproval> RideApprovals { get; set; } = new HashSet<RideApproval>();

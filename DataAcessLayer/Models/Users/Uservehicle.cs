@@ -22,7 +22,7 @@ namespace DataAcessLayer.Models.Users
         public int ColorId { get; set; }
 
 
-        public User UserOwner { get; set; }
+        public Users1 UserOwner { get; set; }
         public int UserId { get; set; }
 
         public DateTime Manufacture_Year { get; set; }

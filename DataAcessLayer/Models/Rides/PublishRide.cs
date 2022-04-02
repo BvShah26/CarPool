@@ -9,7 +9,7 @@ namespace DataAcessLayer.Models.Rides
     public class PublishRide
     {
         public int Id { get; set; }
-        public User Publisher { get; set; }
+        public Users1 Publisher { get; set; }
         public int PublisherId { get; set; }
 
         public int VehicleId { get; set; }
