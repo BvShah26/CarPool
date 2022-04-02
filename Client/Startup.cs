@@ -54,7 +54,7 @@ namespace Client
             {
                 endpoints.MapControllerRoute(
                     name: "areas",
-                    pattern: "{area:exists}/{controller=Vehicle}/{action=Index}/{id?}");
+                    pattern: "{area:exists}/{controller=Account}/{action=Index}/{id?}");
 
 
                 endpoints.MapControllerRoute(

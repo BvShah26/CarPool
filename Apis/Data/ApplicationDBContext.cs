@@ -7,11 +7,12 @@ using DataAcessLayer.Models.Preferences;
 using DataAcessLayer.Models.Rides;
 using DataAcessLayer.Models.Users;
 using DataAcessLayer.Models.VehicleModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Apis.Data
 {
-    public class ApplicationDBContext : DbContext
+    public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDBContext(DbContextOptions options) : base(options)
         {
@@ -42,7 +43,7 @@ namespace Apis.Data
 
 
         // Users
-        public DbSet<User> Users { get; set; }
+        public DbSet<Users> Users { get; set; }
         public DbSet<User_TravelPreference> User_TravelPreferences { get; set; }
         public DbSet<Uservehicle> Uservehicles { get; set; }
 

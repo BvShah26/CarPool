@@ -7,7 +7,7 @@ using DataAcessLayer.Models.Rides;
 
 namespace DataAcessLayer.Models.Users
 {
-    public class User
+    public class Users
     {
         public int Id { get; set; }
 
