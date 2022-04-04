@@ -1,0 +1,221 @@
+﻿@model DataAcessLayer.Models.Rides.PublishRide
+
+@{
+    ViewData["Title"] = "Publish";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Publish</h1>
+
+<h4>PublishRide</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Publish">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="PublisherId" value=1 />
+                <input type="hidden" asp-for="VehicleId" value=1 />
+                @*<label asp-for="PublisherId" class="control-label"></label>
+                    <select asp-for="PublisherId" class ="form-control" asp-items="ViewBag.PublisherId"></select>*@
+            </div>
+            <div class="form-group">
+                @*<label asp-for="VehicleId" class="control-label"></label>
+                    <select asp-for="VehicleId" class ="form-control" asp-items="ViewBag.VehicleId"></select>*@
+            </div>
+            <div class="form-group">
+                <label asp-for="JourneyDate" class="control-label"></label>
+                <input type="date" asp-for="JourneyDate" class="form-control" />
+                <span asp-validation-for="JourneyDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxPassengers" class="control-label"></label>
+                <input asp-for="MaxPassengers" class="form-control" />
+                <span asp-validation-for="MaxPassengers" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                    <label asp-for="Departure_City" class="control-label"></label>
+                    <input asp-for="Departure_City" class="form-control" />
+                    <span asp-validation-for="Departure_City" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Destination_City" class="control-label"></label>
+                    <input asp-for="Destination_City" class="form-control" />
+                    <span asp-validation-for="Destination_City" class="text-danger"></span>
+                </div>*@
+            <div class="form-group">
+                <label asp-for="PickUp_Location" class="control-label"></label>
+                <input asp-for="PickUp_Location" class="form-control" />
+                <span asp-validation-for="PickUp_Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DropOff_Location" class="control-label"></label>
+                <input asp-for="DropOff_Location" class="form-control" />
+                <span asp-validation-for="DropOff_Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PickUp_Time" class="control-label"></label>
+                <input type="time" asp-for="PickUp_Time" class="form-control" />
+                <span asp-validation-for="PickUp_Time" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DropOff_Time" class="control-label"></label>
+                <input type="time" asp-for="DropOff_Time" class="form-control" />
+                <span asp-validation-for="DropOff_Time" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsInstant_Approval" /> @Html.DisplayNameFor(model => model.IsInstant_Approval)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price_Seat" class="control-label"></label>
+                <input asp-for="Price_Seat" class="form-control" />
+                <span asp-validation-for="Price_Seat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ride_Note" class="control-label"></label>
+                <input asp-for="Ride_Note" class="form-control" />
+                <span asp-validation-for="Ride_Note" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                    <label asp-for="Publishing_Timestamp" class="control-label"></label>
+                    <input asp-for="Publishing_Timestamp" class="form-control" />
+                    <span asp-validation-for="Publishing_Timestamp" class="text-danger"></span>
+                </div>*@
+            @*<div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IsCompletelyBooked" /> @Html.DisplayNameFor(model => model.IsCompletelyBooked)
+                    </label>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IsCancelled" /> @Html.DisplayNameFor(model => model.IsCancelled)
+                    </label>
+                </div>*@
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyDwIVgIMPOY0UMpmXrqO0hOBNSTM7dH2pA"></script>
+
+<script>
+    //Preventing Form Submittion By Enter
+    $(document).keypress(function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+
+    var pickupLocation;
+    var dropLocation;
+
+    const disablePastDate = () => {
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+
+        var maxDate = year + '-' + month + '-' + day;
+        $('#JourneyDate').attr('min', maxDate);
+    }
+
+    const AutoComplePlaces = (searchInput) => {
+        return new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
+            types: ['geocode'],
+            componentRestrictions: {
+                country: "IN"
+            },
+            fields: ['place_id', 'geometry', 'name', 'address_components']
+        });
+    }
+
+    const PlaceChange = (data) => {
+
+        var near_place = data.getPlace();
+        console.log("Near", near_place)
+
+        var filtered_array = near_place.address_components.filter(function (address_component) {
+            return address_component.types.includes("administrative_area_level_2");
+        });
+        console.log(filtered_array);
+        var city = filtered_array.length ? filtered_array[0].long_name : "";
+        console.log("City : ", city)
+
+
+        var place = data.getPlace();
+        var lat = place.geometry.location.lat();
+        var lng = place.geometry.location.lng();
+
+        return {
+            LatLong: lat + "," + lng,
+            city
+        };
+
+    }
+    $(document).ready(function () {
+        disablePastDate();
+
+        //AutoComplete Locations
+        pickupLocation = AutoComplePlaces('PickUp_Location');
+        dropLocation = AutoComplePlaces('DropOff_Location');
+
+
+        google.maps.event.addListener(pickupLocation, 'place_changed', function () { return PlaceChange(pickupLocation) });
+        google.maps.event.addListener(dropLocation, 'place_changed', function () { return PlaceChange(dropLocation) });
+
+
+        $("form").submit(function (event) {
+            event.preventDefault();
+
+            var DropLocation_data = PlaceChange(pickupLocation)
+            var Pickup_data = PlaceChange(dropLocation)
+
+
+            var formData = $('form').serializeArray();
+            var objToSend = [{ name: "PickUp_LatLong", value: Pickup_data.LatLong }, { name: "DropOff_LatLong", value: DropLocation_data.LatLong },
+                { name: "Destination_City", value: DropLocation_data.city }, { name: "Departure_City", value: Pickup_data.city },
+            ...formData]
+
+            console.log(objToSend);
+
+
+
+
+            //$.ajax({
+            //    type: "POST",
+            //    url: "/Client/Publish",
+            //    data: objToSend,
+
+            //    success: function (r) {
+            //        console.log(r);
+            //        window.location.href = "/Multiplex/Index";
+            //    },
+            //    error: function (req) {
+            //        window.location.href = "/Multiplex/Create";
+            //    }
+            //});
+        });
+    });
+
+
+
+
+</script>
+
+
+

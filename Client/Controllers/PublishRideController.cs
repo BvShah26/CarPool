@@ -1,0 +1,24 @@
+﻿using DataAcessLayer.Models.Rides;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Client.Controllers
+{
+    public class PublishRideController : Controller
+    {
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Publish(PublishRide ride)
+        {
+            return View();
+        }
+
+    }
+}

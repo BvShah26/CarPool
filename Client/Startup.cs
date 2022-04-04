@@ -63,7 +63,7 @@ namespace Client
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Display}/{id?}");
+                    pattern: "{controller=PublishRide}/{action=Index}/{id?}");
 
 
             });

@@ -15,6 +15,8 @@
     <Compile Remove="Migrations\20220326114431_temp.Designer.cs" />
     <Compile Remove="Migrations\20220403160132_Client Nulale.cs" />
     <Compile Remove="Migrations\20220403160132_Client Nulale.Designer.cs" />
+    <Compile Remove="Migrations\20220404102841_publish-ride fields added.cs" />
+    <Compile Remove="Migrations\20220404102841_publish-ride fields added.Designer.cs" />
   </ItemGroup>
 
 	<ItemGroup>

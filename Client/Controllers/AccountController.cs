@@ -55,10 +55,21 @@ namespace Client.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult Login(ClientUsers clientUsers)
-        {
-            return RedirectToAction();
-        }
+        //[HttpPost]
+        //public IActionResult Login(ClientLogin clientLogin)
+        //{
+        //    HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("Client/Login", clientLogin).Result;
+        //    if (responseMessage.IsSuccessStatusCode)
+        //    {
+        //        string result = responseMessage.Content.ReadAsStringAsync().Result;
+        //        User record = JsonConvert.DeserializeObject<User>(result);
+        //        if (record != null)
+        //        {
+        //            return RedirectToAction("Home");
+        //        }
+        //    }
+        //    return View();
+        //}
+
     }
 }

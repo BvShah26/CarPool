@@ -23,10 +23,14 @@ namespace DataAcessLayer.Models.Rides
         public string PickUp_Location { get; set; }
         public string DropOff_Location { get; set; }
 
+        public string PickUp_LatLong { get; set; }
+        public string DropOff_LatLong { get; set; }
+
+
 
         public DateTime PickUp_Time { get; set; }
         public DateTime DropOff_Time { get; set; }
-            
+
 
         public Boolean IsInstant_Approval { get; set; }
         public int Price_Seat { get; set; }
@@ -40,7 +44,7 @@ namespace DataAcessLayer.Models.Rides
 
 
 
-   
+
         //Collections
 
         public ICollection<Book> Booking { get; set; } = new HashSet<Book>();
