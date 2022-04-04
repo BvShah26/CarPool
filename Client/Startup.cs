@@ -1,6 +1,8 @@
+using Apis.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -28,6 +30,8 @@ namespace Client
             services.AddControllersWithViews();
             services.AddMvc();
             services.AddControllersWithViews();
+            services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CarPoolCN")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

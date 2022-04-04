@@ -18,7 +18,7 @@ namespace DataAcessLayer.Models.Users
 
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public ClientUsers User { get; set; }
 
 
     }

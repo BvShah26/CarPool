@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Apis.Data;
+using Apis.Infrastructure.Client;
 using Apis.Infrastructure.Preference;
 using Apis.Infrastructure.Vehicles;
+using Apis.Repos.Client;
 using Apis.Repos.Preference;
 using Apis.Repos.Vehicles;
 using Microsoft.AspNetCore.Builder;
@@ -45,6 +47,9 @@ namespace Apis
 
             services.AddTransient<IPreferenceType_Repo, PreferenceType_Repo>();
             services.AddTransient<IPreferenceSubType_Repo, PreferenceSubType_Repo>();
+
+            services.AddTransient<IClient_Repo, Client_Repo>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

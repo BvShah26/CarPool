@@ -13,7 +13,7 @@ namespace DataAcessLayer.Models.Rides
         public PublishRide Ride { get; set; }
         public int RideId { get; set; }
 
-        public User User { get; set; }
+        public ClientUsers User { get; set; }
         public int UserId { get; set; }
 
         public Boolean IsApproved { get; set; }

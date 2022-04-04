@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using DataAcessLayer.Models.Booking;
 using DataAcessLayer.Models.Location;
@@ -7,7 +8,7 @@ using DataAcessLayer.Models.Rides;
 
 namespace DataAcessLayer.Models.Users
 {
-    public class User
+    public class ClientUsers
     {
         public int Id { get; set; }
 
@@ -18,11 +19,11 @@ namespace DataAcessLayer.Models.Users
         //public int CityId { get; set; } //To Be Remove
 
         public string Address { get; set; }
-        public Gender Gender { get; set; }
+        public Gender? Gender { get; set; }
 
         public long MobileNumber { get; set; }
         public DateTime BirthDate { get; set; }
-        public int LicenseNumber { get; set; } //?
+        public int LicenseNumber { get; set; }
         public string ProfileImage { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
@@ -41,7 +42,7 @@ namespace DataAcessLayer.Models.Users
 
     public enum Gender
     {
-        Female = 1,
-        Male = 2
+        Female,
+        Male
     }
 }

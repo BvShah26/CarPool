@@ -14,7 +14,7 @@ namespace DataAcessLayer.Models.Booking
         public PublishRide Publish_Ride{ get; set; }
         public int Publish_RideId { get; set; }
 
-        public User Rider{ get; set; }
+        public ClientUsers Rider { get; set; }
         public int RiderId { get; set; }
 
         public int SeatQty { get; set; }
