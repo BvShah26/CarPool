@@ -1,4 +1,5 @@
 using Apis.Data;
+using DataAcessLayer.Models.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,6 +32,8 @@ namespace Client
             services.AddMvc();
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CarPoolCN")));
+            services.AddDefaultIdentity<ApplicationUser>().AddEntityFrameworkStores<ApplicationDBContext>();
+
 
         }
 

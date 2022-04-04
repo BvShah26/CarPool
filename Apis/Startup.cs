@@ -9,6 +9,7 @@ using Apis.Infrastructure.Vehicles;
 using Apis.Repos.Client;
 using Apis.Repos.Preference;
 using Apis.Repos.Vehicles;
+using DataAcessLayer.Models.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,6 +36,8 @@ namespace Apis
         {
             services.AddControllers();
             services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CarPoolCN")));
+            services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CarPoolCN")));
+            services.AddDefaultIdentity<ApplicationUser>().AddEntityFrameworkStores<ApplicationDBContext>();
 
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
