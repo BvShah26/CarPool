@@ -43,7 +43,7 @@ namespace Apis.Data
 
 
         // Users
-        public DbSet<ClientUsers> ClientUsers { get; set; } //Comment This
+        public DbSet<ClientUsers> ClientUsers { get; set; }
         public DbSet<User_TravelPreference> User_TravelPreferences { get; set; }
         public DbSet<Uservehicle> Uservehicles { get; set; }
 

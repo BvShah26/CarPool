@@ -1,8 +1,11 @@
 ﻿using DataAcessLayer.Models.Users;
+using DataAcessLayer.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Protocols;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +23,10 @@ namespace Client.Controllers
         {
             _config = config;
             httpClient = new HttpClient();
-            //httpClient.BaseAddress = new Uri(_config.GetValue<string>("proxyUrl"));
-            httpClient.BaseAddress = new Uri("https://localhost:44372/api/");
+            httpClient.BaseAddress = new Uri(_config.GetValue<string>("proxyUrl"));
         }
 
-        public IActionResult Index()
+        public IActionResult Index() //Delete this and view
         {
             return View();
         }
@@ -47,29 +49,31 @@ namespace Client.Controllers
             return View();
         }
 
-
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
+        [HttpPost]
+        public IActionResult Login(ClientLoginView clientLogin)
+        {
+            HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("ClientUser/Login",clientLogin).Result;
 
-        //[HttpPost]
-        //public IActionResult Login(ClientLogin clientLogin)
-        //{
-        //    HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("Client/Login", clientLogin).Result;
-        //    if (responseMessage.IsSuccessStatusCode)
-        //    {
-        //        string result = responseMessage.Content.ReadAsStringAsync().Result;
-        //        User record = JsonConvert.DeserializeObject<User>(result);
-        //        if (record != null)
-        //        {
-        //            return RedirectToAction("Home");
-        //        }
-        //    }
-        //    return View();
-        //}
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string res = responseMessage.Content.ReadAsStringAsync().Result;
+                ClientUsers client = JsonConvert.DeserializeObject<ClientUsers>(res);
+
+                HttpContext.Session.SetString("UserName", client.Name);
+                HttpContext.Session.SetInt32("UserId", client.Id);
+
+                return RedirectToAction("Index");
+            }
+            return View(clientLogin);
+        }
+
+        //Login Identity
 
     }
 }

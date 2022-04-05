@@ -23,6 +23,12 @@ namespace Apis.Repos.Client
             return _context.ClientUsers.ToList();
         }
 
+        public ClientUsers LoginUser(ClientUsers clientUsers)
+        {
+            ClientUsers record = _context.ClientUsers.FirstOrDefault(item => item.Email == clientUsers.Email && item.Password == clientUsers.Password);
+            return record;
+        }
+
         public ClientUsers RegisterUser(ClientUsers clientUsers)
         {
             clientUsers.RegistrationDate = DateTime.Now;

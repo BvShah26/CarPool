@@ -2,11 +2,11 @@
 
 @{
     ViewData["Title"] = "Publish";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
-<h1>Publish</h1>
 
+<h4>Hello, @ViewBag.Name</h4>
 <h4>PublishRide</h4>
 <hr />
 <div class="row">
@@ -14,14 +14,14 @@
         <form asp-action="Publish">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input type="hidden" asp-for="PublisherId" value=1 />
-                <input type="hidden" asp-for="VehicleId" value=1 />
+                <input type="hidden" asp-for="PublisherId" value=@ViewBag.Id />
+                @*<input type="hidden" asp-for="VehicleId" value=1 />*@
                 @*<label asp-for="PublisherId" class="control-label"></label>
                     <select asp-for="PublisherId" class ="form-control" asp-items="ViewBag.PublisherId"></select>*@
             </div>
             <div class="form-group">
-                @*<label asp-for="VehicleId" class="control-label"></label>
-                    <select asp-for="VehicleId" class ="form-control" asp-items="ViewBag.VehicleId"></select>*@
+                <label asp-for="VehicleId" class="control-label">Vehicle</label>
+                    <select asp-for="VehicleId" class ="form-control" asp-items="ViewBag.Vehicles"></select>
             </div>
             <div class="form-group">
                 <label asp-for="JourneyDate" class="control-label"></label>
@@ -147,14 +147,14 @@
     const PlaceChange = (data) => {
 
         var near_place = data.getPlace();
-        console.log("Near", near_place)
+        //console.log("Near",near_place)
 
         var filtered_array = near_place.address_components.filter(function (address_component) {
             return address_component.types.includes("administrative_area_level_2");
         });
-        console.log(filtered_array);
+        //console.log(filtered_array);
         var city = filtered_array.length ? filtered_array[0].long_name : "";
-        console.log("City : ", city)
+        //console.log("City : ", city)
 
 
         var place = data.getPlace();
@@ -182,33 +182,34 @@
         $("form").submit(function (event) {
             event.preventDefault();
 
+           
+
             var DropLocation_data = PlaceChange(pickupLocation)
             var Pickup_data = PlaceChange(dropLocation)
 
 
             var formData = $('form').serializeArray();
-            var objToSend = [{ name: "PickUp_LatLong", value: Pickup_data.LatLong }, { name: "DropOff_LatLong", value: DropLocation_data.LatLong },
+
+            var objToSend = [
+                { name: "PickUp_LatLong", value: Pickup_data.LatLong }, { name: "DropOff_LatLong", value: DropLocation_data.LatLong },
                 { name: "Destination_City", value: DropLocation_data.city }, { name: "Departure_City", value: Pickup_data.city },
             ...formData]
 
-            console.log(objToSend);
+            $.ajax({
+                type: "POST",
+                url: "/PublishRide/Publish",
+                data: objToSend,
 
+                success: function (r) {
+                    console.log(r);
+                    window.location.href = "/PublishRide/Details/"+r.id;
+                },
+                error: function (req) {
+                    alert("Ride Not Published");
+                }
+            });
 
-
-
-            //$.ajax({
-            //    type: "POST",
-            //    url: "/Client/Publish",
-            //    data: objToSend,
-
-            //    success: function (r) {
-            //        console.log(r);
-            //        window.location.href = "/Multiplex/Index";
-            //    },
-            //    error: function (req) {
-            //        window.location.href = "/Multiplex/Create";
-            //    }
-            //});
+            
         });
     });
 

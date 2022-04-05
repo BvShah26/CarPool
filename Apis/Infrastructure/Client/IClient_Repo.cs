@@ -11,5 +11,7 @@ namespace Apis.Infrastructure.Client
         List<ClientUsers> GetUsers();
 
         ClientUsers RegisterUser(ClientUsers clientUsers);
+
+        ClientUsers LoginUser(ClientUsers clientUsers);
     }
 }

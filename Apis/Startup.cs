@@ -52,6 +52,8 @@ namespace Apis
             services.AddTransient<IPreferenceSubType_Repo, PreferenceSubType_Repo>();
 
             services.AddTransient<IClient_Repo, Client_Repo>();
+            services.AddTransient<IClientVehicle_Repo, ClientVehicle_Repo>();
+
 
         }
 

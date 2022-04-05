@@ -1,0 +1,66 @@
+﻿@model DataAcessLayer.Models.Users.Uservehicle
+
+@{
+    ViewData["Title"] = "Add";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+@section Headers{
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
+}
+
+<h1>Add</h1>
+
+<h4>Uservehicle</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Add">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*<div class="form-group">
+                    <label asp-for="VehicleImage" class="control-label"></label>
+                    <input asp-for="VehicleImage" class="form-control" />
+                    <span asp-validation-for="VehicleImage" class="text-danger"></span>
+                </div>*@
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsCar_NumberDisclosed" /> @Html.DisplayNameFor(model => model.IsCar_NumberDisclosed)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="CarNumber" class="control-label"></label>
+                <input asp-for="CarNumber" class="form-control" />
+                <span asp-validation-for="CarNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VehicleId" class="control-label"></label>
+                <select asp-for="VehicleId" class="form-control" asp-items="ViewBag.Vehicles"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ColorId" class="control-label"></label>
+                <select asp-for="ColorId" class="form-control" asp-items="ViewBag.Colors"> </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Manufacture_Year" class="control-label"></label>
+                <input type="text" asp-for="Manufacture_Year" class="form-control" />
+                <span asp-validation-for="Manufacture_Year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script>
+</script>

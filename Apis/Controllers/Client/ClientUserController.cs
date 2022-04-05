@@ -41,8 +41,24 @@ namespace Apis.Controllers.Client
             return _Repo.RegisterUser(clientUsers);
         }
 
-        // PUT api/<ClientUserController>/5
-        [HttpPut("{id}")]
+        [HttpPost("Login")]
+        public IActionResult Login(ClientUsers clientUsers)
+        {
+            if (clientUsers == null)
+            {
+                return BadRequest();
+            }
+            ClientUsers res =  _Repo.LoginUser(clientUsers);
+            if(res == null)
+            {
+                return NotFound();
+            }
+            return Ok(res);
+
+        }
+
+            // PUT api/<ClientUserController>/5
+            [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }

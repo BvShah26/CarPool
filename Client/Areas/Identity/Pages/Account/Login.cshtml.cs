@@ -12,6 +12,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace Client.Areas.Identity.Pages.Account
 {
@@ -21,14 +25,18 @@ namespace Client.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IConfiguration _config;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, 
+        public LoginModel(SignInManager<ApplicationUser> signInManager,
             ILogger<LoginModel> logger,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _config = config;
+
         }
 
         [BindProperty]
@@ -83,6 +91,22 @@ namespace Client.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    HttpClient httpClient = new HttpClient();
+                    httpClient.BaseAddress = new Uri(_config.GetValue<string>("proxyUrl"));
+                    HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("ClientUser/Login",
+                        new { Email = Input.Email, Password = Input.Password }).Result;
+
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        string res = responseMessage.Content.ReadAsStringAsync().Result;
+                         ClientUsers client = JsonConvert.DeserializeObject<ClientUsers>(res);
+
+                        HttpContext.Session.SetString("UserName", client.Name);
+                        HttpContext.Session.SetInt32("UserId", client.Id);
+                        //May be to remove
+                    }
+
+                    
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
