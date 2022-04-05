@@ -43,13 +43,13 @@ namespace Apis.Data
 
 
         // Users
-        public DbSet<ClientUsers> Users { get; set; } //Comment This
+        public DbSet<ClientUsers> ClientUsers { get; set; } //Comment This
         public DbSet<User_TravelPreference> User_TravelPreferences { get; set; }
         public DbSet<Uservehicle> Uservehicles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);
             //modelBuilder.Entity<PublishRide>().HasOne(item => item.Vehicle).WithMany().OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Vehicle>().ToTable("Vehicles");
         }

@@ -15,6 +15,7 @@ namespace Apis.Controllers.Client
     public class ClientUserController : ControllerBase
     {
         private readonly IClient_Repo _Repo;
+
         public ClientUserController(IClient_Repo repo)
         {
             _Repo = repo;
