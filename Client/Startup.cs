@@ -62,6 +62,7 @@ namespace Client
             app.UseStaticFiles();
 
             app.UseRouting();
+
             app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -76,7 +77,7 @@ namespace Client
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=PublishRide}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
             });

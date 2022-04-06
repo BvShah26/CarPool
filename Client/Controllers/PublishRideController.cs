@@ -70,7 +70,15 @@ namespace Client.Controllers
         //Get All Published Ride of user
         public IActionResult List()
         {
-            return View();
+            var UserId = HttpContext.Session.GetInt32("UserId");
+            HttpResponseMessage responseMessage = httpClient.GetAsync($"PublishRides/UserVehicles/{UserId}").Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string res = responseMessage.Content.ReadAsStringAsync().Result;
+                List<PublishRide> rides = JsonConvert.DeserializeObject<List<PublishRide>>(res);
+                return View(rides);
+            }
+            return BadRequest();
         }
 
 

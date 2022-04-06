@@ -1,0 +1,138 @@
+﻿@model IEnumerable<DataAcessLayer.Models.Rides.PublishRide>
+
+@{
+    ViewData["Title"] = "Rides";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+<h1>Rides</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Publisher)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vehicle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JourneyDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaxPassengers)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Departure_City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Destination_City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickUp_Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DropOff_Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickUp_LatLong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DropOff_LatLong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickUp_Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DropOff_Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsInstant_Approval)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price_Seat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ride_Note)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Publishing_Timestamp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCompletelyBooked)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCancelled)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publisher.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vehicle.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.JourneyDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxPassengers)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Departure_City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Destination_City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PickUp_Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DropOff_Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PickUp_LatLong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DropOff_LatLong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PickUp_Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DropOff_Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsInstant_Approval)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price_Seat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ride_Note)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publishing_Timestamp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCompletelyBooked)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCancelled)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

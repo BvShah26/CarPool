@@ -109,10 +109,10 @@
                                         </ul>
                                     </li>
                                     <li class="dropdown">
-                                        <a href="#">Rent a Car</a>
+                                        <a href="#">Ride</a>
                                         <ul>
-                                            <li><a href="listings.html">Listings</a></li>
-                                            <li><a href="listings-details.html">Listings Details</a></li>
+                                            <li><a asp-controller="PublishRide" asp-action="List">My Publishion</a></li>
+                                            <li><a asp-controller="PublishRide" asp-action="Index">Publish New Ride</a></li>
                                         </ul>
                                     </li>
                                     <li class="dropdown">
@@ -153,9 +153,7 @@
             <div class="sticky-header__content"></div><!-- /.sticky-header__content -->
         </div><!-- /.stricky-header -->
 
-        <div class="container mt-5 mb-5">
-            @RenderBody()
-        </div>
+        @RenderBody()
 
 
         <!--Site Footer One Start-->

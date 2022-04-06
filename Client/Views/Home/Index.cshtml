@@ -1,0 +1,203 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+<section class="banner-two">
+    <div class="banner-bg-slide"
+         data-options='{ "delay": 5000, "slides": [ { "src": "assets/images/backgrounds/main-slider-2-1.jpg" }, { "src": "assets/images/backgrounds/main-slider-2-2.jpg" }, { "src": "assets/images/backgrounds/main-slider-2-3.jpg" } ], "transition": "fade", "timer": false, "align": "top" }'>
+    </div><!-- /.banner-bg-slide -->
+    <div class="banner-bg-slide-overly"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="banner-two__content">
+                    <p class="banner-two__text">Discover Your Perfect Ride Partner</p>
+                    <h2 class="banner-two__title">Looking for<br> A Ride</h2>
+                    <form class="banner-two-form" asp-action="Index" >
+                        <ul class="list-unstyled banner-two__type-boxes clearfix">
+                            <li class="banner-two__input-box">
+                                <input type="text" class="selectpicker" id="Departure"/>
+                            </li>
+                            <li class="banner-two__input-box">
+                                <input type="text" class="selectpicker" id="Destination"/>
+                            </li>
+                        </ul>
+
+                        <ul class="mt-2 list-unstyled banner-two__type-boxes clearfix">
+                            <li class="search-box__input me-2">
+                                <input type="date" name="JourneyDate" placeholder="Select date" id="JourneyDate">
+                                <div class="search-box__icon-box">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                            </li>
+                            <li class="banner-two__input-box">
+                                <select class="selectpicker" name="SeatCount" id="SeatCount" aria-label="Default select example">
+                                    <option selected>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </li>
+                            <li class="banner-two__input-box">
+                                <button type="submit" class="banner-two__btn">Find Your Car</button>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyDwIVgIMPOY0UMpmXrqO0hOBNSTM7dH2pA"></script>
+
+<script>
+    $(document).keypress(function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
+    const disablePastDate = () => {
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+
+        var maxDate = year + '-' + month + '-' + day;
+        $('#JourneyDate').attr('min', maxDate);
+    }
+    const AutoComplePlaces = (searchInput) => {
+        return new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
+            types: ['geocode'],
+            componentRestrictions: {
+                country: "IN"
+            },
+            fields: ['geometry', 'name', 'address_components']
+        });
+    }
+    const PlaceChange = (data) => {
+
+        var near_place = data.getPlace();
+        console.log("Near", near_place)
+
+        var filtered_array = near_place.address_components.filter(function (address_component) {
+            return address_component.types.includes("administrative_area_level_2");
+        });
+        //console.log(filtered_array);
+        var city = filtered_array.length ? filtered_array[0].long_name : "";
+        //console.log("City : ", city)
+
+
+        var place = data.getPlace();
+        var lat = place.geometry.location.lat();
+        var lng = place.geometry.location.lng();
+
+        return {
+            LatLong: lat + "," + lng,
+            city
+        };
+
+    }
+    $(document).ready(function () {
+        console.log("Start")
+        disablePastDate();
+        var pickupLocation = AutoComplePlaces('Departure');
+        var dropLocation = AutoComplePlaces('Destination');
+
+        google.maps.event.addListener(pickupLocation, 'place_changed', function () { return PlaceChange(pickupLocation) });
+        google.maps.event.addListener(dropLocation, 'place_changed', function () { return PlaceChange(dropLocation) });
+
+        $("form").submit(function (event) {
+            event.preventDefault();
+
+
+
+            var Pickup_data = PlaceChange(pickupLocation)
+            var DropLocation_data = PlaceChange(dropLocation)
+
+
+            var formData = $('form').serializeArray();
+            console.log("Main : ", formData);
+
+            var objToSend = [
+                { name: "PickUp_LatLong", value: Pickup_data.LatLong }, { name: "DropOff_LatLong", value: DropLocation_data.LatLong },
+                { name: "Destination_City", value: DropLocation_data.city }, { name: "Departure_City", value: Pickup_data.city },
+                ...formData]
+
+
+            console.log(objToSend);
+
+            //this.submit();
+            //$("form").submit();
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/Index",
+                data: objToSend,
+
+              @*  success: function (r) {
+                    console.log(r);
+                    var myJsonString = JSON.stringify(r);
+                    
+                    console.log(myJsonString )
+                    var url = '/Home/Rides/';
+                    var form = $('<form id="formNew" action="' + url + '" method="post">' +
+                        `<input type="text" name="SearchRide" value="${myJsonString}" />` +
+                        '</form>');
+
+                    var dat = form.serializeArray();
+                    console.log("CHild : ",dat);
+
+                    //alert(form);
+                    //console.log(form);
+                    //$('body').append(form);
+                    //form.submit();
+                    //window.location.href = "/Home/Rides/";
+                },*@
+
+                success: function (r) {
+                    console.log(r);
+                    var myJsonString = JSON.stringify(r);
+
+                   console.log(myJsonString )
+                    var url = '/Home/Rides/';
+                    var frm = '<form id="formNew" action="' + url + '" method="post">';
+                    $.each(r, (i, val) => {
+                        frm += `<input type="text" name="SearchRide" value="${val}" />`;
+                    })
+                    frm += '</form>';
+
+                  
+                    
+
+
+
+                    
+                    console.log("CHild : ", dat);
+                    var form = $(frm)
+                    var dat = form.serializeArray();
+                    //alert(form);
+                    console.log("dat", dat);
+                    //$('body').append(form);
+                    form.submit();
+                    //window.location.href = "/Home/Rides/";
+                },
+                error: function (req) {
+                    alert("Api Calling Fail");
+                }
+            });
+
+
+        });
+
+    })
+</script>

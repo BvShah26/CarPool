@@ -28,6 +28,14 @@ namespace Apis.Controllers
             return await _context.Publish_Rides.ToListAsync();
         }
 
+        [HttpGet("UserVehicles/{UserId}")]
+        public async Task<ActionResult<IEnumerable<PublishRide>>> GetUser_PublishedRide(int UserId)
+        {
+            List<PublishRide> result = await _context.Publish_Rides.Where(item => item.PublisherId == UserId)
+                .Include(item => item.Vehicle).ThenInclude(item => item.Vehicle).ToListAsync();
+            return Ok(result);
+        }
+
         // GET: api/PublishRides/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PublishRide>> GetPublishRide(int id)
