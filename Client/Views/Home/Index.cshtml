@@ -40,6 +40,12 @@
                                     <option>4</option>
                                 </select>
                             </li>
+                            <input type="hidden" id="DestinationLatLong" name="DropOff_LatLong" />
+                            <input type="hidden" id="DepartureLatLong" name="PickUp_LatLong" />
+
+                            <input type="hidden" id="DestinationCity" name="Destination_City" />
+                            <input type="hidden" id="DepartureCity" name="Departure_City" />
+
                             <li class="banner-two__input-box">
                                 <button type="submit" class="banner-two__btn">Find Your Car</button>
                             </li>
@@ -84,10 +90,10 @@
             fields: ['geometry', 'name', 'address_components']
         });
     }
-    const PlaceChange = (data) => {
-
+    const PlaceChange = (data,inputControl) => {
+        console.log("place Change : ", data);
         var near_place = data.getPlace();
-        console.log("Near", near_place)
+        //console.log("Near", near_place)
 
         var filtered_array = near_place.address_components.filter(function (address_component) {
             return address_component.types.includes("administrative_area_level_2");
@@ -101,6 +107,9 @@
         var lat = place.geometry.location.lat();
         var lng = place.geometry.location.lng();
 
+        $("#" + inputControl + "LatLong").val(lat + "," + lng)
+        $("#" + inputControl + "City").val(city)
+
         return {
             LatLong: lat + "," + lng,
             city
@@ -113,88 +122,97 @@
         var pickupLocation = AutoComplePlaces('Departure');
         var dropLocation = AutoComplePlaces('Destination');
 
-        google.maps.event.addListener(pickupLocation, 'place_changed', function () { return PlaceChange(pickupLocation) });
-        google.maps.event.addListener(dropLocation, 'place_changed', function () { return PlaceChange(dropLocation) });
+        google.maps.event.addListener(pickupLocation, 'place_changed', function () { return PlaceChange(pickupLocation,"Departure") });
+        google.maps.event.addListener(dropLocation, 'place_changed', function () { return PlaceChange(dropLocation,"Destination") });
 
         $("form").submit(function (event) {
             event.preventDefault();
 
+            this.submit();
+
+            //var Pickup_data = PlaceChange(pickupLocation)
+            //var DropLocation_data = PlaceChange(dropLocation)
 
 
-            var Pickup_data = PlaceChange(pickupLocation)
-            var DropLocation_data = PlaceChange(dropLocation)
+            //var formData = $('form').serializeArray();
+            //console.log("Main : ", formData);
+
+            //var objToSend = [
+            //    { name: "PickUp_LatLong", value: Pickup_data.LatLong }, { name: "DropOff_LatLong", value: DropLocation_data.LatLong },
+            //    { name: "Destination_City", value: DropLocation_data.city }, { name: "Departure_City", value: Pickup_data.city },
+            //    ...formData]
 
 
-            var formData = $('form').serializeArray();
-            console.log("Main : ", formData);
-
-            var objToSend = [
-                { name: "PickUp_LatLong", value: Pickup_data.LatLong }, { name: "DropOff_LatLong", value: DropLocation_data.LatLong },
-                { name: "Destination_City", value: DropLocation_data.city }, { name: "Departure_City", value: Pickup_data.city },
-                ...formData]
+            //console.log("Main : ", objToSend);
 
 
-            console.log(objToSend);
 
             //this.submit();
             //$("form").submit();
 
-            $.ajax({
-                type: "POST",
-                url: "/Home/Index",
-                data: objToSend,
+            //$.ajax({
+            //    type: "POST",
+            //    url: "/Home/Index",
+            //    data: objToSend,
 
-              @*  success: function (r) {
-                    console.log(r);
-                    var myJsonString = JSON.stringify(r);
+            //    success: function (r) {
+            //        console.log("Response : ",r);
+            //        var myJsonString = JSON.stringify(r);
                     
-                    console.log(myJsonString )
-                    var url = '/Home/Rides/';
-                    var form = $('<form id="formNew" action="' + url + '" method="post">' +
-                        `<input type="text" name="SearchRide" value="${myJsonString}" />` +
-                        '</form>');
+            //        console.log(myJsonString)
+            //        console.log(JSON.parse(myJsonString));
+            //        //console.log("Data :  ",data)
+            //        var url = '/Home/Rides/';
+            //        var formJson = $('<form id="formNew" action="' + url + '" method="post">' +
+            //            `<input type="hidden" name="SearchRide" value=${myJsonString} />` +
+            //            '</form>');
 
-                    var dat = form.serializeArray();
-                    console.log("CHild : ",dat);
+            //        var formObject = $('<form id="formNew" action="' + url + '" method="post">' +
+            //            `<input type="text" name="SearchRide" value=${r} />` +
+            //            '</form>');
 
-                    //alert(form);
-                    //console.log(form);
-                    //$('body').append(form);
-                    //form.submit();
-                    //window.location.href = "/Home/Rides/";
-                },*@
+            //        console.log("Form Json : ", formJson);
 
-                success: function (r) {
-                    console.log(r);
-                    var myJsonString = JSON.stringify(r);
 
-                   console.log(myJsonString )
-                    var url = '/Home/Rides/';
-                    var frm = '<form id="formNew" action="' + url + '" method="post">';
-                    $.each(r, (i, val) => {
-                        frm += `<input type="text" name="SearchRide" value="${val}" />`;
-                    })
-                    frm += '</form>';
+            //        ////alert(form);
+            //        ////console.log(form);
+            //        $('body').append(formJson);
+            //        formJson.submit();
+            //        //window.location.href = "/Home/Rides/";
+            //    },
+
+            //    //success: function (r) {
+            //    //    console.log("Response : ",r);
+
+            //    //    var myJsonString = JSON.stringify(r);
+
+            //    //   //console.log(myJsonString )
+            //    //    var url = '/Home/Rides/';
+            //    //    var frm = '<form id="formNew" action="' + url + '" method="post">';
+            //    //    $.each(r, (i, val) => {
+            //    //        frm += `<input type="text" name="SearchRide" value="${val}" />`;
+            //    //    })
+            //    //    frm += '</form>';
 
                   
-                    
+            //    //    console.log("form : ",frm)
 
 
 
                     
-                    console.log("CHild : ", dat);
-                    var form = $(frm)
-                    var dat = form.serializeArray();
-                    //alert(form);
-                    console.log("dat", dat);
-                    //$('body').append(form);
-                    form.submit();
-                    //window.location.href = "/Home/Rides/";
-                },
-                error: function (req) {
-                    alert("Api Calling Fail");
-                }
-            });
+            //    //    //console.log("CHild : ", dat);
+            //    //    var form = $(frm)
+            //    //    var dat = form.serializeArray();
+            //    //    //alert(form);
+            //    //    console.log("dat", dat);
+            //    //    //$('body').append(form);
+            //    //    form.submit();
+            //    //    //window.location.href = "/Home/Rides/";
+            //    //},
+            //    error: function (req) {
+            //        alert("Api Calling Fail");
+            //    }
+            //});
 
 
         });

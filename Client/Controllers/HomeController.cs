@@ -38,16 +38,17 @@ namespace Client.Controllers
             {
                 string res = responseMessage.Content.ReadAsStringAsync().Result;
                 List<PublishRide> rides = JsonConvert.DeserializeObject<List<PublishRide>>(res);
-                return Ok(rides);
+                //return Ok(rides);
                 //return RedirectToAction("Rides");
+                return View("Rides", rides);
             }
             return View();
         }
 
         [HttpPost]
-        public IActionResult Rides(List<PublishRide> SearchRide)
+        public IActionResult Rides(string SearchRide)
         {
-            //List<PublishRide> rides = JsonConvert.DeserializeObject<List<PublishRide>>(SearchRide);
+            List<PublishRide> rides = JsonConvert.DeserializeObject<List<PublishRide>>(SearchRide);
             return View();
             //return View(rides);
         }
