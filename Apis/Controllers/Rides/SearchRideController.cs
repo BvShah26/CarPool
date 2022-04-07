@@ -27,7 +27,9 @@ namespace Apis.Controllers.Rides
             && item.Departure_City == search.Departure_City 
             && item.Destination_City == search.Destination_City
             && item.MaxPassengers >= search.SeatCount
-            ).ToListAsync();
+            && item.IsCompletelyBooked == false
+            && item.IsCancelled == false
+            ).Include(item => item.Publisher).ToListAsync();
 
             return Ok(rec);
         }

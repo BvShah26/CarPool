@@ -7,6 +7,7 @@ using DataAcessLayer.Models.Preferences;
 using DataAcessLayer.Models.Rides;
 using DataAcessLayer.Models.Users;
 using DataAcessLayer.Models.VehicleModels;
+using DataAcessLayer.ViewModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,6 +47,8 @@ namespace Apis.Data
         public DbSet<ClientUsers> ClientUsers { get; set; }
         public DbSet<User_TravelPreference> User_TravelPreferences { get; set; }
         public DbSet<Uservehicle> Uservehicles { get; set; }
+
+        //public DbSet<RideDetailsView> RideDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
