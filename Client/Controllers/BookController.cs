@@ -21,14 +21,18 @@ namespace Client.Controllers
             httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri(_config.GetValue<string>("proxyUrl"));
         }
+
+
         [HttpGet]
         public IActionResult Index(int RideId)
         {
+            string returnUrl = HttpContext.Request.Path;
             if (IsLogin() == true)
             {
+                //Confirmation Page Here
                 return View();
             }
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
         }
 
         [HttpPost]

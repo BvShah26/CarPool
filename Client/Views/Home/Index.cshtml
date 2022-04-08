@@ -90,9 +90,9 @@
             fields: ['geometry', 'name', 'address_components']
         });
     }
-    const PlaceChange = (data,inputControl) => {
+    const PlaceChange = (data,inputControl) =>   {
         var near_place = data.getPlace();
-        //console.log("Near", near_place)
+        console.log("Near", near_place)
 
         var filtered_array = near_place.address_components.filter(function (address_component) {
             return address_component.types.includes("administrative_area_level_2");
@@ -101,9 +101,10 @@
         //console.log("City : ", city)
 
         var place = data.getPlace();
+        console.log("Place : ", place)
         var lat = place.geometry.location.lat();
         var lng = place.geometry.location.lng();
-
+        console.log($("#" + inputControl).val())
         $("#" + inputControl + "LatLong").val(lat + "," + lng)
         $("#" + inputControl + "City").val(city)
 

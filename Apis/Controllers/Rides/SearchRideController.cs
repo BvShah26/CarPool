@@ -38,8 +38,9 @@ namespace Apis.Controllers.Rides
         [HttpGet("RideDetails/{id}")]
         public async Task<PublishRide> RideDetails(int id)
         {
-            PublishRide ride = await _context.Publish_Rides.Where(item => item.Id == id).Include(x => x.Publisher).FirstOrDefaultAsync();
-            //Uservehicle uservehicle = _context.
+            PublishRide ride = await _context.Publish_Rides.Where(item => item.Id == id)
+                .Include(x => x.Publisher).Include(x => x.Vehicle).ThenInclude(x => x.Vehicle)
+                .FirstOrDefaultAsync();
             return ride;
         }
 

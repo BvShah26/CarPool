@@ -51,7 +51,7 @@ namespace Client.Controllers
                         Publisher = item.Publisher,
                         PublisherId = item.PublisherId,
 
-                        Price_Seat = item.Price_Seat,
+                        Price_Seat = item.Price_Seat * searchRide.SeatCount,
 
                         PickUp_Time = item.PickUp_Time,
                         DropOff_Time = item.DropOff_Time,
@@ -71,11 +71,41 @@ namespace Client.Controllers
                     rides.Add(rideDetails);
 
                 }
-                return RedirectToAction("Rides",rides);
-                //return View("Rides", rides);
+                //return RedirectToAction("Rides",rides);
+
+                ViewBag.Seat = searchRide.SeatCount;
+                ViewBag.Pickup = searchRide.PickUp_LatLong;
+                ViewBag.Destination= searchRide.DropOff_LatLong;
+                return View("Rides", rides);
             }
             return View();
         }
+
+        
+
+        //[HttpPost]
+        //public IActionResult Rides(List<RideDetailsView> rides)
+        //{
+        //    return View(rides);
+        //}
+
+        [HttpGet]
+        public IActionResult Details(int RideId, int Pickup, int Drop)
+        {
+            HttpResponseMessage responseMessage = httpClient.GetAsync($"SearchRide/RideDetails/{RideId}").Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string res = responseMessage.Content.ReadAsStringAsync().Result;
+                PublishRide rideDetail = JsonConvert.DeserializeObject<PublishRide>(res);
+                ViewBag.Pickup = Pickup;
+                ViewBag.Drop = Drop;
+
+                return View(rideDetail);
+            }
+            return View();
+        }
+
+
 
         public double GetDistance(string p1, string p2)
         {
@@ -108,28 +138,7 @@ namespace Client.Controllers
             return deg * (Math.PI / 180);
         }
 
-        //[HttpPost]
-        public IActionResult Rides(List<RideDetailsView> rides)
-        {
-            return View(rides);
-        }
-
-        [HttpGet]
-        public IActionResult Details(int Ride, int Pickup, int Drop)
-        {
-            HttpResponseMessage responseMessage = httpClient.GetAsync($"SearchRide/RideDetails/{Ride}").Result;
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                string res = responseMessage.Content.ReadAsStringAsync().Result;
-                PublishRide rideDetail = JsonConvert.DeserializeObject<PublishRide>(res);
-                ViewBag.Pickup = Pickup;
-                ViewBag.Drop = Drop;
-
-                return View(rideDetail);
-            }
-            return View();
-        }
-
-
     }
+
+
 }

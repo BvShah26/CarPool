@@ -23,6 +23,7 @@
                     <input type="password" asp-for="Password" class="form-control" />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
+                <input type="hidden" asp-for="ReturnUrl" value="@ViewBag.ReturnURL" />
                
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Log in</button>

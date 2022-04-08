@@ -50,8 +50,9 @@ namespace Client.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string url)
         {
+            ViewBag.ReturnURL = url;
             return View();
         }
 
@@ -67,8 +68,8 @@ namespace Client.Controllers
 
                 HttpContext.Session.SetString("UserName", client.Name);
                 HttpContext.Session.SetInt32("UserId", client.Id);
-
-                return RedirectToAction("Index");
+                return LocalRedirect(clientLogin.ReturnUrl);
+                //return RedirectToAction("Index");
             }
             return View(clientLogin);
         }
