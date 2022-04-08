@@ -1,6 +1,7 @@
 ﻿using DataAcessLayer.Models.Users;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace DataAcessLayer.ViewModels
@@ -14,6 +15,7 @@ namespace DataAcessLayer.ViewModels
         public string PickUp_LatLong { get; set; }
         public string DropOff_LatLong { get; set; }
 
+        [Display(Name = "Date")]
         public DateTime JourneyDate { get; set; }
 
         public DateTime PickUp_Time { get; set; }

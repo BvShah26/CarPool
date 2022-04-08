@@ -71,8 +71,8 @@ namespace Client.Controllers
                     rides.Add(rideDetails);
 
                 }
-
-                return View("Rides", rides);
+                return RedirectToAction("Rides",rides);
+                //return View("Rides", rides);
             }
             return View();
         }
@@ -97,8 +97,7 @@ namespace Client.Controllers
             var a =
               Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
               Math.Cos(deg2rad(lat1)) * Math.Cos(deg2rad(lat2)) *
-              Math.Sin(dLon / 2) * Math.Sin(dLon / 2)
-              ;
+              Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
             var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
             var d = R * c; // Distance in km
             return d;
@@ -109,10 +108,26 @@ namespace Client.Controllers
             return deg * (Math.PI / 180);
         }
 
-        [HttpPost]
-        public IActionResult Rides(List<PublishRide> rides)
+        //[HttpPost]
+        public IActionResult Rides(List<RideDetailsView> rides)
         {
             return View(rides);
+        }
+
+        [HttpGet]
+        public IActionResult Details(int Ride, int Pickup, int Drop)
+        {
+            HttpResponseMessage responseMessage = httpClient.GetAsync($"SearchRide/RideDetails/{Ride}").Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string res = responseMessage.Content.ReadAsStringAsync().Result;
+                PublishRide rideDetail = JsonConvert.DeserializeObject<PublishRide>(res);
+                ViewBag.Pickup = Pickup;
+                ViewBag.Drop = Drop;
+
+                return View(rideDetail);
+            }
+            return View();
         }
 
 

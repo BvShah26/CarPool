@@ -5,69 +5,131 @@
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
+<h1>Rides</h1>
 
-<div class="row">
-    <div class="col-xl-2">
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
 
-    </div>
-    <div class="col-xl-8">
+@functions {
+    string CheckDistance(double distance)
+    {
+        string str;
+        if (distance < 5)
+        {
+            str = "Very Close To You";
+        }
+        else if (distance < 15)
+        {
+            str = "A Bit Away From You";
+        }
+        else
+        {
+            str = "Very Far";
+        }
+        return str;
+    }
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Publisher)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickUp_LatLong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DropOff_LatLong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickUp_Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DropOff_Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsInstant_Approval)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price_Seat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Client_Departure_LatLong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Client_Destination_LatLong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pickup_DifferDistance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Drop_DifferDistance)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Publisher.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PickUp_LatLong)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DropOff_LatLong)
+                </td>
+                <td>
+                    @item.PickUp_Time.ToShortTimeString()
+                </td>
+                <td>
+                    @item.DropOff_Time.ToShortTimeString()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsInstant_Approval)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price_Seat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Client_Departure_LatLong)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Client_Destination_LatLong)
+                </td>
+                <td>
+                    <span>@CheckDistance(item.Pickup_DifferDistance)</span>
+                </td>
+                <td>
+                    <span>@CheckDistance(item.Drop_DifferDistance)</span>
+                </td>
+                <td>
+                    @{
+                        var parms = new Dictionary<string, string>
+                        {
+                            { "Ride", item.Id.ToString() },
+                            { "Pickup", item.Pickup_DifferDistance.ToString() },
+                            { "Drop", item.Drop_DifferDistance.ToString() },
+                            //{ "Seat",item.sea}
+                        };
+                    }
+                    <a asp-action="Details" asp-all-route-data="parms" >Book</a>
 
-        <h5>Date Here</h5>
-    </div>
-
-</div>
-
-<div class="row">
-    <div class="col-xl-2">
-
-    </div>
-    <div class="col-xl-8">
-
-        Surat -> Ahmedabad <br />
-        Ride Count
-    </div>
-
-</div>
-<div class="listing__list-box">
-    <div class="row">
-        <div class="col-xl-2"></div>
-        <div class="col-xl-8">
-            <!--Listing List Box Single-->
-            <div class="listing__list-box-single">
-
-                <div class="listing__list-box-content">
-                    <h5 class="listing__list-box-sub-title">Sedan Car</h5>
-                    <h3 class="listing__list-box-title">Land Rover Evoque Pure</h3>
-                    <p class="listing__list-box-price"><span>$32 </span>/perday</p>
-                    <ul class="list-unstyled listing__list-box-details">
-                        <li>2016 Petrol</li>
-                        <li>Air Condition</li>
-                        <li>Auto</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-2"></div>
-    </div>
-    <!--<div class="row">
-        <div class="col-xl-2"></div>
-        <div class="col-xl-8">-->
-    <!--Listing List Box Single-->
-    <!--<div class="listing__list-box-single">
-
-                <div class="listing__list-box-content">
-                    <h5 class="listing__list-box-sub-title">Sedan Car</h5>
-                    <h3 class="listing__list-box-title">Land Rover Evoque Pure</h3>
-                    <p class="listing__list-box-price"><span>$32 </span>/perday</p>
-                    <ul class="list-unstyled listing__list-box-details">
-                        <li>2016 Petrol</li>
-                        <li>Air Condition</li>
-                        <li>Auto</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-2"></div>
-    </div>-->
-
-</div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    const BookMe = (id) => {
+        console.log("Noww");
+    }
+    $(document).ready(function () {
+        console.log("Ready");
+        $("#frm")
+    })
+</script>
