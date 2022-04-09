@@ -96,6 +96,39 @@
                             </ul>
                         </li>
 
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class="sidebar-link">
+                                <i class="bi bi-grid-1x2-fill"></i>
+                                <span>Rides</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a asp-area="Admin" asp-controller="PublishedRide" asp-action="Index">Published</a>
+                                </li>
+                                @*<li class="submenu-item">
+                                        <a href="layout-vertical-1-column.html">1 Column</a>
+                                    </li>
+                                    <li class="submenu-item">
+                                        <a href="layout-vertical-navbar.html">Vertical Navbar</a>
+                                    </li>
+                                    <li class="submenu-item">
+                                        <a href="layout-rtl.html">RTL Layout</a>
+                                    </li>
+                                    <li class="submenu-item">
+                                        <a href="layout-horizontal.html">Horizontal Menu</a>
+                                    </li>*@
+                            </ul>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a asp-area="Admin" asp-controller="Bookings" asp-action="Index" class="sidebar-link">
+                                <i class="bi bi-file-earmark-medical-fill"></i>
+                                <span>Bookings</span>
+                            </a>
+                        </li>
+
+
+
                         @*<li class="sidebar-item has-sub">
                                 <a href="#" class="sidebar-link">
                                     <i class="bi bi-grid-1x2-fill"></i>

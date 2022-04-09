@@ -1,5 +1,6 @@
 ﻿using DataAcessLayer.Models.Rides;
 using DataAcessLayer.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -90,8 +91,14 @@ namespace Client.Controllers
         //}
 
         [HttpGet]
-        public IActionResult Details(int RideId, int Pickup, int Drop)
+        public IActionResult Details(int RideId, int Pickup, int Drop,int Seat,int Publisher)
         {
+            //Check For Login ===== ======= ======== =========
+            if(Publisher == HttpContext.Session.GetInt32("UserId"))
+            {
+                //Edit Published Ride 
+                return Unauthorized();
+            }
             HttpResponseMessage responseMessage = httpClient.GetAsync($"SearchRide/RideDetails/{RideId}").Result;
             if (responseMessage.IsSuccessStatusCode)
             {
@@ -99,6 +106,7 @@ namespace Client.Controllers
                 PublishRide rideDetail = JsonConvert.DeserializeObject<PublishRide>(res);
                 ViewBag.Pickup = Pickup;
                 ViewBag.Drop = Drop;
+                ViewBag.Seats = Seat;
 
                 return View(rideDetail);
             }

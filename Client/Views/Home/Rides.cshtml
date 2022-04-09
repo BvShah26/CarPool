@@ -30,100 +30,99 @@
         return str;
     }
 }
-<form asp-action="">
-    @* Hidden Fileds *@
-    <table class="table">
-        <thead>
+@* Hidden Fileds *@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Publisher)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickUp_LatLong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DropOff_LatLong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickUp_Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DropOff_Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsInstant_Approval)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price_Seat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Client_Departure_LatLong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Client_Destination_LatLong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pickup_DifferDistance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Drop_DifferDistance)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Publisher)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PickUp_LatLong)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DropOff_LatLong)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PickUp_Time)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DropOff_Time)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.IsInstant_Approval)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price_Seat)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Client_Departure_LatLong)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Client_Destination_LatLong)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Pickup_DifferDistance)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Drop_DifferDistance)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Publisher.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PickUp_LatLong)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DropOff_LatLong)
-                    </td>
-                    <td>
-                        @item.PickUp_Time.ToShortTimeString()
-                    </td>
-                    <td>
-                        @item.DropOff_Time.ToShortTimeString()
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsInstant_Approval)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price_Seat)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Client_Departure_LatLong)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Client_Destination_LatLong)
-                    </td>
-                    <td>
-                        <span>@CheckDistance(item.Pickup_DifferDistance)</span>
-                    </td>
-                    <td>
-                        <span>@CheckDistance(item.Drop_DifferDistance)</span>
-                    </td>
-                    <td>
-                        @{
-                            var parms = new Dictionary<string, string> { { "RideId", item.Id.ToString() },
+                <td>
+                    @Html.DisplayFor(modelItem => item.Publisher.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PickUp_LatLong)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DropOff_LatLong)
+                </td>
+                <td>
+                    @item.PickUp_Time.ToShortTimeString()
+                </td>
+                <td>
+                    @item.DropOff_Time.ToShortTimeString()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsInstant_Approval)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price_Seat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Client_Departure_LatLong)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Client_Destination_LatLong)
+                </td>
+                <td>
+                    <span>@CheckDistance(item.Pickup_DifferDistance)</span>
+                </td>
+                <td>
+                    <span>@CheckDistance(item.Drop_DifferDistance)</span>
+                </td>
+                <td>
+                    @{
+                        var parms = new Dictionary<string, string> { { "RideId", item.Id.ToString() },
                                 {"From",ViewBag.Pickup },
                                 {"To",ViewBag.Destination },
                                 { "Seat",ViewBag.Seat.ToString()},
                                 { "Pickup_dist", item.Pickup_DifferDistance.ToString() },
-                                { "Drop_dist", item.Drop_DifferDistance.ToString() } };
-                        }
-                        <a asp-action="Details" asp-all-route-data="parms">Book</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</form>
+                                { "Drop_dist", item.Drop_DifferDistance.ToString() },
+                                { "Publisher",item.PublisherId.ToString() } };
+                    }
+                    <a asp-action="Details" asp-all-route-data="parms">Book</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
     const BookMe = (id) => {

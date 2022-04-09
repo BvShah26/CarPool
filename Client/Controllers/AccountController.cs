@@ -40,7 +40,7 @@ namespace Client.Controllers
         [HttpPost]
         public IActionResult Register(ClientUsers clientUsers)
         {
-             HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("ClientUser",clientUsers).Result;
+            HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("ClientUser", clientUsers).Result;
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
@@ -50,7 +50,7 @@ namespace Client.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login(string url)
+        public IActionResult Login(string? url)
         {
             ViewBag.ReturnURL = url;
             return View();
@@ -59,7 +59,7 @@ namespace Client.Controllers
         [HttpPost]
         public IActionResult Login(ClientLoginView clientLogin)
         {
-            HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("ClientUser/Login",clientLogin).Result;
+            HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("ClientUser/Login", clientLogin).Result;
 
             if (responseMessage.IsSuccessStatusCode)
             {
@@ -68,8 +68,11 @@ namespace Client.Controllers
 
                 HttpContext.Session.SetString("UserName", client.Name);
                 HttpContext.Session.SetInt32("UserId", client.Id);
+                if (String.IsNullOrEmpty(clientLogin.ReturnUrl))
+                {
+                    return RedirectToAction("Index","Home");
+                }
                 return LocalRedirect(clientLogin.ReturnUrl);
-                //return RedirectToAction("Index");
             }
             return View(clientLogin);
         }

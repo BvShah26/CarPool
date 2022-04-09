@@ -7,7 +7,7 @@ namespace DataAcessLayer.ViewModels
     public class SearchRide
     {
         public int Id { get; set; }
-        
+            
         public string PickUp_LatLong { get; set; }
         public string DropOff_LatLong { get; set; }
         public string Departure_City { get; set; }

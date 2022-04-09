@@ -1,0 +1,56 @@
+﻿@model IEnumerable<DataAcessLayer.Models.Booking.Book>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Publish_Ride)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rider)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SeatQty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCancelled)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Publish_Ride.Publisher.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rider.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SeatQty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsCancelled)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
