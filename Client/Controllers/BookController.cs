@@ -39,7 +39,6 @@ namespace Client.Controllers
                     string res = responseMessage.Content.ReadAsStringAsync().Result;
                     PublishRide ride = JsonConvert.DeserializeObject<PublishRide>(res);
 
-                    ViewBag.Price = ride.Price_Seat;
                     ride.Price_Seat = ride.Price_Seat * Seat;
 
                     ViewBag.Seat = Seat;
@@ -51,21 +50,38 @@ namespace Client.Controllers
         }
 
         [HttpPost]
-        public IActionResult Confirmed(int Price, int Id, int SeatQty)
+        public IActionResult Confirmed(int Id, int SeatQty)
         {
-            Book book = new Book()
+            HttpResponseMessage responseRide = httpClient.GetAsync($"SearchRide/GetRateSeats/{Id}").Result;
+            if (responseRide.IsSuccessStatusCode)
             {
-                Publish_RideId = Id,
-                RiderId = (int)HttpContext.Session.GetInt32("UserId"),
-                SeatQty = SeatQty,
-                TotalPrice = SeatQty * Price,
-            };
+                //int Price = Int32.Parse(responseRide.Content.ReadAsStringAsync().Result);
+                var anonymsDefinition = new { rate = "", MaxSeat = 0 };
+                string resultRide = responseRide.Content.ReadAsStringAsync().Result;
+                var dataRide = JsonConvert.DeserializeAnonymousType(resultRide, anonymsDefinition);
 
-            HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("Books", book).Result;
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                string res = responseMessage.Content.ReadAsStringAsync().Result;
+                PublishRide publishRide = new PublishRide() {
+                    MaxPassengers = dataRide.MaxSeat
+                };
+                Book book = new Book()
+                {
+                    Publish_RideId = Id,
+                    RiderId = (int)HttpContext.Session.GetInt32("UserId"),
+                    SeatQty = SeatQty,
+                    TotalPrice = SeatQty * Int32.Parse(dataRide.rate),
+                    Publish_Ride = publishRide
+                };
+                HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("Books", book).Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                }
             }
+            else
+            {
+                throw new Exception("Api Not Caled");
+            }
+
             return View();
         }
 

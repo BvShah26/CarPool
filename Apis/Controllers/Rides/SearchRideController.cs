@@ -25,29 +25,18 @@ namespace Apis.Controllers.Rides
         public async Task<IActionResult> GetRides(SearchRide search)
         {
             List<PublishRide> rec = await _context.Publish_Rides.Where(item => item.JourneyDate == search.JourneyDate
-            && item.Departure_City == search.Departure_City
-            && item.Destination_City == search.Destination_City
-            && item.MaxPassengers >= search.SeatCount
-            && item.IsCompletelyBooked == false
-            && item.IsCancelled == false
-             ).Include(item => item.Publisher).Include(x => x.Booking).ToListAsync();
+                          && item.Departure_City == search.Departure_City
+                          && item.Destination_City == search.Destination_City
+                          && item.MaxPassengers >= search.SeatCount
+                          && item.IsCompletelyBooked == false
+                          && item.IsCancelled == false
+                        ).Include(item => item.Publisher)
+                        .Include(x => x.Booking).
+                        Where(x => (x.Booking.Count == 0 || x.Booking.Sum(y => y.SeatQty) >= search.SeatCount)).ToListAsync();
 
-
-            //var data = await _context.Publish_Rides.Where(item => item.JourneyDate == search.JourneyDate
-            //  && item.Departure_City == search.Departure_City
-            //  && item.Destination_City == search.Destination_City
-            //  && item.MaxPassengers >= search.SeatCount
-            //  && item.IsCompletelyBooked == false
-            //  && item.IsCancelled == false
-            //).Include(item => item.Publisher)
-            //.Include(x => x.Booking).
-            //Where(x => ( x.Booking.Count == 0 || x.Booking.Sum(y => y.SeatQty) < x.MaxPassengers )).ToListAsync();
-
-            //foreach (var item in data)
-            //{
-            //    var a = item.Booking.Sum( x => x.SeatQty);
-            //}
-            //Checking for booking
+            //Booking >= Search
+            //2 >= 3
+            // So Condition Fail
 
             return Ok(rec);
         }
@@ -59,6 +48,17 @@ namespace Apis.Controllers.Rides
                 .Include(x => x.Publisher).Include(x => x.Vehicle).ThenInclude(x => x.Vehicle)
                 .FirstOrDefaultAsync();
             return ride;
+        }
+
+        [HttpGet("GetRateSeats/{id}")]
+        public IActionResult GetRideRate(int id)
+        {
+            //int rate = _context.Publish_Rides.Where(x => x.Id == id).Select(x => x.Price_Seat).First();
+            //return Ok(rate);
+
+            //returning seats and price to controller and it will use it to check isCompleBooking
+            var data = _context.Publish_Rides.Where(x => x.Id == id).Select(x => new { rate = x.Price_Seat,MaxSeat = x.MaxPassengers }).First();
+            return Ok(data);
         }
 
         [HttpGet("VerifyRide/{RideId}")]

@@ -80,7 +80,31 @@ namespace Apis.Controllers.Bookings
         [HttpPost]
         public async Task<ActionResult<Book>> PostBook(Book book)
         {
-            _context.Bookings.Add(book);
+
+            //New Booking Added
+            var result = await _context.Bookings.AddAsync(book);
+
+            //Checking For IsCompletlyBooked Status
+
+            var TotalSeat_Occuiped = _context.Bookings.Sum(x => x.SeatQty);
+            int MaxSeats = book.Publish_Ride.MaxPassengers;
+
+
+            if(TotalSeat_Occuiped == int.MaxValue)
+            {
+                //Call Api of Publish Ride Controller to update status
+
+
+                //we should call api for this 
+                //and update status from it's own api
+
+            }
+
+            //Doing IsCompletly Booked
+            //Doing this to improve performance 
+
+            var data = _context.Publish_Rides.Where(x => x.PublisherId == book.Publish_RideId);
+            
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetBook", new { id = book.Id }, book);
