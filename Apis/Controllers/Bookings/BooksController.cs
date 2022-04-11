@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Apis.Data;
 using DataAcessLayer.Models.Booking;
+using System.Net.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace Apis.Controllers.Bookings
 {
@@ -15,10 +17,13 @@ namespace Apis.Controllers.Bookings
     public class BooksController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
+        private readonly IConfiguration _config;
 
-        public BooksController(ApplicationDBContext context)
+
+        public BooksController(ApplicationDBContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
         }
 
         // GET: api/Books
@@ -40,6 +45,15 @@ namespace Apis.Controllers.Bookings
             }
 
             return book;
+        }
+
+        //Just For Testing / Validation
+        [HttpGet("GetTotalBooking/{RideId}")]
+        public async Task<ActionResult<Book>> GetTotalBooking(int RideId)
+        {
+            var rec = _context.Bookings.Where(x => x.Publish_RideId == RideId).Sum(x => x.SeatQty);
+            return Ok(rec);
+
         }
 
         // PUT: api/Books/5
@@ -70,7 +84,6 @@ namespace Apis.Controllers.Bookings
                     throw;
                 }
             }
-
             return NoContent();
         }
 
@@ -81,33 +94,45 @@ namespace Apis.Controllers.Bookings
         public async Task<ActionResult<Book>> PostBook(Book book)
         {
 
+            int MaxPassenger = book.Publish_Ride.MaxPassengers;
+
+
+            book.Publish_Ride = null;
+            //As it overrides PublishRideId to 0
+
+
             //New Booking Added
-            var result = await _context.Bookings.AddAsync(book);
+            var result =  await _context.Bookings.AddAsync(book);
+            await _context.SaveChangesAsync();
+            //SaveChanges here so able to get correct Total_Occuiped
+
 
             //Checking For IsCompletlyBooked Status
 
-            var TotalSeat_Occuiped = _context.Bookings.Sum(x => x.SeatQty);
-            int MaxSeats = book.Publish_Ride.MaxPassengers;
+            int TotalSeat_Occuiped = _context.Bookings.Where(x => x.Publish_RideId == book.Publish_RideId).Sum(x => x.SeatQty);
 
-
-            if(TotalSeat_Occuiped == int.MaxValue)
+            if (TotalSeat_Occuiped == MaxPassenger)
             {
-                //Call Api of Publish Ride Controller to update status
+                HttpClient httpClient = new HttpClient();
 
+                httpClient.BaseAddress = new Uri(_config.GetValue<string>("proxyUrl"));
 
-                //we should call api for this 
-                //and update status from it's own api
+                HttpResponseMessage responseMessage = httpClient.GetAsync($"PublishRides/ChangeBookStatus/{book.Publish_RideId}").Result;
 
+                if (!responseMessage.IsSuccessStatusCode)
+                {
+                    throw new Exception("Fail : change Booking status ");
+                }
             }
 
-            //Doing IsCompletly Booked
-            //Doing this to improve performance 
 
-            var data = _context.Publish_Rides.Where(x => x.PublisherId == book.Publish_RideId);
-            
-            await _context.SaveChangesAsync();
+            return Ok();
 
-            return CreatedAtAction("GetBook", new { id = book.Id }, book);
+            // Doing IsCompletly Booked
+            // Doing this to improve performance
+
+
+            //return CreatedAtAction("GetBook", new { id = book.Id }, book);
         }
 
         // DELETE: api/Books/5

@@ -61,7 +61,10 @@ namespace Client.Controllers
                 var dataRide = JsonConvert.DeserializeAnonymousType(resultRide, anonymsDefinition);
 
                 PublishRide publishRide = new PublishRide() {
-                    MaxPassengers = dataRide.MaxSeat
+                    MaxPassengers = dataRide.MaxSeat,
+                    Id = Id
+
+                    //Clears Id if we don't specify here ( Model Reference )
                 };
                 Book book = new Book()
                 {
@@ -71,6 +74,8 @@ namespace Client.Controllers
                     TotalPrice = SeatQty * Int32.Parse(dataRide.rate),
                     Publish_Ride = publishRide
                 };
+
+
                 HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("Books", book).Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {

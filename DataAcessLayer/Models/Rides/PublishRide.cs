@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using DataAcessLayer.Models.Booking;
 using DataAcessLayer.Models.Users;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DataAcessLayer.Models.Rides
 {
@@ -50,7 +51,9 @@ namespace DataAcessLayer.Models.Rides
         public ICollection<Book> Booking { get; set; } = new HashSet<Book>();
         public ICollection<RideApproval> Ride_Approval { get; set; } = new HashSet<RideApproval>(); //used only if isInstantApproval is false
 
-
-
+        public static implicit operator PublishRide(ActionResult<PublishRide> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

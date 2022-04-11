@@ -50,6 +50,11 @@ namespace Apis.Controllers
             return publishRide;
         }
 
+
+
+
+
+
         // PUT: api/PublishRides/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPublishRide(int id, PublishRide publishRide)
@@ -78,6 +83,15 @@ namespace Apis.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpGet("ChangeBookStatus/{id}")]
+        public async Task<IActionResult> ChangeBookStatus(int id)
+        {
+            PublishRide ride = (await GetPublishRide(id)).Value;
+            ride.IsCompletelyBooked = true;
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
         // POST: api/PublishRides

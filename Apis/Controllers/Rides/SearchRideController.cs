@@ -24,19 +24,25 @@ namespace Apis.Controllers.Rides
         [HttpPost]
         public async Task<IActionResult> GetRides(SearchRide search)
         {
-            List<PublishRide> rec = await _context.Publish_Rides.Where(item => item.JourneyDate == search.JourneyDate
+            List<PublishRide> rec = await _context.Publish_Rides
+                .Where(item => item.JourneyDate == search.JourneyDate
                           && item.Departure_City == search.Departure_City
                           && item.Destination_City == search.Destination_City
                           && item.MaxPassengers >= search.SeatCount
                           && item.IsCompletelyBooked == false
                           && item.IsCancelled == false
-                        ).Include(item => item.Publisher)
-                        .Include(x => x.Booking).
-                        Where(x => (x.Booking.Count == 0 || x.Booking.Sum(y => y.SeatQty) >= search.SeatCount)).ToListAsync();
+                        )
+                .Include(item => item.Publisher)
+                .Include(x => x.Booking)
+                .Where(x => (x.Booking.Count == 0 ||
+                    ((x.Booking.Sum(y => y.SeatQty) < x.MaxPassengers) && (x.MaxPassengers - x.Booking.Sum(y => y.SeatQty)) >= search.SeatCount)))
+                .ToListAsync();
 
-            //Booking >= Search
-            //2 >= 3
-            // So Condition Fail
+
+            //var data = rec.Where(x => (x.Booking.Count == 0 ||
+            //        ((x.Booking.Sum(y => y.SeatQty) < x.MaxPassengers) && (x.MaxPassengers - x.Booking.Sum(y => y.SeatQty)) >= search.SeatCount))).ToList();
+
+            // 3 < 4 && 4-3 > 1
 
             return Ok(rec);
         }
@@ -57,7 +63,7 @@ namespace Apis.Controllers.Rides
             //return Ok(rate);
 
             //returning seats and price to controller and it will use it to check isCompleBooking
-            var data = _context.Publish_Rides.Where(x => x.Id == id).Select(x => new { rate = x.Price_Seat,MaxSeat = x.MaxPassengers }).First();
+            var data = _context.Publish_Rides.Where(x => x.Id == id).Select(x => new { rate = x.Price_Seat, MaxSeat = x.MaxPassengers }).First();
             return Ok(data);
         }
 
