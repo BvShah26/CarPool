@@ -30,7 +30,13 @@ namespace Apis.Controllers.Bookings
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBookings()
         {
+
             return await _context.Bookings.Include(x => x.Publish_Ride.Publisher).Include(y => y.Rider).ToListAsync();
+
+            //Just To Make Easy ( JourneyDate >= DateTime.Now )
+            //return await _context.Bookings
+            //    .Include(x => x.Publish_Ride).ThenInclude(publishRide => publishRide.Publisher)
+            //    .Include(y => y.Rider).ToListAsync();
         }
 
         // GET: api/Books/5

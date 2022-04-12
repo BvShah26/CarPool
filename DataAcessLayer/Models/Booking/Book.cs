@@ -10,7 +10,6 @@ namespace DataAcessLayer.Models.Booking
     {
         public int Id { get; set; }
         
-        
         public PublishRide Publish_Ride{ get; set; }
         public int Publish_RideId { get; set; }
 

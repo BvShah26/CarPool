@@ -24,6 +24,43 @@ namespace Apis.Controllers.Rides
         [HttpPost]
         public async Task<IActionResult> GetRides(SearchRide search)
         {
+            //After Checking Booking Data (Working)
+            {
+                //List<PublishRide> rec = await _context.Publish_Rides
+                //    .Where(item => item.JourneyDate == search.JourneyDate
+                //              && item.Departure_City == search.Departure_City
+                //              && item.Destination_City == search.Destination_City
+                //              && item.MaxPassengers >= search.SeatCount
+                //              && item.IsCompletelyBooked == false
+                //              && item.IsCancelled == false
+                //            )
+                //    .Include(item => item.Publisher)
+                //    .Include(x => x.Booking)
+                //    .Where(x => (x.Booking.Count == 0 ||
+                //        ((x.Booking.Sum(y => y.SeatQty) < x.MaxPassengers) && (x.MaxPassengers - x.Booking.Sum(y => y.SeatQty)) >= search.SeatCount)))
+                //    .ToListAsync();
+            }
+
+            //Here Data of RideApproved i.e on search it will count only approved ride as blablacar.com
+
+            //List<PublishRide> rec = await _context.Publish_Rides
+            //    .Where(item => item.JourneyDate == search.JourneyDate
+            //              && item.Departure_City == search.Departure_City
+            //              && item.Destination_City == search.Destination_City
+            //              && item.MaxPassengers >= search.SeatCount
+            //              && item.IsCompletelyBooked == false
+            //              && item.IsCancelled == false
+            //            )
+            //    .Include(item => item.Publisher)
+            //    .Include(x => x.Booking)
+            //    .Where(x => (x.Booking.Count == 0 ||
+            //        ((x.Booking.Sum(y => y.SeatQty) < x.MaxPassengers) && (x.MaxPassengers - x.Booking.Sum(y => y.SeatQty)) >= search.SeatCount)))
+            //    .Include(x => x.Ride_Approval)
+            //    .Where(x => x.Ride_Approval.Count == 0 ||
+            //    (x.Ride_Approval.Where(rideApproval => rideApproval.IsApproved == true).Sum(y => y.RequestedSeats) >= search.SeatCount)
+            //    )
+            //    .ToListAsync();
+
             List<PublishRide> rec = await _context.Publish_Rides
                 .Where(item => item.JourneyDate == search.JourneyDate
                           && item.Departure_City == search.Departure_City
@@ -36,6 +73,12 @@ namespace Apis.Controllers.Rides
                 .Include(x => x.Booking)
                 .Where(x => (x.Booking.Count == 0 ||
                     ((x.Booking.Sum(y => y.SeatQty) < x.MaxPassengers) && (x.MaxPassengers - x.Booking.Sum(y => y.SeatQty)) >= search.SeatCount)))
+
+                .Include(x => x.Ride_Approval)
+                .Where(x =>  x.Ride_Approval.Count == 0 ||
+                    (x.Ride_Approval.Where(rideApproval => rideApproval.IsRejected == false)
+                        .Sum(y =>  y.RequestedSeats) - x.MaxPassengers <= (- search.SeatCount))
+                )
                 .ToListAsync();
 
 

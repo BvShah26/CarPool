@@ -56,11 +56,20 @@ namespace Client.Controllers
             if (responseRide.IsSuccessStatusCode)
             {
                 //int Price = Int32.Parse(responseRide.Content.ReadAsStringAsync().Result);
-                var anonymsDefinition = new { rate = "", MaxSeat = 0 };
+                var anonymsDefinition = new { rate = "", MaxSeat = 0, AutoApprove = false };
                 string resultRide = responseRide.Content.ReadAsStringAsync().Result;
                 var dataRide = JsonConvert.DeserializeAnonymousType(resultRide, anonymsDefinition);
 
-                PublishRide publishRide = new PublishRide() {
+                //No Need to check
+                //if (dataRide.AutoApprove == false)
+                //{
+
+
+                //    return Ok();
+                //}
+
+                PublishRide publishRide = new PublishRide()
+                {
                     MaxPassengers = dataRide.MaxSeat,
                     Id = Id
 
@@ -85,6 +94,25 @@ namespace Client.Controllers
             else
             {
                 throw new Exception("Api Not Caled");
+            }
+
+            return View();
+        }
+
+        public IActionResult Request(int Id, int SeatQty)
+        {
+
+            RideApproval rideApproval = new RideApproval()
+            {
+                RideId = Id,
+                UserId = (int)HttpContext.Session.GetInt32("UserId"),
+                RequestedSeats = SeatQty
+            };
+
+            HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("RideApprovals/Request", rideApproval).Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                //Validations
             }
 
             return View();

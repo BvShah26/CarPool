@@ -25,14 +25,28 @@ namespace Apis.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PublishRide>>> GetPublish_Rides()
         {
-            return await _context.Publish_Rides.Include(x => x.Publisher).ToListAsync();
+            //return await _context.Publish_Rides.Include(x => x.Publisher).ToListAsync();
+
+            //Just to make work easy [ Checking Details ]
+            return await _context.Publish_Rides.Include(x => x.Publisher).Where(x => x.JourneyDate >= DateTime.Now).ToListAsync();
         }
+
 
         [HttpGet("UserVehicles/{UserId}")]
         public async Task<ActionResult<IEnumerable<PublishRide>>> GetUser_PublishedRide(int UserId)
         {
+
+            //validate timing as 12-04-2022:00-00>= 12-04-2022:09-44 = False
+            //Should include time in jounery date ..  and calculate timing based on Distance Matrix
+            //Don't Ask Destination Time from user [ Choice ]
+
             List<PublishRide> result = await _context.Publish_Rides.Where(item => item.PublisherId == UserId)
+                .Where(x => x.JourneyDate >= DateTime.Now).Include(x => x.Ride_Approval)
                 .Include(item => item.Vehicle).ThenInclude(item => item.Vehicle).ToListAsync();
+
+           //Improvement To Do
+           //Include Table Only If IsInstantApproval ==  False
+            
             return Ok(result);
         }
 
@@ -40,8 +54,17 @@ namespace Apis.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PublishRide>> GetPublishRide(int id)
         {
-            var publishRide = await _context.Publish_Rides.FindAsync(id);
+            //To Do : 
+            //Include Ride_Approval only If InstantApproval == false
 
+            //var publishRide = await _context.Publish_Rides.Include(x => x.Ride_Approval).FindAsync(id);
+
+
+            //Include Table Tea
+            var publishRide = await _context.Publish_Rides
+                .Where(x => x.Id == id)
+                .Include(x => x.Ride_Approval).ThenInclude(rideApproval => rideApproval.User)
+                .FirstOrDefaultAsync();
             if (publishRide == null)
             {
                 return NotFound();
@@ -49,10 +72,6 @@ namespace Apis.Controllers
 
             return publishRide;
         }
-
-
-
-
 
 
         // PUT: api/PublishRides/5

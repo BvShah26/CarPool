@@ -16,9 +16,10 @@ namespace DataAcessLayer.Models.Rides
         public ClientUsers User { get; set; }
         public int UserId { get; set; }
 
+        public int RequestedSeats { get; set; }
+
         public Boolean IsApproved { get; set; }
 
-
-
+        public Boolean IsRejected { get; set; }
     }
 }

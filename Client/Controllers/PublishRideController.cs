@@ -81,17 +81,47 @@ namespace Client.Controllers
             return BadRequest();
         }
 
+        //Archived Rides
+        public IActionResult History()
+        {
+
+            //Here Our Publishion and also Traveled Ride
+            //Might Be From Booking Also
+
+            //call api of published ride
+            //call api of booking
+            //Combine it and distinct it
+            //Distinct it
+
+            var UserId = HttpContext.Session.GetInt32("UserId");
+            HttpResponseMessage responseMessage = httpClient.GetAsync($"PublishRides/History/{UserId}").Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string res = responseMessage.Content.ReadAsStringAsync().Result;
+                List<PublishRide> rides = JsonConvert.DeserializeObject<List<PublishRide>>(res);
+                return View(rides);
+            }
+            return BadRequest();
+        }
+
 
         //Details of published ride
         [HttpGet]
         public IActionResult Details(int id)
         {
+
+            //Parameter Validation 
+            //Also at api side //this id should be of current user only otherwise Unauthorized()
+            
+            //Return View Accordingly Owner And Search
+
+
             HttpResponseMessage responseMessage = httpClient.GetAsync($"PublishRides/{id}").Result;
             if (responseMessage.IsSuccessStatusCode)
             {
                 string res = responseMessage.Content.ReadAsStringAsync().Result;
                 PublishRide ride = JsonConvert.DeserializeObject<PublishRide>(res);
-                //return Ok(ride;
+                //return Ok(ride);
                 return View(ride);
                 //return Ok();
             }
