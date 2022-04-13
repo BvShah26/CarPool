@@ -23,6 +23,37 @@
     </style>
 
 }
+@* Booking Modal *@
+
+<div class="modal fade" id="booking-modal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
+         role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">
+                    Booking Details
+                </h5>
+                <button type="button" class="close" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="booking-data">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Seat</th>
+                        </tr>
+                    </thead>
+                    <tbody id="booking-table-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 <section class="section">
     <div class="card">
@@ -67,22 +98,29 @@
                                 <th>Price</th>
                                 <th>Complete</th>
                                 <th>Instant</th>
+                                <th>Bookings</th>
                             </tr>
                         </thead>
                         <tbody id="table1body">
                             @foreach (var item in Model)
                             {
-                            <tr>
-                                <td>@item.Publisher.Name</td>
-                                <td>@item.JourneyDate.ToShortDateString()</td>
-                                <td>@item.MaxPassengers</td>
-                                @* Substract Seats Needed  By Checking In Booking Table and cancelled table *@
-                                <td>@item.Departure_City</td>
-                                <td>@item.Destination_City</td>
-                                <td>@item.Price_Seat</td>
-                                <td>@item.IsCompletelyBooked</td>
-                                <td>@item.IsInstant_Approval</td>
-                            </tr>
+                                <tr>
+                                    <td>@item.Publisher.Name</td>
+                                    <td>@item.JourneyDate.ToShortDateString()</td>
+                                    <td>@item.MaxPassengers</td>
+                                    @* Substract Seats Needed  By Checking In Booking Table and cancelled table *@
+                                    <td>@item.Departure_City</td>
+                                    <td>@item.Destination_City</td>
+                                    <td>@item.Price_Seat</td>
+                                    <td>@item.IsCompletelyBooked</td>
+                                    <td>@item.IsInstant_Approval</td>
+                                    <td>
+                                        <span class="hideMe open-BookingDialog" data-bs-toggle="modal" data-id="@item.Id"
+                                              data-bs-target="#booking-modal">
+                                            <button class="btn btn-primary">Bookings</button>
+                                        </span>
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -118,3 +156,62 @@
         </div>
     </div>
 </section>
+
+<script>
+    $(document).on("click", ".open-BookingDialog", function () {
+
+        var RideId = $(this).data('id');
+        console.log("RideId : ", RideId)
+
+        var BookingModal = $("#booking-data")
+        var Copy = BookingModal;
+        BookingModal.empty();
+        BookingModal.append(`<div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden" > Loading...</span >
+                            </div >`);
+
+        console.log(Copy)
+
+        $.ajax({
+            type: "GET",
+            url: `Bookings/GetBookingById/${RideId}`,
+
+            success: function (res) {
+
+                //Validate this
+                BookingModal.empty();
+                BookingModal = Copy;
+                console.log(res);
+                var tableBody = $("#booking-table-body")
+                var bookingSection = $("#booking-data");
+                if (res.length != 0) {
+                    
+                    var data = "";
+                    $.each(res, (i, val) => {
+                        data += `<tr><td>${val.rider.name}</td><td>${val.seatQty}</td></tr>`;
+                    })
+                    tableBody.empty();
+                    tableBody.append(data);
+                }
+                else {
+                    bookingSection.empty();
+                    bookingSection.append("No Data Found");
+                }                
+            },
+            error: function (req) {
+                alert("Booking api eror");
+            }
+        });
+    });
+</script>
+
+<style>
+    .hideMe {
+        opacity: 0.6
+    }
+
+        .hideMe:hover {
+            opacity: 1;
+            cursor: pointer
+        }
+</style>

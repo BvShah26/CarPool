@@ -52,14 +52,17 @@ namespace Apis.Controllers.Bookings
 
             return book;
         }
-
-        //Just For Testing / Validation
-        [HttpGet("GetTotalBooking/{RideId}")]
-        public async Task<ActionResult<Book>> GetTotalBooking(int RideId)
+        [HttpGet("GetBookByRide/{id}")]
+        public async Task<ActionResult<List<Book>>> GetBookByRide(int id)
         {
-            var rec = _context.Bookings.Where(x => x.Publish_RideId == RideId).Sum(x => x.SeatQty);
-            return Ok(rec);
+            var book = await _context.Bookings.Where(x => x.Publish_RideId == id).Include(x => x.Rider).ToListAsync();
 
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            return book;
         }
 
         // PUT: api/Books/5

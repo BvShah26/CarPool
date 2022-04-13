@@ -34,5 +34,19 @@ namespace Client.Areas.Admin.Controllers.Booking
             }
             return NotFound();
         }
+
+
+        [HttpGet]
+        public List<Book> GetBookingById(int Id)
+        {
+            HttpResponseMessage responseMessage = httpClient.GetAsync($"Books/GetBookByRide/{Id}").Result;
+            List<Book> booking = null;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string res = responseMessage.Content.ReadAsStringAsync().Result;
+                booking = JsonConvert.DeserializeObject<List<Book>>(res);
+            }
+            return booking;
+        }
     }
 }

@@ -23,6 +23,7 @@ namespace Client.Areas.Admin.Controllers.Rides
             httpClient.BaseAddress = new Uri(_config.GetValue<string>("proxyUrl"));
 
         }
+        
         public IActionResult Index()
         {
              HttpResponseMessage responseMessage = httpClient.GetAsync("PublishRides").Result;
