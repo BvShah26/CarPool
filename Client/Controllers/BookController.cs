@@ -49,13 +49,14 @@ namespace Client.Controllers
             return RedirectToAction("Login", "Account", new { url = returnUrl });
         }
 
-        [HttpPost]
-        public IActionResult Confirmed(int Id, int SeatQty)
+        [HttpGet]
+        public IActionResult Confirmed(int Id, int SeatQty,int? UserId)
         {
             HttpResponseMessage responseRide = httpClient.GetAsync($"SearchRide/GetRateSeats/{Id}").Result;
             if (responseRide.IsSuccessStatusCode)
             {
                 //int Price = Int32.Parse(responseRide.Content.ReadAsStringAsync().Result);
+
                 var anonymsDefinition = new { rate = "", MaxSeat = 0, AutoApprove = false };
                 string resultRide = responseRide.Content.ReadAsStringAsync().Result;
                 var dataRide = JsonConvert.DeserializeAnonymousType(resultRide, anonymsDefinition);
@@ -78,7 +79,7 @@ namespace Client.Controllers
                 Book book = new Book()
                 {
                     Publish_RideId = Id,
-                    RiderId = (int)HttpContext.Session.GetInt32("UserId"),
+                    RiderId =  (UserId==null) ? (int)HttpContext.Session.GetInt32("UserId") : (int)UserId ,
                     SeatQty = SeatQty,
                     TotalPrice = SeatQty * Int32.Parse(dataRide.rate),
                     Publish_Ride = publishRide
@@ -99,6 +100,7 @@ namespace Client.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult Request(int Id, int SeatQty)
         {
 

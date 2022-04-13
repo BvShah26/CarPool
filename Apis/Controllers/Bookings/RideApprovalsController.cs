@@ -73,6 +73,19 @@ namespace Apis.Controllers.Bookings
             return NoContent();
         }
 
+        [HttpPut("UpdateStatus/{id}")]
+        public async Task<IActionResult> UpdateStatus(int id, RideApproval rideApproval)
+        {
+            RideApproval request = (await GetRideApproval(id)).Value;
+            request.IsApproved = rideApproval.IsApproved;
+            request.IsRejected = (rideApproval.IsApproved == false) ? true : false;
+
+            _context.RideApprovals.Update(request);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
         // POST: api/RideApprovals
         [HttpPost("Request")]
         public async Task<ActionResult<RideApproval>> PostRideApproval(RideApproval rideApproval)

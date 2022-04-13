@@ -64,6 +64,7 @@ namespace Apis.Controllers
             var publishRide = await _context.Publish_Rides
                 .Where(x => x.Id == id)
                 .Include(x => x.Ride_Approval).ThenInclude(rideApproval => rideApproval.User)
+                .Include(x => x.Booking).ThenInclude(bookings=> bookings.Rider)
                 .FirstOrDefaultAsync();
             if (publishRide == null)
             {

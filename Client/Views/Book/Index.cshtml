@@ -121,7 +121,16 @@
     </dl>
 </div>
 <div>
-    <form asp-action=@(Model.IsInstant_Approval ? "Confirmed" : "Request" ) method="post">
+    @*changing Post To Get*@
+    @* BookController Confirmed and Request *@
+
+    @*<form asp-action=@(Model.IsInstant_Approval ? "Confirmed" : "Request" ) method="post">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" id="SeatQty" name="SeatQty" value="@ViewBag.Seat" />
+            <button> @(Model.IsInstant_Approval ? "Book" : "Request" ) </button>
+        </form>*@
+
+    <form asp-action=@(Model.IsInstant_Approval ? "Confirmed" : "Request" ) method="get">
         <input type="hidden" asp-for="Id" />
         <input type="hidden" id="SeatQty" name="SeatQty" value="@ViewBag.Seat" />
         <button> @(Model.IsInstant_Approval ? "Book" : "Request" ) </button>
