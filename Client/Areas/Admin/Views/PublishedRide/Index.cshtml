@@ -40,7 +40,7 @@
                 </button>
             </div>
             <div class="modal-body" id="booking-data">
-                <table class="table">
+                <table class="table" id="booking-table" >
                     <thead>
                         <tr>
                             <th>User</th>
@@ -50,6 +50,7 @@
                     <tbody id="booking-table-body">
                     </tbody>
                 </table>
+                <div id="not-found" >No Bookings</div>
             </div>
         </div>
     </div>
@@ -105,6 +106,7 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
+                                    @*<td>@item.Id</td>*@
                                     <td>@item.Publisher.Name</td>
                                     <td>@item.JourneyDate.ToShortDateString()</td>
                                     <td>@item.MaxPassengers</td>
@@ -161,42 +163,44 @@
     $(document).on("click", ".open-BookingDialog", function () {
 
         var RideId = $(this).data('id');
-        console.log("RideId : ", RideId)
 
         var BookingModal = $("#booking-data")
-        var Copy = BookingModal;
-        BookingModal.empty();
-        BookingModal.append(`<div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+        var tableBody = $("#booking-table-body")
+        var BookingTable = $("#booking-table")
+
+        var NotFound = $("#not-found");
+
+        BookingTable.hide();
+        NotFound.hide();
+        tableBody.empty();
+
+        BookingModal.append(`<div class="spinner-border" id="loader-data" style="width: 3rem; height: 3rem;" role="status">
             <span class="visually-hidden" > Loading...</span >
                             </div >`);
-
-        console.log(Copy)
 
         $.ajax({
             type: "GET",
             url: `Bookings/GetBookingById/${RideId}`,
 
             success: function (res) {
-
-                //Validate this
-                BookingModal.empty();
-                BookingModal = Copy;
-                console.log(res);
-                var tableBody = $("#booking-table-body")
+                
                 var bookingSection = $("#booking-data");
                 if (res.length != 0) {
-                    
+
+                    $("#loader-data").remove();
+
                     var data = "";
                     $.each(res, (i, val) => {
                         data += `<tr><td>${val.rider.name}</td><td>${val.seatQty}</td></tr>`;
                     })
-                    tableBody.empty();
                     tableBody.append(data);
+                    BookingTable.show();
                 }
                 else {
-                    bookingSection.empty();
-                    bookingSection.append("No Data Found");
-                }                
+                    $("#loader-data").remove();
+                    NotFound.show();
+                    //bookingSection.append("No Data Found");
+                }
             },
             error: function (req) {
                 alert("Booking api eror");

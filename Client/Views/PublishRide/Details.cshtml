@@ -93,12 +93,11 @@
             @Html.DisplayFor(model => model.DropOff_Time)
         </dd>
 
-
         @{
             @foreach (var item in Model.Booking)
             {
                 <div>
-                    <span>@item.</span>
+                    <span>@item.Rider.Name</span>
                     <span>@item.SeatQty</span>
                 </div>
             }
