@@ -19,6 +19,16 @@
     <Compile Remove="Migrations\20220404102841_publish-ride fields added.Designer.cs" />
     <Compile Remove="Migrations\20220409160206_a.cs" />
     <Compile Remove="Migrations\20220409160206_a.Designer.cs" />
+    <Compile Remove="Migrations\20220415055223_chat added.cs" />
+    <Compile Remove="Migrations\20220415055223_chat added.Designer.cs" />
+    <Compile Remove="Migrations\20220415055555_chat added.cs" />
+    <Compile Remove="Migrations\20220415055555_chat added.Designer.cs" />
+    <Compile Remove="Migrations\20220415061331_Chat Added.cs" />
+    <Compile Remove="Migrations\20220415061331_Chat Added.Designer.cs" />
+    <Compile Remove="Migrations\20220415075407_ChatAdded.cs" />
+    <Compile Remove="Migrations\20220415075407_ChatAdded.Designer.cs" />
+    <Compile Remove="Migrations\20220415081533_chat.cs" />
+    <Compile Remove="Migrations\20220415081533_chat.Designer.cs" />
   </ItemGroup>
 
 	<ItemGroup>

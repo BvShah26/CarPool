@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using DataAcessLayer.Models.Booking;
+using DataAcessLayer.Models.Chat;
 using DataAcessLayer.Models.Location;
 using DataAcessLayer.Models.Rides;
 
@@ -38,6 +39,7 @@ namespace DataAcessLayer.Models.Users
         public ICollection<Book> BookingDetails { get; set; } = new HashSet<Book>();
 
         public ICollection<RideApproval> RideApprovals { get; set; } = new HashSet<RideApproval>();
+        public ICollection<ChatRoom> ChatRooms { get; set; } = new HashSet<ChatRoom>();
     }
 
     public enum Gender

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DataAcessLayer.Models.Booking;
+using DataAcessLayer.Models.Chat;
 using DataAcessLayer.Models.Preferences;
 using DataAcessLayer.Models.Rides;
 using DataAcessLayer.Models.Users;
@@ -52,11 +53,26 @@ namespace Apis.Data
         //public DbSet<RideDetailsView> RideDetails { get; set; }
         //public DbSet<UserRideViewModal> UserRides { get; set; }
 
+        //chats
+
+        public DbSet<ChatRoom> ChatRoom { get; set; }
+        public DbSet<ChatMessages> ChatMessages { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             //modelBuilder.Entity<PublishRide>().HasOne(item => item.Vehicle).WithMany().OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Vehicle>().ToTable("Vehicles");
+
+            modelBuilder.Entity<ChatRoom>()
+                .HasOne(r => r.Rider)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ChatRoom>()
+                .HasOne(r => r.Publisher)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
     }
