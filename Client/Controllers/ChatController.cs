@@ -36,7 +36,7 @@ namespace Client.Controllers
             {
                 string res = responseMessage.Content.ReadAsStringAsync().Result;
                 List<ChatMessages> messages = new List<ChatMessages>();
-                    ViewBag.PublisherId = publisherId;
+                ViewBag.PublisherId = publisherId;
                 if (res != "0")
                 {
                     //messages = JsonConvert.DeserializeObject<List<ChatMessages>>(res);
@@ -44,6 +44,7 @@ namespace Client.Controllers
                     messages = data.Messages;
                     ViewBag.RoomId = data.RoomId;
                 }
+                ViewBag.RideId = RideId;
                 //else
                 //{
                 //    return View();
@@ -56,32 +57,79 @@ namespace Client.Controllers
 
 
         [HttpPost]
-        public IActionResult PostMessage(string Message,int? RoomId,int? PublisherId,int? RideId)
+        public IActionResult PostMessage(string Message, int? RoomId, int? PublisherId, int? RideId)
         {
-            if(RoomId == null)
+
+            if (RoomId == null)
+            {
+                RoomId = (CreateRoom((int)PublisherId, (int)RideId));
+            }
+            if (RoomId != -1)
             {
                 var UserId = HttpContext.Session.GetInt32("UserId");
-                ChatRoom room = new ChatRoom()
+
+                ChatMessages message = new ChatMessages()
+                {
+                    Message = Message,
+                    RoomId = (int)RoomId,
+                    SenderId = (int)UserId
+                };
+                HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("ChatMessage", message).Result;
+                if (responseMessage.IsSuccessStatusCode)
                 {
 
-                    PublisherId = (int)PublisherId,
-                    RideId = (int)RideId,
-                    RiderId = UserId;
-                    
-                };
-
-                //call create room api
-                //StartMessaging()
+                }
             }
             return View();
         }
 
-
-        [HttpPost]
-        public IActionResult StartMessaging(string Message,int PublisherId,int RideId)
+        [HttpGet]
+        public int CreateRoom(int PublisherId, int RideId)
         {
+            var UserId = HttpContext.Session.GetInt32("UserId");
+            ChatRoom room = new ChatRoom()
+            {
 
-            return Ok();
+                PublisherId = (int)PublisherId,
+                RideId = (int)RideId,
+                RiderId = (int)UserId,
+
+            };
+            HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("ChatRoom/CreateRoom", room).Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string res = responseMessage.Content.ReadAsStringAsync().Result;
+                ChatRoom record = JsonConvert.DeserializeObject<ChatRoom>(res);
+                return record.Id;
+            }
+            return -1;
+        }
+
+
+        public IActionResult Rooms()
+        {
+            var UserId = HttpContext.Session.GetInt32("UserId");
+            HttpResponseMessage responseMessage = httpClient.GetAsync($"ChatRoom/UserRooms/{UserId}").Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string res = responseMessage.Content.ReadAsStringAsync().Result;
+                List<ChatRoom> UserRooms = JsonConvert.DeserializeObject<List<ChatRoom>>(res);
+                return View(UserRooms);
+            }
+            return BadRequest();
+        }
+
+
+        public IActionResult Details(int RoomId)
+        {
+            HttpResponseMessage responseMessage = httpClient.GetAsync($"ChatMessage/GetRoomMessages/{RoomId}").Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string res = responseMessage.Content.ReadAsStringAsync().Result;
+                List<ChatMessages> messages = JsonConvert.DeserializeObject<List<ChatMessages>>(res);
+                return View(messages);
+            }
+            return View();
         }
     }
 }

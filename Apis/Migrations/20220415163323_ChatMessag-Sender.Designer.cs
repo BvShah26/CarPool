@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Apis.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20220415092303_chat added")]
-    partial class chatadded
+    [Migration("20220415163323_ChatMessag-Sender")]
+    partial class ChatMessagSender
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -80,9 +80,14 @@ namespace Apis.Migrations
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("RoomId");
+
+                    b.HasIndex("SenderId");
 
                     b.ToTable("ChatMessages");
                 });
@@ -654,6 +659,12 @@ namespace Apis.Migrations
                     b.HasOne("DataAcessLayer.Models.Chat.ChatRoom", "Room")
                         .WithMany("ChatMessages")
                         .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAcessLayer.Models.Users.ClientUsers", "Sender")
+                        .WithMany("ChatMessages")
+                        .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -31,7 +31,7 @@ namespace Apis.Controllers.Chat
 
 
 
-            if(RoomId != 0)
+            if (RoomId != 0)
             {
                 var Messages = await _context.ChatMessages.Where(x => x.RoomId == RoomId).ToListAsync();
                 return Ok(new { Messages = Messages, RoomId = RoomId });
@@ -39,17 +39,40 @@ namespace Apis.Controllers.Chat
             return Ok(RoomId);
         }
 
+        [HttpGet("UserRooms/{UserId}")]
+        public async Task<IActionResult> UserRooms(int UserId)
+        {
+            List<ChatRoom> rooms = await _context.ChatRoom.Where(x => x.PublisherId == UserId
+            || x.RiderId == UserId
+            )
+                .Include(x => x.Publisher)
+                .Include(y => y.Ride)
+                .Include(x => x.Rider)
+                .ToListAsync();
+            return Ok(rooms);
+        }
 
-        [HttpPost]
+
+        [HttpPost("CreateRoom")]
         public async Task<IActionResult> CreateRoom(ChatRoom chatRoom)
         {
             if (chatRoom == null)
             {
                 return BadRequest();
             }
-            var res = await _context.ChatRoom.AddAsync(chatRoom);
-            await _context.SaveChangesAsync();
-            return Ok(res.Entity);
+            try
+            {
+                var res = await _context.ChatRoom.AddAsync(chatRoom);
+                await _context.SaveChangesAsync();
+                return Ok(res.Entity);
+            }
+            catch (Exception ex)
+            {
+                var a = ex;
+            }
+            return BadRequest();
         }
+
+
     }
 }

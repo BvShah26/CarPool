@@ -29,6 +29,8 @@
     <Compile Remove="Migrations\20220415075407_ChatAdded.Designer.cs" />
     <Compile Remove="Migrations\20220415081533_chat.cs" />
     <Compile Remove="Migrations\20220415081533_chat.Designer.cs" />
+    <Compile Remove="Migrations\20220415162822_ChatMessage-Sender.cs" />
+    <Compile Remove="Migrations\20220415162822_ChatMessage-Sender.Designer.cs" />
   </ItemGroup>
 
 	<ItemGroup>

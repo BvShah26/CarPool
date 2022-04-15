@@ -40,6 +40,7 @@ namespace DataAcessLayer.Models.Users
 
         public ICollection<RideApproval> RideApprovals { get; set; } = new HashSet<RideApproval>();
         public ICollection<ChatRoom> ChatRooms { get; set; } = new HashSet<ChatRoom>();
+        public ICollection<ChatMessages> ChatMessages { get; set; }
     }
 
     public enum Gender

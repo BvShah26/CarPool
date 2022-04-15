@@ -2,7 +2,7 @@
 
 namespace Apis.Migrations
 {
-    public partial class chatadded : Migration
+    public partial class ChatAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,17 +15,17 @@ namespace Apis.Migrations
                     RiderId = table.Column<int>(nullable: false),
                     PublisherId = table.Column<int>(nullable: false),
                     RideId = table.Column<int>(nullable: false),
-                    //ClientUsersId = table.Column<int>(nullable: true)
+                    ClientUsersId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ChatRoom", x => x.Id);
-                    //table.ForeignKey(
-                    //    name: "FK_ChatRoom_ClientUsers_ClientUsersId",
-                    //    column: x => x.ClientUsersId,
-                    //    principalTable: "ClientUsers",
-                    //    principalColumn: "Id",
-                    //    onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ChatRoom_ClientUsers_ClientUsersId",
+                        column: x => x.ClientUsersId,
+                        principalTable: "ClientUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ChatRoom_ClientUsers_PublisherId",
                         column: x => x.PublisherId,
@@ -71,10 +71,10 @@ namespace Apis.Migrations
                 table: "ChatMessages",
                 column: "RoomId");
 
-            //migrationBuilder.CreateIndex(
-            //    name: "IX_ChatRoom_ClientUsersId",
-            //    table: "ChatRoom",
-            //    column: "ClientUsersId");
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatRoom_ClientUsersId",
+                table: "ChatRoom",
+                column: "ClientUsersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChatRoom_PublisherId",
