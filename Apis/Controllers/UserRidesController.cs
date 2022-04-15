@@ -1,11 +1,13 @@
 ﻿using Apis.Data;
+using DataAcessLayer.ViewModels.Client;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using System.Data.Entity.SqlServer;
 
 namespace Apis.Controllers
 {
@@ -24,13 +26,16 @@ namespace Apis.Controllers
         public async Task<ActionResult> GetRides(int UserId)
         {
             var rides = await _context.Publish_Rides.Include(x => x.Booking).Include(x => x.Ride_Approval)
+                .Where(x => x.JourneyDate >= DateTime.Now
+                || DateTime.Now.Day - x.JourneyDate.Day <= 7) //Rides of last 7 days
+
+
                 .Where(x => x.PublisherId == UserId ||
                     x.Booking.Any(booking => booking.RiderId == UserId) ||
                     x.Ride_Approval.Any(rideRequest => rideRequest.UserId == UserId)
                     )
-                //error here
-                .Where(x => x.JourneyDate >= DateTime.Now || (DateTime.Now.Subtract(x.JourneyDate).Days <=7 )  ||(DateTime.Now - x.JourneyDate).TotalDays <= 7) //Rides of last 7 days
-                .Select(x => new
+                
+                .Select(x => new UserRideViewModal()
                 {
                     RideId = x.Id,
                     Date = x.JourneyDate,
@@ -58,7 +63,7 @@ namespace Apis.Controllers
                     x.Booking.Any(booking => booking.RiderId == UserId) ||
                     x.Ride_Approval.Any(rideRequest => rideRequest.UserId == UserId)
                     )
-                .Where(x => (DateTime.Now - x.JourneyDate).TotalDays > 7) //Rides excpet last 7 days // Archived
+                .Where(x => (DateTime.Now.Day - x.JourneyDate.Day) > 7) //Rides excpet last 7 days // Archived
                 .Select(x => new
                 {
                     RideId = x.Id,
