@@ -21,6 +21,7 @@ namespace Apis.Controllers.Chat
             _context = context;
         }
 
+
         [HttpGet]
         public async Task<IActionResult> Index(int RideId, int PublisherId, int UserId)
         {

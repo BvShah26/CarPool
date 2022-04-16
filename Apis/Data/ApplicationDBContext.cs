@@ -74,6 +74,5 @@ namespace Apis.Data
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
         }
-
     }
 }

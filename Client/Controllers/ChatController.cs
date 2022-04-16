@@ -30,6 +30,7 @@ namespace Client.Controllers
             var UserId = HttpContext.Session.GetInt32("UserId");
             List<ChatMessages> list = null;
             var AnonymsDefinition = new { Messages = list, RoomId = 0 };
+                
 
             HttpResponseMessage responseMessage = httpClient.GetAsync($"ChatRoom?RideId={RideId}&PublisherId={publisherId}&UserId={UserId}").Result;
             if (responseMessage.IsSuccessStatusCode)
@@ -43,6 +44,8 @@ namespace Client.Controllers
                     var data = JsonConvert.DeserializeAnonymousType(res, AnonymsDefinition);
                     messages = data.Messages;
                     ViewBag.RoomId = data.RoomId;
+                    return RedirectToAction("Details",new { RoomId = data.RoomId});
+
                 }
                 ViewBag.RideId = RideId;
                 //else
@@ -77,7 +80,7 @@ namespace Client.Controllers
                 HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("ChatMessage", message).Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {
-
+                    return RedirectToAction("Details", new { RoomId = RoomId });
                 }
             }
             return View();
@@ -122,14 +125,34 @@ namespace Client.Controllers
 
         public IActionResult Details(int RoomId)
         {
-            HttpResponseMessage responseMessage = httpClient.GetAsync($"ChatMessage/GetRoomMessages/{RoomId}").Result;
-            if (responseMessage.IsSuccessStatusCode)
+            //if (IsLogin() == false)
+            //{
+
+                HttpResponseMessage responseMessage = httpClient.GetAsync($"ChatMessage/GetRoomMessages/{RoomId}").Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    List<ChatMessages> messages = JsonConvert.DeserializeObject<List<ChatMessages>>(res);
+
+                    ViewBag.CurrentUser = HttpContext.Session.GetInt32("UserId");
+                //Get Details of Ride
+                    ViewBag.RoomId = RoomId;
+                    return View(messages);
+                }
+                return View();
+            //}
+            //return RedirectToAction("Login","Account");
+        }
+
+        public Boolean IsLogin()
+        {
+            if (HttpContext.Session.GetInt32("UserId") == null)
             {
-                string res = responseMessage.Content.ReadAsStringAsync().Result;
-                List<ChatMessages> messages = JsonConvert.DeserializeObject<List<ChatMessages>>(res);
-                return View(messages);
+                return false;
             }
-            return View();
+            return true;
         }
     }
+
+
 }

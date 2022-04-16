@@ -24,7 +24,8 @@ namespace Apis.Controllers.Chat
         [HttpGet("GetRoomMessages/{RoomId}")]
         public async Task<IActionResult> GetRoomMessages(int RoomId)
         {
-            List<ChatMessages> rec = await _context.ChatMessages.Where(x => x.RoomId == RoomId).ToListAsync();
+            List<ChatMessages> rec = await _context.ChatMessages.Where(x => x.RoomId == RoomId)
+                .Include(x => x.Sender).ToListAsync();
             return Ok(rec);
         }
 

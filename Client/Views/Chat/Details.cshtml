@@ -2,42 +2,93 @@
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+
 }
 
-<h1>Details</h1>
+<div class="row"  >
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Room)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Message)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sender)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Room.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Message)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sender.Id)
-            </td>
-            
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="col-3"></div>
+    <div class="col-6">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <div>
+                    <div></div>
+                    <div style="min-height:400px; max-height:400px;overflow:auto">
+                    @foreach (var item in Model)
+                    {
+                        <div class=' @(item.SenderId == ViewBag.CurrentUser ? "MessageContainer3 " : "MessageContainer2"  ) '>
+                            <div class="text-left MessageContainer ">@item.Message</div>
+
+                        </div>
+
+                    }
+                        </div>
+                    <form class="mt-4 mb-3" asp-controller="Chat" asp-action="PostMessage" method="post">
+                        @*<input type="text" class="form-control" placeholder="Message" name="Message" />*@
+                        <div class="row">
+                            <div class="col-10">
+                                <textarea class="textAreaa form-control" placeholder="Message" name="Message"></textarea>
+
+                            </div>
+                            <div class="col-2" style="text-align: center; justify-content: center; align-self: center; " >
+                                <button style="background-color:transparent">Submit</button>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="RoomId" value="@ViewBag.RoomId" />
+                    </form>
+
+                </div>
+            </div>
+            <div class="col-1"></div>
+        </div>
+
+    </div>
+    <div class="col-3"></div>
+
+</div>
+
+<div class="">
+
+</div>
+
+
+
+<style>
+
+    .textAreaa {
+        position: relative;
+        display: flex;
+        box-sizing: border-box;
+        color: rgb(5, 71, 82);
+        background-color: rgb(237, 237, 237);
+        border-radius: 16px;
+        border: 3px solid transparent;
+    }
+
+    .MessageContainer {
+        overflow-wrap: anywhere;
+        max-width: 300px;
+        width: fit-content;
+        background-color: rgb(5, 71, 82);
+        color: white;
+        margin-top: 5px;
+        padding: 5px 15px 5px 15px;
+        border-radius: 10px 10px 0px 10px;
+        line-height: 1.5;
+    }
+
+    .MessageContainer3 {
+        text-align: -webkit-right;
+    }
+
+    .MessageContainer2 {
+        text-align: -webkit-left;
+    }
+
+    .form-message {
+        border-radius: 10px;
+    }
+</style>
