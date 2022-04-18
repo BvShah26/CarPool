@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Apis.Data;
 using DataAcessLayer.Models.Rides;
+using Apis.Infrastructure.Bookings;
 
 namespace Apis.Controllers.Bookings
 {
@@ -14,108 +15,118 @@ namespace Apis.Controllers.Bookings
     [ApiController]
     public class RideApprovalsController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
+        private readonly IRideApproval_Repo _RideRequest;
 
-        public RideApprovalsController(ApplicationDBContext context)
+        public RideApprovalsController(IRideApproval_Repo RideRequest)
         {
-            _context = context;
+            _RideRequest = RideRequest;
         }
 
-        // GET: api/RideApprovals
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<RideApproval>>> GetRideApprovals()
-        {
-            return await _context.RideApprovals.ToListAsync();
-        }
 
         // GET: api/RideApprovals/5
         [HttpGet("{id}")]
         public async Task<ActionResult<RideApproval>> GetRideApproval(int id)
         {
-            var rideApproval = await _context.RideApprovals.FindAsync(id);
+
+            var rideApproval = await _RideRequest.GetRequest(id);
 
             if (rideApproval == null)
             {
                 return NotFound();
             }
 
-            return rideApproval;
+            return Ok(rideApproval);
         }
 
 
         // PUT: api/RideApprovals/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRideApproval(int id, RideApproval rideApproval)
-        {
-            if (id != rideApproval.Id)
-            {
-                return BadRequest();
-            }
+        //public async Task<IActionResult> PutRideApproval(int id, RideApproval rideApproval)
+        //{
+        //    if (id != rideApproval.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(rideApproval).State = EntityState.Modified;
+        //    _context.Entry(rideApproval).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RideApprovalExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!RideApprovalExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         [HttpPut("UpdateStatus/{id}")]
         public async Task<IActionResult> UpdateStatus(int id, RideApproval rideApproval)
         {
-            RideApproval request = (await GetRideApproval(id)).Value;
-            request.IsApproved = rideApproval.IsApproved;
-            request.IsRejected = (rideApproval.IsApproved == false) ? true : false;
+            try
+            {
+                await _RideRequest.UpdateStatus(id, rideApproval);
+                return Ok();
 
-            _context.RideApprovals.Update(request);
-            await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            //RideApproval request = (await GetRideApproval(id)).Value;
+            //request.IsApproved = rideApproval.IsApproved;
+            //request.IsRejected = (rideApproval.IsApproved == false) ? true : false;
 
-            return Ok();
+            //_context.RideApprovals.Update(request);
+            //await _context.SaveChangesAsync();
+
+        }
+
+
+        [HttpGet("GetUserRideRequest/{id}/{UserId}")]
+        public async Task<IActionResult> GetUserRideRequest(int id, int UserId)
+        {
+            var requests = await _RideRequest.GetUserRideRequest(id, UserId);
+            return Ok(requests);
         }
 
         // POST: api/RideApprovals
         [HttpPost("Request")]
         public async Task<ActionResult<RideApproval>> PostRideApproval(RideApproval rideApproval)
         {
-            _context.RideApprovals.Add(rideApproval);
-            await _context.SaveChangesAsync();
+            var record = await _RideRequest.NewRequest(rideApproval);
+            return Ok(record);
+            //_context.RideApprovals.Add(rideApproval);
+            //await _context.SaveChangesAsync();
 
-            return Ok();
+            //return Ok();
             //return CreatedAtAction("GetRideApproval", new { id = rideApproval.Id }, rideApproval);
         }
 
         // DELETE: api/RideApprovals/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<RideApproval>> DeleteRideApproval(int id)
-        {
-            var rideApproval = await _context.RideApprovals.FindAsync(id);
-            if (rideApproval == null)
-            {
-                return NotFound();
-            }
+        //[HttpDelete("{id}")]
 
-            _context.RideApprovals.Remove(rideApproval);
-            await _context.SaveChangesAsync();
+        //public async Task<ActionResult<RideApproval>> DeleteRideApproval(int id)
+        //{
+        //    var rideApproval = await _context.RideApprovals.FindAsync(id);
+        //    if (rideApproval == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _context.RideApprovals.Remove(rideApproval);
+        //    await _context.SaveChangesAsync();
+        //    return rideApproval;
+        //}
 
-            return rideApproval;
-        }
-
-        private bool RideApprovalExists(int id)
-        {
-            return _context.RideApprovals.Any(e => e.Id == id);
-        }
     }
+    
 }

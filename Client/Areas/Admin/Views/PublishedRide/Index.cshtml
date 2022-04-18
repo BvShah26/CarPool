@@ -40,7 +40,7 @@
                 </button>
             </div>
             <div class="modal-body" id="booking-data">
-                <table class="table" id="booking-table" >
+                <table class="table" id="booking-table">
                     <thead>
                         <tr>
                             <th>User</th>
@@ -50,7 +50,10 @@
                     <tbody id="booking-table-body">
                     </tbody>
                 </table>
-                <div id="not-found" >No Bookings</div>
+                <div id="not-found">No Bookings</div>
+                <div class="spinner-border" id="loader-data" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden"> Loading...</span>
+                </div>
             </div>
         </div>
     </div>
@@ -174,30 +177,33 @@
         NotFound.hide();
         tableBody.empty();
 
-        BookingModal.append(`<div class="spinner-border" id="loader-data" style="width: 3rem; height: 3rem;" role="status">
-            <span class="visually-hidden" > Loading...</span >
-                            </div >`);
+        //BookingModal.append(``);
+        //loader - data
+        var loader = $("#loader-data");
+        loader.show();
 
         $.ajax({
             type: "GET",
             url: `Bookings/GetBookingById/${RideId}`,
 
             success: function (res) {
-                
+                console.log(res);
                 var bookingSection = $("#booking-data");
                 if (res.length != 0) {
 
-                    $("#loader-data").remove();
+                    //$("#loader-data").remove();
 
                     var data = "";
                     $.each(res, (i, val) => {
                         data += `<tr><td>${val.rider.name}</td><td>${val.seatQty}</td></tr>`;
                     })
+                    loader.hide();
                     tableBody.append(data);
                     BookingTable.show();
                 }
                 else {
-                    $("#loader-data").remove();
+                    //$("#loader-data").remove();
+                    loader.hide();
                     NotFound.show();
                     //bookingSection.append("No Data Found");
                 }

@@ -93,7 +93,10 @@ namespace Client.Controllers
         [HttpGet]
         public IActionResult Details(int RideId, int Pickup, int Drop,int Seat,int Publisher)
         {
-            //Check For Login ===== ======= ======== =========
+            // check for session
+            // if login true then redirect to booking page directly
+            // Check For Login ===== ======= ======== =========
+
             if(Publisher == HttpContext.Session.GetInt32("UserId"))
             {
                 //Edit Published Ride 

@@ -48,8 +48,8 @@ namespace Apis.Controllers.Client
             {
                 return BadRequest();
             }
-            ClientUsers res =  _Repo.LoginUser(clientUsers);
-            if(res == null)
+            ClientUsers res = _Repo.LoginUser(clientUsers);
+            if (res == null)
             {
                 return NotFound();
             }
@@ -57,10 +57,11 @@ namespace Apis.Controllers.Client
 
         }
 
-            // PUT api/<ClientUserController>/5
-            [HttpPut("{id}")]
+        // PUT api/<ClientUserController>/5
+        [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
+
         }
 
         // DELETE api/<ClientUserController>/5

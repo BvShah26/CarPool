@@ -24,7 +24,6 @@ namespace Client.Controllers
             httpClient.BaseAddress = new Uri(_config.GetValue<string>("proxyUrl"));
         }
 
-
         [HttpGet]
         public IActionResult Index(int RideId, int Seat)
         {
@@ -41,6 +40,22 @@ namespace Client.Controllers
 
                     ride.Price_Seat = ride.Price_Seat * Seat;
 
+                    if (ride.IsInstant_Approval == false)
+                    {
+                        var UserId = HttpContext.Session.GetInt32("UserId");
+                        HttpResponseMessage approvalResponse = httpClient.GetAsync($"RideApprovals/GetUserRideRequest/{RideId}/{UserId}").Result;
+
+                        //Checking For Already Rejection
+                        if (approvalResponse.IsSuccessStatusCode)
+                        {
+                            string responseApproval = approvalResponse.Content.ReadAsStringAsync().Result;
+                            if(responseApproval != "")
+                            {
+                                ViewBag.HasDeclined = true;
+                            }
+                        }
+                    }
+
                     ViewBag.Seat = Seat;
                     return View(ride);
                 }
@@ -50,7 +65,7 @@ namespace Client.Controllers
         }
 
         [HttpGet]
-        public IActionResult Confirmed(int Id, int SeatQty,int? UserId)
+        public IActionResult Confirmed(int Id, int SeatQty, int? UserId)
         {
             HttpResponseMessage responseRide = httpClient.GetAsync($"SearchRide/GetRateSeats/{Id}").Result;
             if (responseRide.IsSuccessStatusCode)
@@ -79,7 +94,7 @@ namespace Client.Controllers
                 Book book = new Book()
                 {
                     Publish_RideId = Id,
-                    RiderId =  (UserId==null) ? (int)HttpContext.Session.GetInt32("UserId") : (int)UserId ,
+                    RiderId = (UserId == null) ? (int)HttpContext.Session.GetInt32("UserId") : (int)UserId,
                     SeatQty = SeatQty,
                     TotalPrice = SeatQty * Int32.Parse(dataRide.rate),
                     Publish_Ride = publishRide

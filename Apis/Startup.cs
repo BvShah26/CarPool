@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Apis.Data;
+using Apis.Infrastructure.Bookings;
 using Apis.Infrastructure.Client;
 using Apis.Infrastructure.Preference;
 using Apis.Infrastructure.Vehicles;
+using Apis.Repos.Bookings;
 using Apis.Repos.Client;
 using Apis.Repos.Preference;
 using Apis.Repos.Vehicles;
@@ -54,6 +56,10 @@ namespace Apis
             services.AddTransient<IClient_Repo, Client_Repo>();
             services.AddTransient<IClientVehicle_Repo, ClientVehicle_Repo>();
 
+
+            services.AddTransient<IBooking_Repo, Booking_Repo>();
+
+            services.AddTransient<IRideApproval_Repo, RideApproval_Repo>();
 
         }
 
