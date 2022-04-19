@@ -4,14 +4,16 @@ using Apis.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Apis.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220419063417_BookingCancellation")]
+    partial class BookingCancellation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,7 +72,7 @@ namespace Apis.Migrations
 
                     b.HasIndex("ReasonId");
 
-                    b.ToTable("bookingCancellations");
+                    b.ToTable("BookingCancellation");
                 });
 
             modelBuilder.Entity("DataAcessLayer.Models.Booking.CancellationReason", b =>

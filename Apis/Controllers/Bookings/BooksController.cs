@@ -18,11 +18,13 @@ namespace Apis.Controllers.Bookings
     public class BooksController : ControllerBase
     {
         private readonly IBooking_Repo _bookingRepo;
+        private readonly IBookingCancellation_Repo _cancellationRepo;
 
 
-        public BooksController(IBooking_Repo repo)
+        public BooksController(IBooking_Repo repo, IBookingCancellation_Repo cancellationRepo)
         {
             _bookingRepo = repo;
+            _cancellationRepo = cancellationRepo;
         }
 
         
@@ -119,6 +121,15 @@ namespace Apis.Controllers.Bookings
                 return StatusCode(StatusCodes.Status500InternalServerError);
                 throw;
             }
+        }
+
+        [HttpGet("Cancel/{ReasonId}/{BookingId}")]
+        public async Task<IActionResult> Cancel(int ReasonId, int BookingId)
+        {
+            Book bookingRecord = await _bookingRepo.GetBooking(BookingId);
+            await _cancellationRepo.CancelBooking(ReasonId,bookingRecord);
+
+            return Ok();
         }
 
         private bool BookExists(int id)

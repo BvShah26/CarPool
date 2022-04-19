@@ -20,5 +20,8 @@ namespace DataAcessLayer.Models.Booking
         public int TotalPrice { get; set; }
 
         public Boolean IsCancelled { get; set; }
+
+        public BookingCancellation bookingCancellation { get; set; }
+
     }
 }

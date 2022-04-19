@@ -61,6 +61,8 @@ namespace Apis
 
             services.AddTransient<IRideApproval_Repo, RideApproval_Repo>();
 
+            services.AddTransient<IBookingCancellation_Repo, BookingCancellation_Repo>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -31,6 +31,15 @@ namespace Apis.Controllers
             return await _context.Publish_Rides.Include(x => x.Publisher).Where(x => x.JourneyDate >= DateTime.Now).ToListAsync();
         }
 
+        [HttpGet("GetRideDetailsUser/{RideId}")]
+        public async Task<IEnumerable<PublishRide>> GetRideDetailsUser(int RideId)
+        {
+            return await _context.Publish_Rides
+                .Where(x => x.Id == RideId)
+                .Include(x => x.Publisher).Include(x => x.Booking)
+                .Where(x => x.IsCancelled == false)
+                .ToListAsync();
+        }
 
         [HttpGet("UserVehicles/{UserId}")]
         public async Task<ActionResult<IEnumerable<PublishRide>>> GetUser_PublishedRide(int UserId)

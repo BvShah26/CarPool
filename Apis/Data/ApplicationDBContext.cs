@@ -43,6 +43,7 @@ namespace Apis.Data
 
         public DbSet<Book> Bookings { get; set; }
         public DbSet<CancellationReason> CancellationReasons { get; set; }
+        public DbSet<BookingCancellation> bookingCancellations { get; set; }
 
 
         // Users

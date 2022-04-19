@@ -31,6 +31,8 @@
     <Compile Remove="Migrations\20220415081533_chat.Designer.cs" />
     <Compile Remove="Migrations\20220415162822_ChatMessage-Sender.cs" />
     <Compile Remove="Migrations\20220415162822_ChatMessage-Sender.Designer.cs" />
+    <Compile Remove="Migrations\20220419072014_tes.cs" />
+    <Compile Remove="Migrations\20220419072014_tes.Designer.cs" />
   </ItemGroup>
 
 	<ItemGroup>
