@@ -15,22 +15,20 @@
                 <div class="banner-two__content">
                     <p class="banner-two__text">Discover Your Perfect Ride Partner</p>
                     <h2 class="banner-two__title">Looking for<br> A Ride</h2>
-                    <form class="banner-two-form" asp-action="Index" >
+                    <form class="banner-two-form" asp-action="Index">
                         <ul class="list-unstyled banner-two__type-boxes clearfix">
-                            <li class="banner-two__input-box">
-                                <input type="text" class="selectpicker" id="Departure"/>
+                            <li class="search-box__input me-2">
+                                <input type="text" id="Departure" style="background-color:white" placeholder="From">
                             </li>
-                            <li class="banner-two__input-box">
-                                <input type="text" class="selectpicker" id="Destination"/>
+                            
+                            <li class="search-box__input me-2">
+                                <input type="text" id="Destination" style="background-color:white" placeholder="To">
                             </li>
                         </ul>
 
-                        <ul class="mt-2 list-unstyled banner-two__type-boxes clearfix">
+                        <ul class="list-unstyled banner-two__type-boxes clearfix">
                             <li class="search-box__input me-2">
                                 <input type="date" name="JourneyDate" placeholder="Select date" id="JourneyDate">
-                                <div class="search-box__icon-box">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
                             </li>
                             <li class="banner-two__input-box">
                                 <select class="selectpicker" name="SeatCount" id="SeatCount" aria-label="Default select example">
@@ -90,7 +88,7 @@
             fields: ['geometry', 'name', 'address_components']
         });
     }
-    const PlaceChange = (data,inputControl) =>   {
+    const PlaceChange = (data, inputControl) => {
         var near_place = data.getPlace();
         console.log("Near", near_place)
 
@@ -116,8 +114,8 @@
         var pickupLocation = AutoComplePlaces('Departure');
         var dropLocation = AutoComplePlaces('Destination');
 
-        google.maps.event.addListener(pickupLocation, 'place_changed', function () { return PlaceChange(pickupLocation,"Departure") });
-        google.maps.event.addListener(dropLocation, 'place_changed', function () { return PlaceChange(dropLocation,"Destination") });
+        google.maps.event.addListener(pickupLocation, 'place_changed', function () { return PlaceChange(pickupLocation, "Departure") });
+        google.maps.event.addListener(dropLocation, 'place_changed', function () { return PlaceChange(dropLocation, "Destination") });
 
         $("form").submit(function (event) {
             event.preventDefault();
@@ -126,90 +124,90 @@
 
             {
                 //var Pickup_data = PlaceChange(pickupLocation)
-            //var DropLocation_data = PlaceChange(dropLocation)
+                //var DropLocation_data = PlaceChange(dropLocation)
 
 
-            //var formData = $('form').serializeArray();
-            //console.log("Main : ", formData);
+                //var formData = $('form').serializeArray();
+                //console.log("Main : ", formData);
 
-            //var objToSend = [
-            //    { name: "PickUp_LatLong", value: Pickup_data.LatLong }, { name: "DropOff_LatLong", value: DropLocation_data.LatLong },
-            //    { name: "Destination_City", value: DropLocation_data.city }, { name: "Departure_City", value: Pickup_data.city },
-            //    ...formData]
-
-
-            //console.log("Main : ", objToSend);
+                //var objToSend = [
+                //    { name: "PickUp_LatLong", value: Pickup_data.LatLong }, { name: "DropOff_LatLong", value: DropLocation_data.LatLong },
+                //    { name: "Destination_City", value: DropLocation_data.city }, { name: "Departure_City", value: Pickup_data.city },
+                //    ...formData]
 
 
-
-            //this.submit();
-            //$("form").submit();
-
-            //$.ajax({
-            //    type: "POST",
-            //    url: "/Home/Index",
-            //    data: objToSend,
-
-            //    success: function (r) {
-            //        console.log("Response : ",r);
-            //        var myJsonString = JSON.stringify(r);
-
-            //        console.log(myJsonString)
-            //        console.log(JSON.parse(myJsonString));
-            //        //console.log("Data :  ",data)
-            //        var url = '/Home/Rides/';
-            //        var formJson = $('<form id="formNew" action="' + url + '" method="post">' +
-            //            `<input type="hidden" name="SearchRide" value=${myJsonString} />` +
-            //            '</form>');
-
-            //        var formObject = $('<form id="formNew" action="' + url + '" method="post">' +
-            //            `<input type="text" name="SearchRide" value=${r} />` +
-            //            '</form>');
-
-            //        console.log("Form Json : ", formJson);
-
-
-            //        ////alert(form);
-            //        ////console.log(form);
-            //        $('body').append(formJson);
-            //        formJson.submit();
-            //        //window.location.href = "/Home/Rides/";
-            //    },
-
-            //    //success: function (r) {
-            //    //    console.log("Response : ",r);
-
-            //    //    var myJsonString = JSON.stringify(r);
-
-            //    //   //console.log(myJsonString )
-            //    //    var url = '/Home/Rides/';
-            //    //    var frm = '<form id="formNew" action="' + url + '" method="post">';
-            //    //    $.each(r, (i, val) => {
-            //    //        frm += `<input type="text" name="SearchRide" value="${val}" />`;
-            //    //    })
-            //    //    frm += '</form>';
-
-
-            //    //    console.log("form : ",frm)
+                //console.log("Main : ", objToSend);
 
 
 
+                //this.submit();
+                //$("form").submit();
 
-            //    //    //console.log("CHild : ", dat);
-            //    //    var form = $(frm)
-            //    //    var dat = form.serializeArray();
-            //    //    //alert(form);
-            //    //    console.log("dat", dat);
-            //    //    //$('body').append(form);
-            //    //    form.submit();
-            //    //    //window.location.href = "/Home/Rides/";
-            //    //},
-            //    error: function (req) {
-            //        alert("Api Calling Fail");
-            //    }
-            //});
+                //$.ajax({
+                //    type: "POST",
+                //    url: "/Home/Index",
+                //    data: objToSend,
+
+                //    success: function (r) {
+                //        console.log("Response : ",r);
+                //        var myJsonString = JSON.stringify(r);
+
+                //        console.log(myJsonString)
+                //        console.log(JSON.parse(myJsonString));
+                //        //console.log("Data :  ",data)
+                //        var url = '/Home/Rides/';
+                //        var formJson = $('<form id="formNew" action="' + url + '" method="post">' +
+                //            `<input type="hidden" name="SearchRide" value=${myJsonString} />` +
+                //            '</form>');
+
+                //        var formObject = $('<form id="formNew" action="' + url + '" method="post">' +
+                //            `<input type="text" name="SearchRide" value=${r} />` +
+                //            '</form>');
+
+                //        console.log("Form Json : ", formJson);
+
+
+                //        ////alert(form);
+                //        ////console.log(form);
+                //        $('body').append(formJson);
+                //        formJson.submit();
+                //        //window.location.href = "/Home/Rides/";
+                //    },
+
+                //    //success: function (r) {
+                //    //    console.log("Response : ",r);
+
+                //    //    var myJsonString = JSON.stringify(r);
+
+                //    //   //console.log(myJsonString )
+                //    //    var url = '/Home/Rides/';
+                //    //    var frm = '<form id="formNew" action="' + url + '" method="post">';
+                //    //    $.each(r, (i, val) => {
+                //    //        frm += `<input type="text" name="SearchRide" value="${val}" />`;
+                //    //    })
+                //    //    frm += '</form>';
+
+
+                //    //    console.log("form : ",frm)
+
+
+
+
+                //    //    //console.log("CHild : ", dat);
+                //    //    var form = $(frm)
+                //    //    var dat = form.serializeArray();
+                //    //    //alert(form);
+                //    //    console.log("dat", dat);
+                //    //    //$('body').append(form);
+                //    //    form.submit();
+                //    //    //window.location.href = "/Home/Rides/";
+                //    //},
+                //    error: function (req) {
+                //        alert("Api Calling Fail");
+                //    }
+                //});
             }
-            
+
         });
 
     })

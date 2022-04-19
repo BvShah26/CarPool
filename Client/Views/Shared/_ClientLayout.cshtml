@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http;
+
+<!DOCTYPE html>
 <html lang="en">
 
 
@@ -55,6 +57,7 @@
     <!-- /.preloader -->
     <div class="page-wrapper">
         <header class="main-header-two clearfix">
+            
             <div class="main-header-two__top">
                 <div class="container">
                     <div class="main-header-two__top-inner clearfix">
@@ -94,7 +97,8 @@
                                         <a href="index.html">Home</a>
                                         <ul>
                                             <li>
-                                                <a href="index.html">Home One</a>
+                                                <a href="index.html">@Context.Session.GetString("UserName")</a>
+                                                <h1></h1>
                                             </li>
                                             <li><a href="index2.html">Home Two</a></li>
                                             <li><a href="index3.html">Home Three</a></li>
