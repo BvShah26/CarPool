@@ -21,45 +21,149 @@
   <body>
     <h1>Hello, world!</h1>
 
-    <div  style="display: flex;flex-direction: column;align-items: center;">
-        <div class="card w-100 " style="width: 18rem;max-width: 700px;margin: 100px;">
-            <div class="card-body">
+    <div style="display: flex; flex-direction: column; align-items: center">
+      <div
+        class="card w-100"
+        style="width: 18rem; max-width: 70%; margin: 100px"
+      >
+        <div class="card-body">
+          <div class="row">
+            <div class="col-4">
               <div class="row">
-                <div class="col-lg-3">
+                <div class="col-4">
                   <div class="row">
-                    <div class="col-5">
-                      <div class="row">
-                        <div class="col-12">06:00</div>
-                      </div>
-                      <div class="row">
-                        <div class="col-12">05:00</div>
-                      </div>
-  
-                      <div class="row">
-                        <div class="col-12">11:00</div>
-                      </div>
-                    </div>
-                    <div class="col-2">|</div>
-                    <div class="col-5">Cities</div>
+                    <div class="col-12">06:00</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">05:00</div>
                   </div>
                 </div>
-                <div class="col-8"></div>
-                <!-- <div class="col-1"><img src="lineimg.png" height="100px" ></div> -->
-  
-                <div class="col-1">Price</div>
+                <div class="col-2">
+                  <img
+                    src="./line1.png"
+                    style="width: 100%; object-fit: cover"
+                    height="80px"
+                  />
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-12">Surat</div>
+                  </div>
+                  <div>
+                    <svg
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="kirk-icon sc-ksdxgE hcEKjk"
+                      width="20px"
+                      height="20px"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="#EDEDED"
+                        d="M10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10zm1.202-14.863a1.568 1.568 0 1 0 0-3.136 1.568 1.568 0 0 0 0 3.136zm.94 1.868h-.005a1.568 1.568 0 0 0-1.563-1.554h-.007c-2.252 0-3.896 1.32-4.288 2.692L5.5 11.051H6.926l.723-2.72 1.166-.825-.874 3.264L6.003 18h1.569l1.83-5.661 1.526 1.269.314 4.392h1.528v-5.02l-1.757-1.756.473-1.767a3.753 3.753 0 0 0 2.853 1.313h.314V9.515a2.51 2.51 0 0 1-2.51-2.51z"
+                      ></path>
+                    </svg>
+                    <svg
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="kirk-icon sc-ksdxgE dCzRrk"
+                      width="20px"
+                      height="20px"
+                      aria-hidden="false"
+                    >
+                      <title>A bit away from you</title>
+                      <path
+                        fill="#FFCA0C"
+                        d="M10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10zm1.202-14.863a1.568 1.568 0 1 0 0-3.136 1.568 1.568 0 0 0 0 3.136zm.94 1.868h-.005a1.568 1.568 0 0 0-1.563-1.554h-.007c-2.252 0-3.896 1.32-4.288 2.692L5.5 11.051H6.926l.723-2.72 1.166-.825-.874 3.264L6.003 18h1.569l1.83-5.661 1.526 1.269.314 4.392h1.528v-5.02l-1.757-1.756.473-1.767a3.753 3.753 0 0 0 2.853 1.313h.314V9.515a2.51 2.51 0 0 1-2.51-2.51z"
+                      ></path>
+                    </svg>
+
+                    <svg
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="kirk-icon sc-ksdxgE hcEKjk"
+                      width="20px"
+                      height="20px"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="#EDEDED"
+                        d="M10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10zm1.202-14.863a1.568 1.568 0 1 0 0-3.136 1.568 1.568 0 0 0 0 3.136zm.94 1.868h-.005a1.568 1.568 0 0 0-1.563-1.554h-.007c-2.252 0-3.896 1.32-4.288 2.692L5.5 11.051H6.926l.723-2.72 1.166-.825-.874 3.264L6.003 18h1.569l1.83-5.661 1.526 1.269.314 4.392h1.528v-5.02l-1.757-1.756.473-1.767a3.753 3.753 0 0 0 2.853 1.313h.314V9.515a2.51 2.51 0 0 1-2.51-2.51z"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
               </div>
-  
-              <!-- <h5 class="card-title">Card title</h5>
+
+              <div class="row">
+                <div class="col-4 mt-1">11:00</div>
+                <div class="col-2">|</div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-12">Ahmedabad</div>
+                  </div>
+                  <div>
+                    <svg
+                      viewbox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="kirk-icon sc-ksdxgE hcEKjk"
+                      width="20px"
+                      height="20px"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="#EDEDED"
+                        d="M10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10zm1.202-14.863a1.568 1.568 0 1 0 0-3.136 1.568 1.568 0 0 0 0 3.136zm.94 1.868h-.005a1.568 1.568 0 0 0-1.563-1.554h-.007c-2.252 0-3.896 1.32-4.288 2.692L5.5 11.051H6.926l.723-2.72 1.166-.825-.874 3.264L6.003 18h1.569l1.83-5.661 1.526 1.269.314 4.392h1.528v-5.02l-1.757-1.756.473-1.767a3.753 3.753 0 0 0 2.853 1.313h.314V9.515a2.51 2.51 0 0 1-2.51-2.51z"
+                      ></path>
+                    </svg>
+                    <svg
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="kirk-icon sc-ksdxgE dCzRrk"
+                      width="20px"
+                      height="20px"
+                      aria-hidden="false"
+                    >
+                      <title>A bit away from you</title>
+                      <path
+                        fill="#FFCA0C"
+                        d="M10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10zm1.202-14.863a1.568 1.568 0 1 0 0-3.136 1.568 1.568 0 0 0 0 3.136zm.94 1.868h-.005a1.568 1.568 0 0 0-1.563-1.554h-.007c-2.252 0-3.896 1.32-4.288 2.692L5.5 11.051H6.926l.723-2.72 1.166-.825-.874 3.264L6.003 18h1.569l1.83-5.661 1.526 1.269.314 4.392h1.528v-5.02l-1.757-1.756.473-1.767a3.753 3.753 0 0 0 2.853 1.313h.314V9.515a2.51 2.51 0 0 1-2.51-2.51z"
+                      ></path>
+                    </svg>
+
+                    <svg
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="kirk-icon sc-ksdxgE hcEKjk"
+                      width="20px"
+                      height="20px"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="#EDEDED"
+                        d="M10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10zm1.202-14.863a1.568 1.568 0 1 0 0-3.136 1.568 1.568 0 0 0 0 3.136zm.94 1.868h-.005a1.568 1.568 0 0 0-1.563-1.554h-.007c-2.252 0-3.896 1.32-4.288 2.692L5.5 11.051H6.926l.723-2.72 1.166-.825-.874 3.264L6.003 18h1.569l1.83-5.661 1.526 1.269.314 4.392h1.528v-5.02l-1.757-1.756.473-1.767a3.753 3.753 0 0 0 2.853 1.313h.314V9.515a2.51 2.51 0 0 1-2.51-2.51z"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-7"></div>
+            <!-- <div class="col-1"><img src="lineimg.png" height="100px" ></div> -->
+
+            <div class="col-1">680</div>
+          </div>
+
+          <!-- <h5 class="card-title">Card title</h5>
               <p class="card-text">
                 Some quick example text to build on the card title and make up the
                 bulk of the card's content.
               </p>
               <a href="#" class="btn btn-primary">Go somewhere</a> -->
-            </div>
-          </div>
+        </div>
+      </div>
     </div>
 
-   
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script
