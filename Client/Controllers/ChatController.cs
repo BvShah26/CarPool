@@ -23,14 +23,13 @@ namespace Client.Controllers
             httpClient.BaseAddress = new Uri(_config.GetValue<string>("proxyUrl"));
 
         }
+
         [HttpGet]
         public IActionResult Index(int RideId, int publisherId)
         {
 
             var UserId = HttpContext.Session.GetInt32("UserId");
             List<ChatMessages> list = null;
-            var AnonymsDefinition = new { Messages = list, RoomId = 0 };
-                
 
             HttpResponseMessage responseMessage = httpClient.GetAsync($"ChatRoom?RideId={RideId}&PublisherId={publisherId}&UserId={UserId}").Result;
             if (responseMessage.IsSuccessStatusCode)
@@ -40,19 +39,14 @@ namespace Client.Controllers
                 ViewBag.PublisherId = publisherId;
                 if (res != "0")
                 {
-                    //messages = JsonConvert.DeserializeObject<List<ChatMessages>>(res);
-                    var data = JsonConvert.DeserializeAnonymousType(res, AnonymsDefinition);
-                    messages = data.Messages;
-                    ViewBag.RoomId = data.RoomId;
-                    return RedirectToAction("Details",new { RoomId = data.RoomId});
-
+                    int RoomId = JsonConvert.DeserializeObject<int>(res);
+                    ViewBag.RoomId = RoomId;
+                    return RedirectToAction("Details", new { RoomId = RoomId });
                 }
+
                 ViewBag.RideId = RideId;
-                //else
-                //{
-                //    return View();
-                //}
-                return View(messages);
+                ViewBag.PublisherId = publisherId;
+                return View("Details");
 
             }
             return View();
@@ -125,24 +119,21 @@ namespace Client.Controllers
 
         public IActionResult Details(int RoomId)
         {
-            //if (IsLogin() == false)
-            //{
 
-                HttpResponseMessage responseMessage = httpClient.GetAsync($"ChatMessage/GetRoomMessages/{RoomId}").Result;
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    string res = responseMessage.Content.ReadAsStringAsync().Result;
-                    List<ChatMessages> messages = JsonConvert.DeserializeObject<List<ChatMessages>>(res);
+            HttpResponseMessage responseMessage = httpClient.GetAsync($"ChatMessage/GetRoomMessages/{RoomId}").Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string res = responseMessage.Content.ReadAsStringAsync().Result;
+                List<ChatMessages> messages = JsonConvert.DeserializeObject<List<ChatMessages>>(res);
 
-                    ViewBag.CurrentUser = HttpContext.Session.GetInt32("UserId");
+                ViewBag.CurrentUser = HttpContext.Session.GetInt32("UserId");
                 //Get Details of Ride
-                    ViewBag.RoomId = RoomId;
-                    return View(messages);
-                }
-                return View();
-            //}
-            //return RedirectToAction("Login","Account");
+                ViewBag.RoomId = RoomId;
+                return View(messages);
+            }
+            return View();
         }
+
 
         public Boolean IsLogin()
         {
@@ -153,6 +144,4 @@ namespace Client.Controllers
             return true;
         }
     }
-
-
 }

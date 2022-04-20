@@ -6,7 +6,7 @@
 
 }
 
-<div class="row"  >
+<div class="row">
 
     <div class="col-3"></div>
     <div class="col-6">
@@ -16,15 +16,19 @@
                 <div>
                     <div></div>
                     <div style="min-height:400px; max-height:400px;overflow:auto">
-                    @foreach (var item in Model)
-                    {
-                        <div class=' @(item.SenderId == ViewBag.CurrentUser ? "MessageContainer3 " : "MessageContainer2"  ) '>
-                            <div class="text-left MessageContainer ">@item.Message</div>
+                        @if (ViewBag.RoomId != null)
+                        {
 
-                        </div>
+                            @foreach (var item in Model)
+                            {
+                                <div class=' @(item.SenderId == ViewBag.CurrentUser ? "MessageContainer3 " : "MessageContainer2"  ) '>
+                                    <div class="text-left MessageContainer ">@item.Message</div>
 
-                    }
-                        </div>
+                                </div>
+
+                            }
+                        }
+                    </div>
                     <form class="mt-4 mb-3" asp-controller="Chat" asp-action="PostMessage" method="post">
                         @*<input type="text" class="form-control" placeholder="Message" name="Message" />*@
                         <div class="row">
@@ -32,12 +36,19 @@
                                 <textarea class="textAreaa form-control" placeholder="Message" name="Message"></textarea>
 
                             </div>
-                            <div class="col-2" style="text-align: center; justify-content: center; align-self: center; " >
+                            <div class="col-2" style="text-align: center; justify-content: center; align-self: center; ">
                                 <button style="background-color:transparent">Submit</button>
                             </div>
                         </div>
-
-                        <input type="hidden" name="RoomId" value="@ViewBag.RoomId" />
+                        @if (ViewBag.RoomId != null)
+                        {
+                            <input type="hidden" name="RoomId" value="@ViewBag.RoomId" />
+                        }
+                        else
+                        {
+                            <input type="hidden" name="RideId" value=@ViewBag.RideId />
+                            <input type="hidden" name="PublisherId" value=@ViewBag.PublisherId />
+                        }
                     </form>
 
                 </div>

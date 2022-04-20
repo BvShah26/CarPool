@@ -17,7 +17,7 @@ namespace Apis.Repos.Chat
             _context = context;
         }
         public async Task<ChatRoom> CreateRoom(ChatRoom chatRoom)
-        { 
+        {
             var res = await _context.ChatRoom.AddAsync(chatRoom);
             await _context.SaveChangesAsync();
             return res.Entity;
@@ -30,14 +30,13 @@ namespace Apis.Repos.Chat
            && x.RiderId == UserId
            ).Select(x => x.Id).FirstOrDefaultAsync();
 
-
-
-            if (RoomId != 0)
-            {
-                var Messages = await _context.ChatMessages.Where(x => x.RoomId == RoomId).ToListAsync();
-                return (new { Messages = Messages, RoomId = RoomId });
-            }
-            return Ok(RoomId);
+            //if (RoomId != 0)
+            //{
+            //    var Messages = await _context.ChatMessages.Where(x => x.RoomId == RoomId).ToListAsync();
+                
+            //    return (new { Messages = Messages, RoomId = RoomId });
+            //}
+            return RoomId;
         }
 
         public async Task<List<ChatRoom>> GetUser_ChatRooms(int UserId)

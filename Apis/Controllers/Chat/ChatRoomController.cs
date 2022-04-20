@@ -1,4 +1,5 @@
 ﻿using Apis.Data;
+using Apis.Infrastructure.Chat;
 using DataAcessLayer.Models.Chat;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,42 +15,26 @@ namespace Apis.Controllers.Chat
     [ApiController]
     public class ChatRoomController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
-
-        public ChatRoomController(ApplicationDBContext context)
+        private readonly IChatRoom_Repo _chatRoom_Repo;
+ 
+        public ChatRoomController(IChatRoom_Repo _Repo)
         {
-            _context = context;
+            _chatRoom_Repo = _Repo;
         }
 
 
         [HttpGet]
         public async Task<IActionResult> Index(int RideId, int PublisherId, int UserId)
         {
-            int RoomId = await _context.ChatRoom.Where(x => x.RideId == RideId
-            && x.PublisherId == PublisherId
-            && x.RiderId == UserId
-            ).Select(x => x.Id).FirstOrDefaultAsync();
 
-
-
-            if (RoomId != 0)
-            {
-                var Messages = await _context.ChatMessages.Where(x => x.RoomId == RoomId).ToListAsync();
-                return Ok(new { Messages = Messages, RoomId = RoomId });
-            }
+            int RoomId = await _chatRoom_Repo.GetRoomIdByRiders(RideId, PublisherId, UserId);
             return Ok(RoomId);
         }
 
         [HttpGet("UserRooms/{UserId}")]
         public async Task<IActionResult> UserRooms(int UserId)
         {
-            List<ChatRoom> rooms = await _context.ChatRoom.Where(x => x.PublisherId == UserId
-            || x.RiderId == UserId
-            )
-                .Include(x => x.Publisher)
-                .Include(y => y.Ride)
-                .Include(x => x.Rider)
-                .ToListAsync();
+            List<ChatRoom> rooms = await _chatRoom_Repo.GetUser_ChatRooms(UserId);
             return Ok(rooms);
         }
 
@@ -63,15 +48,13 @@ namespace Apis.Controllers.Chat
             }
             try
             {
-                var res = await _context.ChatRoom.AddAsync(chatRoom);
-                await _context.SaveChangesAsync();
-                return Ok(res.Entity);
+                var res = await _chatRoom_Repo.CreateRoom(chatRoom);
+                return Ok(res);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                var a = ex;
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            return BadRequest();
         }
 
 
