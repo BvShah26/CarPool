@@ -9,9 +9,10 @@ namespace Apis.Infrastructure.Client
     public interface IClientVehicle_Repo
     {
         Task<List<Uservehicle>> GetUservehicles();
-        Task<List<Uservehicle>> GetUservehicleByUser(int id);
+        Task<List<Uservehicle>> GetUservehicleByUser(int UserId);
 
         Task<Uservehicle> AddVehicle(Uservehicle vehicle);
+        public Task<bool> DeleteUserVehicle(int UserVehicleId);
 
     }
 }

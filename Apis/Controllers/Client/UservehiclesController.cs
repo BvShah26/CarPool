@@ -15,12 +15,10 @@ namespace Apis.Controllers.Client
     [ApiController]
     public class UservehiclesController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
         private readonly IClientVehicle_Repo _Repo;
 
-        public UservehiclesController(ApplicationDBContext context, IClientVehicle_Repo Repo)
+        public UservehiclesController(IClientVehicle_Repo Repo)
         {
-            _context = context;
             _Repo = Repo;
         }
 
@@ -47,67 +45,25 @@ namespace Apis.Controllers.Client
 
 
 
-        // PUT: api/Uservehicles/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUservehicle(int id, Uservehicle uservehicle)
-        {
-            if (id != uservehicle.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(uservehicle).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UservehicleExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         // POST: api/Uservehicles
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<Uservehicle>> PostUservehicle(Uservehicle uservehicle)
         {
-            _context.Uservehicles.Add(uservehicle);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUservehicle", new { id = uservehicle.Id }, uservehicle);
+            var record = await _Repo.AddVehicle(uservehicle);
+           
+            return CreatedAtAction("GetUservehicle", new { id = record.Id }, record);
         }
 
         // DELETE: api/Uservehicles/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Uservehicle>> DeleteUservehicle(int id)
         {
-            var uservehicle = await _context.Uservehicles.FindAsync(id);
-            if (uservehicle == null)
+            Boolean res =await _Repo.DeleteUserVehicle(id);
+            if(res == true)
             {
-                return NotFound();
+                return Ok();
             }
-
-            _context.Uservehicles.Remove(uservehicle);
-            await _context.SaveChangesAsync();
-
-            return uservehicle;
-        }
-
-        private bool UservehicleExists(int id)
-        {
-            return _context.Uservehicles.Any(e => e.Id == id);
+            return NotFound();
         }
     }
 }

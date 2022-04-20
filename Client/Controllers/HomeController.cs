@@ -47,10 +47,10 @@ namespace Client.Controllers
 
                     RideDetailsView rideDetails = new RideDetailsView()
                     {
-
                         Id = item.Id,
-                        Publisher = item.Publisher,
                         PublisherId = item.PublisherId,
+                        PublisherName = item.Publisher.Name,
+                        Publisher_Profile = item.Publisher.ProfileImage,
 
                         Price_Seat = item.Price_Seat * searchRide.SeatCount,
 
@@ -67,7 +67,12 @@ namespace Client.Controllers
 
                         Client_Departure_LatLong = searchRide.Departure_City,
                         Client_Destination_LatLong = searchRide.DropOff_LatLong,
-                        JourneyDate = item.JourneyDate
+                        JourneyDate = item.JourneyDate,
+
+                        DepartureCity = item.Departure_City,
+                        DestinationCity = item.Destination_City,
+
+                       
                     };
                     rides.Add(rideDetails);
 

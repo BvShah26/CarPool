@@ -9,8 +9,12 @@ namespace DataAcessLayer.ViewModels
     public class RideDetailsView
     {
         public int Id { get; set; }
-        public ClientUsers Publisher { get; set; }
+        //to be delete 
         public int PublisherId { get; set; }
+        public string PublisherName { get; set; }
+        public string Publisher_Profile { get; set; }
+
+
 
         public string PickUp_LatLong { get; set; }
         public string DropOff_LatLong { get; set; }
@@ -30,6 +34,9 @@ namespace DataAcessLayer.ViewModels
 
         public double Pickup_DifferDistance { get; set; }
         public double Drop_DifferDistance { get; set; }
+
+        public string DepartureCity { get; set; }
+        public string DestinationCity { get; set; }
 
 
     }

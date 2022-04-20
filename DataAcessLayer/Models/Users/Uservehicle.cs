@@ -27,6 +27,8 @@ namespace DataAcessLayer.Models.Users
 
         public DateTime Manufacture_Year { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         //Collections
 
         //One user's vehicle can be used by his multipled Published Rides

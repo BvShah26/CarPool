@@ -16,18 +16,40 @@ namespace Apis.Repos.Client
         {
             _context = context;
         }
+
+        // Update Vehicle Image [ Implement ]
+
+
+
         public async Task<Uservehicle> AddVehicle(Uservehicle vehicle)
         {
             var result = await _context.Uservehicles.AddAsync(vehicle);
             await _context.SaveChangesAsync();
-
             return result.Entity;
         }
 
-        public async Task<List<Uservehicle>> GetUservehicleByUser(int id)
+        public async Task<bool> DeleteUserVehicle(int UserVehicleId)
         {
-            var rec = await _context.Uservehicles.Where(x => x.UserOwnerId == id).Include(item => item.Vehicle)
+            Uservehicle uservehicle = await _context.Uservehicles.FindAsync(UserVehicleId);
+            if(uservehicle == null)
+            {
+                return false;
+            }
+            uservehicle.IsDeleted = true;
+
+            _context.Uservehicles.Update(uservehicle);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<List<Uservehicle>> GetUservehicleByUser(int UserId)
+        {
+            var rec = await _context.Uservehicles.Where(x => x.UserOwnerId == UserId)
+                .Where(x => x.IsDeleted == false)
+                .Include(item => item.Vehicle)
                 .Include(item => item.Color)
+
                 .ToListAsync();
             return rec;
         }
@@ -35,7 +57,7 @@ namespace Apis.Repos.Client
         public async Task<List<Uservehicle>> GetUservehicles()
         {
             return await _context.Uservehicles.ToListAsync();
-
         }
+
     }
 }
