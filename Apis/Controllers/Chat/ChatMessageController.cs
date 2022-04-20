@@ -1,4 +1,4 @@
-﻿using Apis.Data;
+﻿using Apis.Infrastructure.Chat;
 using DataAcessLayer.Models.Chat;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,19 +14,30 @@ namespace Apis.Controllers.Chat
     [ApiController]
     public class ChatMessageController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
+        private readonly IChatMessages_Repo _chatMessages_Repo;
 
-        public ChatMessageController(ApplicationDBContext context)
+        public ChatMessageController(IChatMessages_Repo messageRepo)
         {
-            _context = context;
+            _chatMessages_Repo = messageRepo;
         }
 
         [HttpGet("GetRoomMessages/{RoomId}")]
         public async Task<IActionResult> GetRoomMessages(int RoomId)
         {
-            List<ChatMessages> rec = await _context.ChatMessages.Where(x => x.RoomId == RoomId)
-                .Include(x => x.Sender).ToListAsync();
-            return Ok(rec);
+            try
+            {
+                var messages = await _chatMessages_Repo.GetRoomMessages(RoomId);
+                if (messages == null)
+                {
+                    return NotFound();
+                }
+                return Ok(messages);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
         }
 
         [HttpPost]
@@ -38,15 +49,14 @@ namespace Apis.Controllers.Chat
             }
             try
             {
-                var res = await _context.ChatMessages.AddAsync(message);
-                await _context.SaveChangesAsync();
-                return Ok(res.Entity);
+                var res = await _chatMessages_Repo.NewMessage(message);
+                return Ok(res);
             }
             catch (Exception ex)
             {
-                var a = ex;
+                return StatusCode(StatusCodes.Status500InternalServerError);
+
             }
-            return BadRequest();
         }
     }
 }

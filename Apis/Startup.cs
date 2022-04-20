@@ -67,6 +67,7 @@ namespace Apis
 
             //Chat
             services.AddTransient<IChatRoom_Repo, ChatRoom_Repo>();
+            services.AddTransient<IChatMessages_Repo, ChatMessages_Repo>();
 
         }
 
