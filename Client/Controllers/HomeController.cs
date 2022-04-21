@@ -96,7 +96,7 @@ namespace Client.Controllers
         //}
 
         [HttpGet]
-        public IActionResult Details(int RideId, int Pickup, int Drop,int Seat,int Publisher)
+        public IActionResult Details(int RideId, int Pickup_dist, int Drop_dist, int Seat,int Publisher)
         {
             // check for session
             // if login true then redirect to booking page directly
@@ -112,8 +112,9 @@ namespace Client.Controllers
             {
                 string res = responseMessage.Content.ReadAsStringAsync().Result;
                 PublishRide rideDetail = JsonConvert.DeserializeObject<PublishRide>(res);
-                ViewBag.Pickup = Pickup;
-                ViewBag.Drop = Drop;
+                rideDetail.Price_Seat = Seat * rideDetail.Price_Seat;
+                ViewBag.Pickup_LatLong = Pickup_dist;
+                ViewBag.Drop_LatLong = Drop_dist;
                 ViewBag.Seats = Seat;
 
                 return View(rideDetail);

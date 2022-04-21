@@ -4,128 +4,473 @@
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
+@section Headers{
+    <link href="~/ClientAssets/css/rides.css" rel="stylesheet" />
+}
+<style>
+</style>
+<div id="root" class="" style="min-height: 685px; height: auto">
+    <aside class="sc-eJwWfJ djHSaA kirk-drawer kirk-drawer--close">
+        <div class="kirk-drawer-scrollableContent" style="width: 400px">
+            <nav class="bg-white user-menu" id="connect-menu" role="menu">
+                <ul class="sc-gGCDDS bZCmSV kirk-items-list">
+                    <li class="kirk-items-list-item">
+                        <a type="button"
+                           class="kirk-item kirk-item--clickable sc-Galmp kNDdlo kirk-item-choice user-menu-item"
+                           href="/login">
+                            <span class="kirk-item-leftWrapper">
+                                <span class="kirk-item-leftText">
+                                    <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx"
+                                          style="color: rgb(5, 71, 82)">Log in</span>
+                                </span>
+                            </span><span class="kirk-item-rightAddon">
+                                <svg viewBox="0 0 24 24"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     class="kirk-icon sc-ksdxgE eqtwsd"
+                                     width="24"
+                                     height="24"
+                                     aria-hidden="true">
+                                    <polyline fill="none"
+                                              stroke="#708C91"
+                                              stroke-width="2"
+                                              stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                              stroke-miterlimit="10"
+                                              points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="kirk-items-list-item">
+                        <a type="button"
+                           class="kirk-item kirk-item--clickable sc-Galmp kNDdlo kirk-item-choice user-menu-item"
+                           href="/register">
+                            <span class="kirk-item-leftWrapper">
+                                <span class="kirk-item-leftText">
+                                    <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx"
+                                          style="color: #054752">Sign up</span>
+                                </span>
+                            </span><span class="kirk-item-rightAddon">
+                                <svg viewBox="0 0 24 24"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     class="kirk-icon sc-ksdxgE eqtwsd"
+                                     width="24"
+                                     height="24"
+                                     aria-hidden="true">
+                                    <polyline fill="none"
+                                              stroke="#708C91"
+                                              stroke-width="2"
+                                              stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                              stroke-miterlimit="10"
+                                              points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <div class="sc-nVkyK byfaVK kirk-drawer-dimmer" aria-hidden="true"></div>
+    <main class="mainContent relative"
+          id="MainContent"
+          tabindex="-1"
+          style="min-height: 685px; height: auto">
+        <div class="transition-wrapper relative "
+             style="min-height: 685px; height: auto">
+            <div class="sc-bYoBSM cxfGep page-wrapper"
+                 style="min-height: 685px; height: auto">
+                <div class="transition-wrapper relative "
+                     style="min-height: 685px; height: auto">
+                    <div class="sc-bYoBSM cxfGep page-wrapper"
+                         style="min-height: 685px; height: auto">
+                        <div>
+                            <div role="presentation" class="sc-fbyfCU ghIEhT">
+                                <div class="section-content">
+                                    <h1 class="sc-gsDKAQ sc-hUpaCq sc-jgrJph erBbkF daGzFx JGsMk">
+                                        @Model.JourneyDate.ToString("M")
+                                    </h1>
+                                    <ul class="sc-iCfMLu hTHQWP" style="margin-top: 40px">
+                                        <li aria-label="Departure:" class="sc-furwcr hsXUUV">
+                                            <a href="/trip/map?source=CARPOOLING&amp;pro_partner_id=&amp;id=2453389527-surat-ahmedabad&amp;zoomOn=21.201428%2C72.800492">
+                                                <div class="sc-pVTFL dolFzq kirk-timeDuration notranslate">
+                                                    <time aria-hidden="false"
+                                                          class="sc-gsDKAQ sc-eCImPb sc-jRQBWg erBbkF cgfVyE grmCxQ">@Model.PickUp_Time.ToShortTimeString()</time>
+                                                    </div>
+                                                    <div aria-hidden="true" class="sc-kDTinF fTujgh">
+                                                        <div class="sc-iqseJM jFjUqa"></div>
+                                                        <div class="sc-crHmcD dlbSDa">
+                                                            <div class="sc-bdvvtL bhkYMD kirk-bullet kirk-bullet--default"
+                                                                 aria-hidden="true"></div>
+                                                        </div>
+                                                        <div class="sc-iqseJM dSOAKu"></div>
+                                                    </div>
+                                                    <div class="sc-bkkeKt hdhUSy">
+                                                        <span class="sc-gsDKAQ sc-eCImPb sc-jRQBWg sc-ieecCq erBbkF cgfVyE grmCxQ bJuKmu">@Model.PickUp_Location</span><span class="sc-gsDKAQ sc-dkPtRN sc-dJjYzT erBbkF ikczMY bFBmuD">@Model.Departure_City</span>
+                                                        <div class="sc-hGPBjI jyJEgP">
+                                                            <div class="sc-llYSUQ eImWfY kirk-proximity">
+                                                                <svg viewBox="0 0 20 20"
+                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                     class="kirk-icon sc-ksdxgE ehSFsc"
+                                                                     width="20px"
+                                                                     height="20px"
+                                                                     aria-hidden="true">
+                                                                    @if (ViewBag.Pickup_LatLong < 3)
+                                                                    {
+                                                                        <title>Very close to you</title>
+                                                                    }
+                                                                    else if ((ViewBag.Pickup_LatLong >= 3) && (ViewBag.Pickup_LatLong < 8))
+                                                                    {
+                                                                        <title>A bit away from you</title>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <title>You might need another transport to get there</title>
+                                                                    }
+                                                                    <path fill=@(ViewBag.Pickup_LatLong < 3 ? "#5DD167" : ViewBag.Pickup_LatLong< 8 ? "#FFCA0C" : "#F78B00" )
+                                                                          d="M10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10zm1.202-14.863a1.568 1.568 0 1 0 0-3.136 1.568 1.568 0 0 0 0 3.136zm.94 1.868h-.005a1.568 1.568 0 0 0-1.563-1.554h-.007c-2.252 0-3.896 1.32-4.288 2.692L5.5 11.051H6.926l.723-2.72 1.166-.825-.874 3.264L6.003 18h1.569l1.83-5.661 1.526 1.269.314 4.392h1.528v-5.02l-1.757-1.756.473-1.767a3.753 3.753 0 0 0 2.853 1.313h.314V9.515a2.51 2.51 0 0 1-2.51-2.51z"></path>
+                                                                </svg><span style='color:@(ViewBag.Pickup_LatLong < 3 ? "#5DD167" : ViewBag.Pickup_LatLong< 8 ? "#FFCA0C" : "#F78B00" )'
+                                                                            class="sc-gsDKAQ sc-dkPtRN sc-iJKOTD erBbkF ikczMY ddANCp">@ViewBag.Pickup_LatLong km from your departure</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <svg viewBox="0 0 24 24"
+                                                                         xmlns="http://www.w3.org/2000/svg"
+                                                                         class="kirk-icon sc-ksdxgE eqtwsd sc-dlVxhl cMVgjB"
+                                                                         width="24"
+                                                                         height="24"
+                                                                         aria-hidden="true">
+                                                                        <polyline fill="none"
+                                                                                  stroke="#708C91"
+                                                                                  stroke-width="2"
+                                                                                  stroke-linecap="round"
+                                                                                  stroke-linejoin="round"
+                                                                                  stroke-miterlimit="10"
+                                                                                  points="9 18 15 12 9 6"></polyline>
+                                                                    </svg>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                        <li aria-label="Drop-off location:"
+                                                            class="sc-furwcr hsXUUV">
+                                                            <a href="/trip/map?source=CARPOOLING&amp;pro_partner_id=&amp;id=2453389527-surat-ahmedabad&amp;zoomOn=23.011901%2C72.517695">
+                                                                <div class="sc-pVTFL dolFzq kirk-timeDuration notranslate">
+                                                                    <time aria-hidden="false"
+                                                                          class="sc-gsDKAQ sc-eCImPb sc-jRQBWg erBbkF cgfVyE grmCxQ">@Model.DropOff_Time.ToShortTimeString()</time>
+                                                                    </div>
+                                                                    <div aria-hidden="true" class="sc-kDTinF fTujgh">
+                                                                        <div class="sc-iqseJM dSOAKu"></div>
+                                                                        <div class="sc-crHmcD dlbSDa">
+                                                                            <div class="sc-bdvvtL bhkYMD kirk-bullet kirk-bullet--default"
+                                                                                 aria-hidden="true"></div>
+                                                                        </div>
+                                                                        <div class="sc-iqseJM jFjUqa"></div>
+                                                                    </div>
+                                                                    <div class="sc-bkkeKt hdhUSy">
+                                                                        <span class="sc-gsDKAQ sc-eCImPb sc-jRQBWg sc-ieecCq erBbkF cgfVyE grmCxQ bJuKmu">@Model.DropOff_Location</span><span class="sc-gsDKAQ sc-dkPtRN sc-dJjYzT erBbkF ikczMY bFBmuD">@Model.Destination_City</span>
+                                                                        <div class="sc-hGPBjI jyJEgP">
+                                                                            <div class="sc-llYSUQ eImWfY kirk-proximity">
+                                                                                <svg viewBox="0 0 20 20"
+                                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                                     class="kirk-icon sc-ksdxgE ehSFsc"
+                                                                                     width="20px"
+                                                                                     height="20px"
+                                                                                     aria-hidden="true">
 
-<h1>Details</h1>
+                                                                                    @if (ViewBag.Drop_LatLong < 3)
+                                                                                    {
+                                                                                        <title>Very close to you</title>
+                                                                                    }
+                                                                                    else if ((ViewBag.Drop_LatLong >= 3) && (ViewBag.Drop_LatLong < 8))
+                                                                                    {
+                                                                                        <title>A bit away from you</title>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <title>You might need another transport to get there</title>
+                                                                                    }
+                                                                                    <path fill=@(ViewBag.Drop_LatLong < 3 ? "#5DD167" : ViewBag.Drop_LatLong    < 8 ? "#FFCA0C" : "#F78B00" )
+                                                                                          d="M10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10zm1.202-14.863a1.568 1.568 0 1 0 0-3.136 1.568 1.568 0 0 0 0 3.136zm.94 1.868h-.005a1.568 1.568 0 0 0-1.563-1.554h-.007c-2.252 0-3.896 1.32-4.288 2.692L5.5 11.051H6.926l.723-2.72 1.166-.825-.874 3.264L6.003 18h1.569l1.83-5.661 1.526 1.269.314 4.392h1.528v-5.02l-1.757-1.756.473-1.767a3.753 3.753 0 0 0 2.853 1.313h.314V9.515a2.51 2.51 0 0 1-2.51-2.51z"></path>
+                                                                                </svg><span style='color:@(ViewBag.Drop_LatLong < 3 ? "#5DD167" : ViewBag.Drop_LatLong    < 8 ? "#FFCA0C" : "#F78B00" )'
+                                                                                            class="sc-gsDKAQ sc-dkPtRN sc-iJKOTD erBbkF ikczMY ddANCp">@ViewBag.Drop_LatLong km from your arrival</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <svg viewBox="0 0 24 24"
+                                                                                         xmlns="http://www.w3.org/2000/svg"
+                                                                                         class="kirk-icon sc-ksdxgE eqtwsd sc-dlVxhl cMVgjB"
+                                                                                         width="24"
+                                                                                         height="24"
+                                                                                         aria-hidden="true">
+                                                                                        <polyline fill="none"
+                                                                                                  stroke="#708C91"
+                                                                                                  stroke-width="2"
+                                                                                                  stroke-linecap="round"
+                                                                                                  stroke-linejoin="round"
+                                                                                                  stroke-miterlimit="10"
+                                                                                                  points="9 18 15 12 9 6"></polyline>
+                                                                                    </svg>
+                                                                                </div>
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <div aria-hidden="true"
+                                                                         class="sc-ehCJOs sc-xiLah eXHFUG gCuPID">
+                                                                        <hr />
+                                                                    </div>
+                                                                    <div class="kirk-item sc-Galmp kNDdlo">
+                                                                        <span class="kirk-item-leftWrapper">
+                                                                            <span class="kirk-item-leftText">
+                                                                                <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx"
+                                                                                      style="color: rgb(112, 140, 145)">Total price for @ViewBag.Seats passenger</span>
+                                                                                </span>
+                                                                            </span><span class="kirk-item-rightText">
+                                                                                <div class="kirk-text kirk-text-subheaderStrong sc-faUpoM gHhpVx kirk-item-title">
+                                                                                    Rs. @Model.Price_Seat
+                                                                                </div>
+                                                                            </span>
+                                                                        </div>
+                                                                        <div aria-hidden="true"
+                                                                             class="sc-ehCJOs sc-xiLah eXHFUG gCuPID">
+                                                                            <hr />
+                                                                        </div>
+                                                                        <a class="publisherCard kirk-item kirk-item--clickable sc-Galmp sc-cLpAjG kNDdlo dTtSfA"
+                                                                           href="/user/show/cf54dde5-ad04-4b2e-a4aa-6c7452cb0fd4">
+                                                                            <span class="kirk-item-leftWrapper">
+                                                                                <span class="kirk-item-leftText">
+                                                                                    <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx">@Model.Publisher.Name</span><span class="kirk-text kirk-text-body sc-faUpoM gHhpVx kirk-item-body">
+                                                                                        <div class="sc-gslxeA cwrRNq">
+                                                                                            <span class="sc-gsDKAQ sc-gKclnd erBbkF bEOvQm" style="display:flex">
+                                                                                                <svg viewBox="-2 -4 84 82"
+                                                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                                                     class="kirk-icon sc-ksdxgE eqtwsd"
+                                                                                                     width="12"
+                                                                                                     height="12"
+                                                                                                     aria-hidden="true">
+                                                                                                    <g>
+                                                                                                        <linearGradient y2="0%"
+                                                                                                                        x2="100%"
+                                                                                                                        y1="0%"
+                                                                                                                        x1="0%"
+                                                                                                                        id="gradient-1">
+                                                                                                            <stop stop-color="#708C91"
+                                                                                                                  offset="100%"></stop>
+                                                                                                            <stop stop-color="#FFF"
+                                                                                                                  offset="0%"></stop>
+                                                                                                        </linearGradient>
+                                                                                                        <path stroke="#708C91"
+                                                                                                              stroke-width="4"
+                                                                                                              fill="url(#gradient-1)"
+                                                                                                              d="M 40.000 60.000 L 63.511 72.361 L 59.021 46.180 L 78.042 27.639 L 51.756 23.820 L 40.000 0.000 L 28.244 23.820 L 1.958 27.639 L 20.979 46.180 L 16.489 72.361 L 40.000 60.000"></path>
+                                                                                                    </g>
+                                                                                                </svg>
+                                                                                                @* Rating Baki *@
 
-<div>
-    <h4>PublishRide</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Publisher)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Publisher.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Vehicle)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Vehicle.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.JourneyDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.JourneyDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MaxPassengers)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MaxPassengers)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Departure_City)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Departure_City)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Destination_City)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Destination_City)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PickUp_Location)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PickUp_Location)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DropOff_Location)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DropOff_Location)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PickUp_LatLong)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PickUp_LatLong)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DropOff_LatLong)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DropOff_LatLong)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PickUp_Time)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PickUp_Time)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DropOff_Time)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DropOff_Time)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IsInstant_Approval)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsInstant_Approval)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Price_Seat)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Price_Seat)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Ride_Note)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Ride_Note)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Publishing_Timestamp)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Publishing_Timestamp)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IsCompletelyBooked)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsCompletelyBooked)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IsCancelled)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsCancelled)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+                                                                                                @*4.2/5 - 5 ratings*@
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </span>
+                                                                                </span>
+                                                                            </span><span class="kirk-item-rightAddon">
+                                                                                <div class="sc-fWCJzd ctNlLp kirk-avatar--image kirk-avatar">
+                                                                                    @if (Model.Publisher.ProfileImage != null)
+                                                                                    {
 
-<a class="btn btn-primary" asp-route-Seat="@ViewBag.Seats" asp-route-RideId="@Model.Id" asp-action="Index" asp-controller="Book">Continue</a>
+                                                                                        <img src="https://d2kwny77wxvuie.cloudfront.net/user/YTomnFUKQdSAg2yUgGH3Vg/thumbnail_144x144.jpeg"
+                                                                                             alt="" />
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <img src="~/img/avtar.png" alt="avtar" />
+                                                                                    }
+                                                                                </div>
+                                                                            </span><span class="kirk-item-rightAddon">
+                                                                                <svg viewBox="0 0 24 24"
+                                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                                     class="kirk-icon sc-ksdxgE eqtwsd"
+                                                                                     width="24"
+                                                                                     height="24"
+                                                                                     aria-hidden="true">
+                                                                                    <polyline fill="none"
+                                                                                              stroke="#708C91"
+                                                                                              stroke-width="2"
+                                                                                              stroke-linecap="round"
+                                                                                              stroke-linejoin="round"
+                                                                                              stroke-miterlimit="10"
+                                                                                              points="9 18 15 12 9 6"></polyline>
+                                                                                </svg>
+                                                                            </span>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                                @* Ride Note *@
+                                                                @*<div role="presentation" class="sc-fbyfCU ghIEhT">
+                                                                        <div class="section-content">
 
-@* Can also be placed at Details section *@
-<a class="btn btn-primary" asp-route-RideId="@Model.Id" asp-route-publisherId="@Model.PublisherId"  asp-action="Index" asp-controller="Chat">Chat</a>
+                                                                            <div class="sc-jObWnj ijebKB my-xl" role="presentation">
+                                                                                <p id="paragraph-notenterdelhi"
+                                                                                   class="sc-gsDKAQ sc-gKclnd sc-dPiLbb erBbkF bEOvQm btATnz">
+                                                                                    Not enter delhi
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>*@
+                                                                <div role="presentation" class="sc-fbyfCU ghIEhT">
+                                                                    <div class="section-content">
+                                                                        <a class="kirk-item kirk-item--highlighted kirk-item--clickable sc-Galmp kNDdlo"
+                                                                           asp-route-RideId="@Model.Id" asp-route-publisherId="@Model.PublisherId" asp-action="Details" asp-controller="Chat">
+                                                                            <span class="kirk-item-leftWrapper">
+                                                                                <span class="kirk-item-leftAddon">
+                                                                                    <svg viewBox="0 0 24 24"
+                                                                                         xmlns="http://www.w3.org/2000/svg"
+                                                                                         class="kirk-icon sc-ksdxgE dNZZtF"
+                                                                                         width="24"
+                                                                                         height="24"
+                                                                                         aria-hidden="true">
+                                                                                        <path d="M21.951,10.281C21.98,10.023,22,9.764,22,9.5C22,4.813,17.29,1,11.5,1C5.71,1,1,4.813,1,9.5c0,1.801,0.691,3.52,2,4.979 V19.5c0,0.173,0.09,0.334,0.237,0.426C3.317,19.975,3.409,20,3.5,20c0.077,0,0.153-0.018,0.224-0.053l4.431-2.215 C9.667,19.752,12.424,21,15.5,21c0.547,0,1.097-0.042,1.636-0.123l4.141,2.07C21.347,22.982,21.424,23,21.5,23 c0.092,0,0.183-0.025,0.263-0.074C21.91,22.834,22,22.673,22,22.5v-3.814c1.292-1.173,2-2.651,2-4.186 C24,12.946,23.27,11.461,21.951,10.281z M3.865,13.943C2.645,12.641,2,11.104,2,9.5C2,5.364,6.262,2,11.5,2S21,5.364,21,9.5 S16.738,17,11.5,17c-1.023,0-2.045-0.135-3.038-0.399c-0.118-0.029-0.244-0.019-0.353,0.036L4,18.691v-4.406 C4,14.158,3.952,14.036,3.865,13.943z M21.176,18.079C21.064,18.175,21,18.313,21,18.46v3.23l-3.561-1.78 c-0.094-0.048-0.203-0.064-0.307-0.046C16.597,19.954,16.047,20,15.5,20c-2.334,0-4.511-0.826-5.917-2.162 C10.219,17.935,10.858,18,11.5,18c4.962,0,9.12-2.804,10.212-6.554C22.543,12.351,23,13.411,23,14.5 C23,15.805,22.353,17.076,21.176,18.079z"></path>
+                                                                                    </svg>
+                                                                                </span><span class="kirk-item-leftText">
+                                                                                    <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx">Ask @Model.Publisher.Name a question</span>
+                                                                                </span>
+                                                                            </span>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                                <div role="presentation" class="sc-fbyfCU ghIEhT">
+                                                                    <div class="section-content">
+                                                                        <div aria-hidden="true"
+                                                                             class="sc-ehCJOs sc-lcepkR eXHFUG hBGTps">
+                                                                            <hr />
+                                                                        </div>
+
+                                                                        @if (Model.IsInstant_Approval == true)
+                                                                        {
+
+                                                                            <section class="mb-l" aria-label="Ride preferences">
+                                                                                <ul>
+                                                                                    <li class="kirk-item sc-Galmp kNDdlo">
+                                                                                        <span class="kirk-item-leftWrapper">
+                                                                                            <span class="kirk-item-leftAddon">
+                                                                                                <svg viewBox="0 0 24 24"
+                                                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                                                     class="kirk-icon sc-ksdxgE eqtwsd"
+                                                                                                     width="24"
+                                                                                                     height="24"
+                                                                                                     aria-hidden="true">
+                                                                                                    <path fill="none"
+                                                                                                          stroke="#708C91"
+                                                                                                          stroke-width="1"
+                                                                                                          stroke-linecap="round"
+                                                                                                          stroke-linejoin="round"
+                                                                                                          stroke-miterlimit="10"
+                                                                                                          d="M15.5 1.5h-7l-3 11h6l-2 8 10-12h-6z"></path>
+                                                                                                </svg>
+                                                                                            </span><span class="kirk-item-leftText">
+                                                                                                <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx"
+                                                                                                      style="color: rgb(112, 140, 145)">Automatic approval</span>
+                                                                                            </span>
+                                                                                        </span>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </section><section class="mb-l" aria-label="Ride preferences">
+                                                                                <ul>
+                                                                                    <li class="kirk-item sc-Galmp kNDdlo">
+                                                                                        <span class="kirk-item-leftWrapper">
+                                                                                            <span class="kirk-item-leftAddon">
+                                                                                                <svg viewBox="0 0 24 24"
+                                                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                                                     class="kirk-icon sc-ksdxgE eqtwsd"
+                                                                                                     width="24"
+                                                                                                     height="24"
+                                                                                                     aria-hidden="true">
+                                                                                                    <path fill="none"
+                                                                                                          stroke="#708C91"
+                                                                                                          stroke-width="1"
+                                                                                                          stroke-linecap="round"
+                                                                                                          stroke-linejoin="round"
+                                                                                                          stroke-miterlimit="10"
+                                                                                                          d="M15.5 1.5h-7l-3 11h6l-2 8 10-12h-6z"></path>
+                                                                                                </svg>
+                                                                                            </span><span class="kirk-item-leftText">
+                                                                                                <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx"
+                                                                                                      style="color: rgb(112, 140, 145)">Automatic approval</span>
+                                                                                            </span>
+                                                                                        </span>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </section>
+                                                                        }
+                                                                        <div class="kirk-item sc-Galmp kNDdlo">
+                                                                            <span class="kirk-item-leftWrapper">
+                                                                                <span class="kirk-item-leftText">
+                                                                                    <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx">MARUTI SWIFT DZIRE</span><span class="kirk-text kirk-text-body sc-faUpoM gHhpVx kirk-item-body">white</span>
+                                                                                </span>
+                                                                            </span><span class="kirk-item-rightText">
+                                                                                <div class="kirk-text kirk-text-subheaderStrong sc-faUpoM gHhpVx kirk-item-title">
+                                                                                    <div class="sc-fWCJzd ctNlLp kirk-avatar--image kirk-avatar">
+                                                                                        <img src="https://cdn.blablacar.com/comuto3/images/rebranding/icons/vehicles/car-saloon.svg"
+                                                                                             alt="" />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div role="presentation" class="sc-fbyfCU ghIEhT">
+                                                                    <div class="section-content">
+                                                                        <div aria-hidden="true"
+                                                                             class="sc-ehCJOs sc-xiLah eXHFUG gCuPID">
+                                                                            <hr />
+                                                                        </div>
+                                                                        <div class="pl-xl pr-xl">
+                                                                            <div class="sc-gsDKAQ sc-eCImPb sc-jRQBWg erBbkF cgfVyE grmCxQ py-l mb-m py-l mb-m py-l mb-m">
+                                                                                Co-travellers
+                                                                            </div>
+                                                                        </div>
+                                                                        <ul>
+                                                                            <li>
+                                                                                <a class="kirk-item kirk-item--clickable sc-Galmp sc-cLpAjG kNDdlo dTtSfA"
+                                                                                   style="position: relative; display: flex; padding-top: 16px; padding-bottom: 16px; -webkit-box-align: center; align-items: center; flex: 1 1 0%; border: 0px; "
+                                                                                   href="/user/show/a12ac288-7703-456d-9de5-848cd16c8383">
+                                                                                    <span class="kirk-item-leftWrapper">
+                                                                                        <span class="kirk-item-leftText">
+                                                                                            <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx">Partner1</span>
+                                                                                        </span>
+                                                                                    </span><span class="kirk-item-rightAddon">
+                                                                                        <div class="sc-fWCJzd ctNlLp kirk-avatar--image kirk-avatar">
+                                                                                            <img src="https://cdn.blablacar.com/comuto3/images/avatar/pixar/passenger-f-02.svg"
+                                                                                                 alt="" />
+                                                                                        </div>
+                                                                                    </span><span class="kirk-item-rightAddon">
+                                                                                        <svg viewBox="0 0 24 24"
+                                                                                             xmlns="http://www.w3.org/2000/svg"
+                                                                                             class="kirk-icon sc-ksdxgE eqtwsd"
+                                                                                             width="24"
+                                                                                             height="24"
+                                                                                             aria-hidden="true">
+                                                                                            <polyline fill="none"
+                                                                                                      stroke="#708C91"
+                                                                                                      stroke-width="2"
+                                                                                                      stroke-linecap="round"
+                                                                                                      stroke-linejoin="round"
+                                                                                                      stroke-miterlimit="10"
+                                                                                                      points="9 18 15 12 9 6"></polyline>
+                                                                                        </svg>
+                                                                                    </span>
+                                                                                </a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="sc-avest hhmynR">
+                                                                    <div class="sc-kmQMED Uwbpz">
+                                                                        <a class="kirk-button kirk-button-primary sc-iUKqMP jKcvnS"
+                                                                           asp-route-Seat="@ViewBag.Seats" asp-route-RideId="@Model.Id" asp-action="Index" asp-controller="Book"><span class="button-label">Continue</span></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </main>
+                                    </div>
