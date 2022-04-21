@@ -9,14 +9,15 @@ namespace DataAcessLayer.ViewModels.Client
     {
         public int Id { get; set; }
         public int PublisherId { get; set; }
-        public int PublisherName { get; set; }
+        public string PublisherName { get; set; }
         public string PublisherProfile { get; set; }
 
-        public int VehicleId { get; set; }
         public string VehicleName { get; set; }
         public string VehicleImage { get; set; }
+        public string VehicleColor { get; set; }
 
         //Ride
+        public DateTime JourneyDate { get; set; }
         public int RideId { get; set; }
         public int MaxPassengers { get; set; }
         public string Departure_City { get; set; } //

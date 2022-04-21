@@ -1,5 +1,6 @@
 ﻿using DataAcessLayer.Models.Rides;
 using DataAcessLayer.ViewModels;
+using DataAcessLayer.ViewModels.Client;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -111,7 +112,7 @@ namespace Client.Controllers
             if (responseMessage.IsSuccessStatusCode)
             {
                 string res = responseMessage.Content.ReadAsStringAsync().Result;
-                PublishRide rideDetail = JsonConvert.DeserializeObject<PublishRide>(res);
+                UserRideDetailsViewModel rideDetail = JsonConvert.DeserializeObject<UserRideDetailsViewModel>(res);
                 rideDetail.Price_Seat = Seat * rideDetail.Price_Seat;
                 ViewBag.Pickup_LatLong = Pickup_dist;
                 ViewBag.Drop_LatLong = Drop_dist;

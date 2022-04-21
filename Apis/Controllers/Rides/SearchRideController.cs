@@ -2,6 +2,7 @@
 using DataAcessLayer.Models.Rides;
 using DataAcessLayer.Models.Users;
 using DataAcessLayer.ViewModels;
+using DataAcessLayer.ViewModels.Client;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -91,12 +92,46 @@ namespace Apis.Controllers.Rides
         }
 
         [HttpGet("RideDetails/{id}")]
-        public async Task<PublishRide> RideDetails(int id)
+        public async Task<IActionResult> RideDetails(int id)
         {
-            PublishRide ride = await _context.Publish_Rides.Where(item => item.Id == id)
-                .Include(x => x.Publisher).Include(x => x.Vehicle).ThenInclude(x => x.Vehicle)
+            var ride = await _context.Publish_Rides.Where(item => item.Id == id)
+                .Include(x => x.Publisher)
+                .Include(x => x.Vehicle).ThenInclude(userVehicle => userVehicle.Vehicle).ThenInclude(vehicle => vehicle.VehicleBrand)
+                .Include(x => x.Vehicle).ThenInclude(vehicle => vehicle.Color)
+                .Select(x => new UserRideDetailsViewModel()
+                {
+                    IsInstant_Approval = x.IsInstant_Approval,
+                    Departure_City = x.Departure_City,
+                    Destination_City = x.Destination_City,
+
+                    DropOff_Location = x.DropOff_Location,
+                    PickUp_Location = x.PickUp_Location,
+
+                    PickUp_Time = x.PickUp_Time,
+                    DropOff_Time = x.DropOff_Time,
+
+                    Price_Seat = x.Price_Seat,
+
+
+                    PublisherName = x.Publisher.Name,
+                    PublisherId = x.PublisherId,
+                    PublisherProfile = x.Publisher.ProfileImage,
+
+                    RideId = x.Id,
+                    Ride_Note = x.Ride_Note,
+                   
+                    MaxPassengers = x.MaxPassengers,
+
+                    VehicleImage = x.Vehicle.VehicleImage,
+                    VehicleName = x.Vehicle.Vehicle.VehicleBrand.Name + " " + x.Vehicle.Vehicle.Name,
+                    VehicleColor = x.Vehicle.Color.Color,
+                    JourneyDate = x.JourneyDate
+
+                })
                 .FirstOrDefaultAsync();
-            return ride;
+
+
+            return Ok(ride);
         }
 
         [HttpGet("GetRateSeats/{id}")]
