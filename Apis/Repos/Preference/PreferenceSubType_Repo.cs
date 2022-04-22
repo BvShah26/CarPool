@@ -38,6 +38,11 @@ namespace Apis.Repos.Preference
             return data;
         }
 
+        public async Task<List<TravelPreference>> GetPreferencesByType(int TypeId)
+        {
+            return await _context.TravelPreferences.Where(x => x.TypeId == TypeId).ToListAsync();
+        }
+
         public async Task<List<TravelPreference>> GetPrefrenceSubTypes()
         {
             return await _context.TravelPreferences.Include( item => item.Type).ToListAsync();

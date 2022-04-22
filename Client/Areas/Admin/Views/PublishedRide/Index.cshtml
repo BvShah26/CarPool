@@ -195,7 +195,7 @@
 
                     var data = "";
                     $.each(res, (i, val) => {
-                        data += `<tr><td>${val.rider.name}</td><td>${val.seatQty}</td></tr>`;
+                        data += `<tr><td>${val.riderName}</td><td>${val.seatQty}</td></tr>`;
                     })
                     loader.hide();
                     tableBody.append(data);

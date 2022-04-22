@@ -1,8 +1,10 @@
 ﻿using Apis.Data;
+using Apis.Infrastructure.Bookings;
 using DataAcessLayer.Models.Rides;
 using DataAcessLayer.Models.Users;
 using DataAcessLayer.ViewModels;
 using DataAcessLayer.ViewModels.Client;
+using DataAcessLayer.ViewModels.Ride;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,12 +17,16 @@ namespace Apis.Controllers.Rides
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class SearchRideController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
-        public SearchRideController(ApplicationDBContext context)
+        private readonly IBooking_Repo _bookingRepo;
+
+        public SearchRideController(ApplicationDBContext context, IBooking_Repo bookingRepo)
         {
             _context = context;
+            _bookingRepo = bookingRepo;
         }
         [HttpPost]
         public async Task<IActionResult> GetRides(SearchRide search)
@@ -94,10 +100,11 @@ namespace Apis.Controllers.Rides
         [HttpGet("RideDetails/{id}")]
         public async Task<IActionResult> RideDetails(int id)
         {
-            var ride = await _context.Publish_Rides.Where(item => item.Id == id)
+            var rideDetails = await _context.Publish_Rides.Where(item => item.Id == id)
                 .Include(x => x.Publisher)
                 .Include(x => x.Vehicle).ThenInclude(userVehicle => userVehicle.Vehicle).ThenInclude(vehicle => vehicle.VehicleBrand)
                 .Include(x => x.Vehicle).ThenInclude(vehicle => vehicle.Color)
+                
                 .Select(x => new UserRideDetailsViewModel()
                 {
                     IsInstant_Approval = x.IsInstant_Approval,
@@ -125,13 +132,16 @@ namespace Apis.Controllers.Rides
                     VehicleImage = x.Vehicle.VehicleImage,
                     VehicleName = x.Vehicle.Vehicle.VehicleBrand.Name + " " + x.Vehicle.Vehicle.Name,
                     VehicleColor = x.Vehicle.Color.Color,
-                    JourneyDate = x.JourneyDate
+                    JourneyDate = x.JourneyDate,
 
-                })
-                .FirstOrDefaultAsync();
+                }).FirstOrDefaultAsync();
+
+            List<RidePartners> partners = await _bookingRepo.GetRideBookings(id);
+            rideDetails.Partners = partners;
 
 
-            return Ok(ride);
+
+            return Ok(rideDetails);
         }
 
         [HttpGet("GetRateSeats/{id}")]

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<DataAcessLayer.Models.Preferences.PreferenceType>
+
+@{
+    ViewData["Title"] = "Rides";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+
+@section Headers{
+    <link href="~/ClientAssets/css/rides.css" rel="stylesheet" />
+}
+<div class="kirk-modal-dialog">
+
+
+    <div class="kirk-modal-body">
+        <div role="presentation" class="sc-fbyfCU ghIEhT">
+            <div class="section-content">
+                <h1 class="sc-gsDKAQ sc-hUpaCq sc-jgrJph erBbkF daGzFx JGsMk">
+                    Travel preferences
+                </h1>
+                <ul>
+
+                    @foreach (var item in Model)
+                    {
+
+                        <li>
+                            <a type="button" asp-controller="Preferences" asp-action="Choice" asp-route-Id="@item.Id"
+                                    asp-route-Type="@item.Title"
+                                    class="kirk-item kirk-item--clickable sc-Galmp kNDdlo">
+                                <span class="kirk-item-leftWrapper">
+                                    <span class="kirk-item-leftText">
+                                        <span class="kirk-text kirk-text-body sc-faUpoM gHhpVx"
+                                              style="color: rgb(112, 140, 145)">@item.Title</span>
+                                        <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx kirk-item-body"
+                                              style="color: rgb(0, 175, 245)">I’m chatty when I feel comfortable</span>
+                                    </span>
+                                </span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

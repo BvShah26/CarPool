@@ -45,6 +45,14 @@ namespace Apis.Controllers.Preference
         }
 
 
+        [HttpGet("Type/{TypeId}")]
+        public async Task<IActionResult> Type(int TypeId)
+        {
+            var Preferences = await _Repo.GetPreferencesByType(TypeId);
+            return Ok(Preferences);
+        }
+
+
         [HttpGet("Search/{SearchValue}")]
         public async Task<List<TravelPreference>> Search(string SearchValue)
         {

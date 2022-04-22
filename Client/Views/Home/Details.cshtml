@@ -344,7 +344,6 @@
 
                                                                         @if (Model.IsInstant_Approval == true)
                                                                         {
-
                                                                             <section class="mb-l" aria-label="Ride preferences">
                                                                                 <ul>
                                                                                     <li class="kirk-item sc-Galmp kNDdlo">
@@ -381,7 +380,7 @@
                                                                             </span><span class="kirk-item-rightText">
                                                                                 <div class="kirk-text kirk-text-subheaderStrong sc-faUpoM gHhpVx kirk-item-title">
                                                                                     <div class="sc-fWCJzd ctNlLp kirk-avatar--image kirk-avatar">
-                                                                                        @if (Model.VehicleImage == null)
+                                                                                        @if (Model.VehicleImage != null)
                                                                                         {
                                                                                             <img src=@Model.VehicleImage
                                                                                                  alt="" />
@@ -397,52 +396,69 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div role="presentation" class="sc-fbyfCU ghIEhT">
-                                                                    <div class="section-content">
-                                                                        <div aria-hidden="true"
-                                                                             class="sc-ehCJOs sc-xiLah eXHFUG gCuPID">
-                                                                            <hr />
-                                                                        </div>
-                                                                        <div class="pl-xl pr-xl">
-                                                                            <div class="sc-gsDKAQ sc-eCImPb sc-jRQBWg erBbkF cgfVyE grmCxQ py-l mb-m py-l mb-m py-l mb-m">
-                                                                                Co-travellers
+
+                                                                @if (Model.Partners.Count > 0)
+                                                                {
+                                                                    <div role="presentation" class="sc-fbyfCU ghIEhT">
+                                                                        <div class="section-content">
+                                                                            <div aria-hidden="true"
+                                                                                 class="sc-ehCJOs sc-xiLah eXHFUG gCuPID">
+                                                                                <hr />
                                                                             </div>
+                                                                            <div class="pl-xl pr-xl">
+                                                                                <div class="sc-gsDKAQ sc-eCImPb sc-jRQBWg erBbkF cgfVyE grmCxQ py-l mb-m py-l mb-m py-l mb-m">
+                                                                                    Co-travellers
+                                                                                </div>
+                                                                            </div>
+                                                                            <ul>
+                                                                                @foreach (var item in Model.Partners)
+                                                                                {
+
+
+                                                                                    <li>
+                                                                                        <a class="kirk-item kirk-item--clickable sc-Galmp sc-cLpAjG kNDdlo dTtSfA"
+                                                                                           style="position: relative; display: flex; padding-top: 16px; padding-bottom: 16px; -webkit-box-align: center; align-items: center; flex: 1 1 0%; border: 0px; "
+                                                                                           href="/user/show/a12ac288-7703-456d-9de5-848cd16c8383">
+                                                                                            <span class="kirk-item-leftWrapper">
+                                                                                                <span class="kirk-item-leftText">
+                                                                                                    <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx">@item.RiderName</span>
+                                                                                                </span>
+                                                                                            </span><span class="kirk-item-rightAddon">
+                                                                                                <div class="sc-fWCJzd ctNlLp kirk-avatar--image kirk-avatar">
+                                                                                                    @if (item.RiderProfile == null)
+                                                                                                    {
+                                                                                                        <img src="https://cdn.blablacar.com/comuto3/images/avatar/pixar/passenger-f-02.svg"
+                                                                                                             alt="" />
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        <img src=@item.RiderProfile
+                                                                                                             alt="" />
+                                                                                                    }
+                                                                                                </div>
+                                                                                            </span><span class="kirk-item-rightAddon">
+                                                                                                <svg viewBox="0 0 24 24"
+                                                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                                                     class="kirk-icon sc-ksdxgE eqtwsd"
+                                                                                                     width="24"
+                                                                                                     height="24"
+                                                                                                     aria-hidden="true">
+                                                                                                    <polyline fill="none"
+                                                                                                              stroke="#708C91"
+                                                                                                              stroke-width="2"
+                                                                                                              stroke-linecap="round"
+                                                                                                              stroke-linejoin="round"
+                                                                                                              stroke-miterlimit="10"
+                                                                                                              points="9 18 15 12 9 6"></polyline>
+                                                                                                </svg>
+                                                                                            </span>
+                                                                                        </a>
+                                                                                    </li>
+                                                                                }
+                                                                            </ul>
                                                                         </div>
-                                                                        <ul>
-                                                                            <li>
-                                                                                <a class="kirk-item kirk-item--clickable sc-Galmp sc-cLpAjG kNDdlo dTtSfA"
-                                                                                   style="position: relative; display: flex; padding-top: 16px; padding-bottom: 16px; -webkit-box-align: center; align-items: center; flex: 1 1 0%; border: 0px; "
-                                                                                   href="/user/show/a12ac288-7703-456d-9de5-848cd16c8383">
-                                                                                    <span class="kirk-item-leftWrapper">
-                                                                                        <span class="kirk-item-leftText">
-                                                                                            <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx">Partner1</span>
-                                                                                        </span>
-                                                                                    </span><span class="kirk-item-rightAddon">
-                                                                                        <div class="sc-fWCJzd ctNlLp kirk-avatar--image kirk-avatar">
-                                                                                            <img src="https://cdn.blablacar.com/comuto3/images/avatar/pixar/passenger-f-02.svg"
-                                                                                                 alt="" />
-                                                                                        </div>
-                                                                                    </span><span class="kirk-item-rightAddon">
-                                                                                        <svg viewBox="0 0 24 24"
-                                                                                             xmlns="http://www.w3.org/2000/svg"
-                                                                                             class="kirk-icon sc-ksdxgE eqtwsd"
-                                                                                             width="24"
-                                                                                             height="24"
-                                                                                             aria-hidden="true">
-                                                                                            <polyline fill="none"
-                                                                                                      stroke="#708C91"
-                                                                                                      stroke-width="2"
-                                                                                                      stroke-linecap="round"
-                                                                                                      stroke-linejoin="round"
-                                                                                                      stroke-miterlimit="10"
-                                                                                                      points="9 18 15 12 9 6"></polyline>
-                                                                                        </svg>
-                                                                                    </span>
-                                                                                </a>
-                                                                            </li>
-                                                                        </ul>
                                                                     </div>
-                                                                </div>
+                                                                }
                                                                 <div class="sc-avest hhmynR">
                                                                     <div class="sc-kmQMED Uwbpz">
                                                                         <a class="kirk-button kirk-button-primary sc-iUKqMP jKcvnS"

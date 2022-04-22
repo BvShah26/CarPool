@@ -1,5 +1,6 @@
 ﻿using DataAcessLayer.Models.Booking;
 using DataAcessLayer.Models.Rides;
+using DataAcessLayer.ViewModels.Ride;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -36,15 +37,18 @@ namespace Client.Areas.Admin.Controllers.Booking
         }
 
 
+        // Ride Partner View Model
+        // Publish Ride Index
+
         [HttpGet]
-        public List<Book> GetBookingById(int Id)
+        public List<RidePartners> GetBookingById(int Id)
         {
             HttpResponseMessage responseMessage = httpClient.GetAsync($"Books/GetBookByRide/{Id}").Result;
-            List<Book> booking = null;
+            List<RidePartners> booking = null;
             if (responseMessage.IsSuccessStatusCode)
             {
                 string res = responseMessage.Content.ReadAsStringAsync().Result;
-                booking = JsonConvert.DeserializeObject<List<Book>>(res);
+                booking = JsonConvert.DeserializeObject<List<RidePartners>>(res);
             }
             return booking;
         }

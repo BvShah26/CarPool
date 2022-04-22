@@ -1,7 +1,9 @@
 ﻿using Apis.Data;
 using Apis.Infrastructure.Client;
 using DataAcessLayer.Models.Users;
+using DataAcessLayer.ViewModels.Client;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +29,25 @@ namespace Apis.Repos.Client
         {
             ClientUsers record = _context.ClientUsers.FirstOrDefault(item => item.Email == clientUsers.Email && item.Password == clientUsers.Password);
             return record;
+        }
+
+        public async Task<ClientPublicProfile> PublicProfile(int UserId)
+        {
+            ClientPublicProfile record = await _context.ClientUsers.Where(x => x.Id == UserId).Include(user => user.Published_Rides)
+                .Include(x => x.UserPreference).ThenInclude(preference => preference.Travel_Preference)
+                .Select(x => new ClientPublicProfile()
+                {
+                    UserName = x.Name,
+                    ProfileImage = x.ProfileImage,
+                    RegistrationDate = x.RegistrationDate,
+                    TotalRides = x.Published_Rides.Count,
+                    Preferences = x.UserPreference.Select(userPreference => userPreference.Travel_Preference).ToList()
+                    
+                })
+                .FirstOrDefaultAsync();
+
+            return record;
+            //throw new NotImplementedException();
         }
 
         public ClientUsers RegisterUser(ClientUsers clientUsers)

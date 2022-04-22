@@ -1,0 +1,56 @@
+﻿@model IEnumerable<DataAcessLayer.Models.Preferences.TravelPreference>
+
+@{
+    ViewData["Title"] = "Rides";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+
+@section Headers{
+    <link href="~/ClientAssets/css/rides.css" rel="stylesheet" />
+}
+
+<div class="kirk-modal-dialog" style="min-height: 687px; height: auto">
+
+    <div class="kirk-modal-body kirk-modal-modalFooterBorder" style="min-height: 687px; height: auto">
+        <form class="sc-bYoBSM cxfGep" method="post" asp-controller="Preferences" asp-action="SavePreference" style="min-height: 687px; height: auto">
+            <div role="presentation" class="sc-giYglK cFiciA">
+                <div role="presentation" class="sc-fbyfCU ghIEhT">
+                    <div class="section-content">
+                        <h1 class="sc-gsDKAQ sc-hUpaCq sc-jgrJph erBbkF daGzFx JGsMk">
+                            @ViewBag.Type
+                        </h1>
+                        <ul class="sc-gGCDDS bZCmSV kirk-items-list" role="radiogroup">
+
+                            @foreach (var item in Model)
+                            {
+
+
+                            <li class="kirk-items-list-item">
+                                <label class="kirk-item kirk-item--clickable sc-Galmp sc-fmBCVi kNDdlo ibbpRM kirk-item-radio">
+                                    <span class="kirk-item-leftWrapper">
+                                        <span class="kirk-item-leftText"><span class="kirk-text kirk-text-title sc-faUpoM gHhpVx">@item.Title</span></span>
+                                    </span><span class="kirk-item-rightAddon">
+                                        <input type="radio" name="PrefId" value="@item.Id" ><svg viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg" class="kirk-icon kirk-icon-circle sc-ksdxgE dNZZtF sc-ikJyIC gaPuLV" width="24" height="24" aria-hidden="true">
+                                            <circle class="outer" cx="33" cy="33" r="30" fill="none"></circle>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </li>
+                            }
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div role="presentation" class="sc-ezbkAF A-dmbO" style="margin-right: auto;
+            margin-left: auto;margin-top:10px">
+                <div class="button-wrapper p-xl justify-center button-wrapper--auto">
+                    <button class="kirk-button kirk-button-primary sc-iUKqMP jKcvnS" type="submit">
+                        <span class="button-label"><span>Save</span></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

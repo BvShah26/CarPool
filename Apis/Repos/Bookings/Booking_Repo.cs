@@ -1,6 +1,7 @@
 ﻿using Apis.Data;
 using Apis.Infrastructure.Bookings;
 using DataAcessLayer.Models.Booking;
+using DataAcessLayer.ViewModels.Ride;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -71,9 +72,20 @@ namespace Apis.Repos.Bookings
             return bookingRecord;
         }
 
-        public async Task<List<Book>> GetRideBookings(int RideId)
+        public async Task<List<RidePartners>> GetRideBookings(int RideId)
         {
-            var bookingRecord = await _context.Bookings.Where(x => x.Publish_RideId == RideId).Include(x => x.Rider).ToListAsync();
+            var bookingRecord = await _context.Bookings.Where(x => x.Publish_RideId == RideId)
+                .Where(x => x.IsCancelled == false)
+                .Include(x => x.Rider)
+                .Select(x => new RidePartners()
+                { 
+
+                    RiderName =x.Rider.Name,
+                    RiderProfile = x.Rider.ProfileImage,
+                    SeatQty = x.SeatQty
+                    
+                })
+                .ToListAsync() ;
             return bookingRecord;
         }
 

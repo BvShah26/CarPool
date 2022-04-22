@@ -1,5 +1,6 @@
 ﻿using Apis.Infrastructure.Client;
 using DataAcessLayer.Models.Users;
+using DataAcessLayer.ViewModels.Client;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,16 @@ namespace Apis.Controllers.Client
                 return NotFound();
             }
             return Ok(res);
+
+        }
+
+
+        [HttpGet("PublicProfile/{UserId}")]
+        public async Task<IActionResult> PublicProfile(int UserId)
+        {
+            ClientPublicProfile userProfile  = await _Repo.PublicProfile(UserId);
+            return Ok(userProfile);
+
 
         }
 

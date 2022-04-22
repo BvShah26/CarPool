@@ -1,4 +1,5 @@
 ﻿using DataAcessLayer.Models.Users;
+using DataAcessLayer.ViewModels.Ride;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -35,6 +36,6 @@ namespace DataAcessLayer.ViewModels.Client
         public int Price_Seat { get; set; }
         public string Ride_Note { get; set; }
 
-        public ICollection<ClientUsers> Partners { get; set; }
+        public ICollection<RidePartners> Partners { get; set; }
     }
 }

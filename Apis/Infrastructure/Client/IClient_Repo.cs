@@ -1,4 +1,5 @@
 ﻿using DataAcessLayer.Models.Users;
+using DataAcessLayer.ViewModels.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace Apis.Infrastructure.Client
         ClientUsers RegisterUser(ClientUsers clientUsers);
 
         ClientUsers LoginUser(ClientUsers clientUsers);
+
+        Task<ClientPublicProfile> PublicProfile(int UserId);
     }
 }

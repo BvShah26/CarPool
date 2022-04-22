@@ -10,6 +10,7 @@ using DataAcessLayer.Models.Booking;
 using System.Net.Http;
 using Microsoft.Extensions.Configuration;
 using Apis.Infrastructure.Bookings;
+using DataAcessLayer.ViewModels.Ride;
 
 namespace Apis.Controllers.Bookings
 {
@@ -61,7 +62,7 @@ namespace Apis.Controllers.Bookings
         }
 
         [HttpGet("GetBookByRide/{id}")]
-        public async Task<ActionResult<List<Book>>> GetBookByRide(int id)
+        public async Task<ActionResult<List<RidePartners>>> GetBookByRide(int id)
         {
             var records = await _bookingRepo.GetRideBookings(id);
 

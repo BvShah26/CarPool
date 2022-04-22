@@ -48,7 +48,7 @@ namespace Apis.Controllers
             //validate timing as 12-04-2022:00-00>= 12-04-2022:09-44 = False
             //Should include time in jounery date ..  and calculate timing based on Distance Matrix
             //Don't Ask Destination Time from user [ Choice ]
-
+                    
             List<PublishRide> result = await _context.Publish_Rides.Where(item => item.PublisherId == UserId)
                 .Where(x => x.JourneyDate >= DateTime.Now).Include(x => x.Ride_Approval)
                 .Include(item => item.Vehicle).ThenInclude(item => item.Vehicle).ToListAsync();

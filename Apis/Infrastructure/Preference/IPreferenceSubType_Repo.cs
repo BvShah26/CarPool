@@ -15,6 +15,8 @@ namespace Apis.Infrastructure.Preference
         Task<TravelPreference> Add_PrefrenceSubType(TravelPreference travelPreference);
         Task<TravelPreference> Update_PrefrenceSubType(int id, TravelPreference travelPreference);
         Task<TravelPreference> Delete_PrefrenceSubType(int id);
+
+        Task<List<TravelPreference>> GetPreferencesByType(int TypeId);
         bool SubType_Exists(int id);
     }
 }
