@@ -1,0 +1,271 @@
+﻿@model DataAcessLayer.ViewModels.Client.ClientPublicProfile
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+@section Headers{
+    <link href="~/ClientAssets/css/rides.css" rel="stylesheet" />
+}
+<div id="root" class="" style="min-height: 685px; height: auto">
+
+    <aside class="sc-eJwWfJ djHSaA kirk-drawer kirk-drawer--close">
+        <div class="kirk-drawer-scrollableContent" style="width: 400px">
+            <nav class="bg-white user-menu" id="connect-menu" role="menu">
+                <ul class="sc-gGCDDS bZCmSV kirk-items-list">
+                    <li class="kirk-items-list-item">
+                        <a type="button"
+                           class="kirk-item kirk-item--clickable sc-Galmp kNDdlo kirk-item-choice user-menu-item"
+                           href="/login">
+                            <span class="kirk-item-leftWrapper">
+                                <span class="kirk-item-leftText">
+                                    <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx"
+                                          style="color: rgb(5, 71, 82)">Log in</span>
+                                </span>
+                            </span><span class="kirk-item-rightAddon">
+                                <svg viewBox="0 0 24 24"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     class="kirk-icon sc-ksdxgE eqtwsd"
+                                     width="24"
+                                     height="24"
+                                     aria-hidden="true">
+                                    <polyline fill="none"
+                                              stroke="#708C91"
+                                              stroke-width="2"
+                                              stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                              stroke-miterlimit="10"
+                                              points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="kirk-items-list-item">
+                        <a type="button"
+                           class="kirk-item kirk-item--clickable sc-Galmp kNDdlo kirk-item-choice user-menu-item"
+                           href="/register">
+                            <span class="kirk-item-leftWrapper">
+                                <span class="kirk-item-leftText">
+                                    <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx"
+                                          style="color: #054752">Sign up</span>
+                                </span>
+                            </span><span class="kirk-item-rightAddon">
+                                <svg viewBox="0 0 24 24"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     class="kirk-icon sc-ksdxgE eqtwsd"
+                                     width="24"
+                                     height="24"
+                                     aria-hidden="true">
+                                    <polyline fill="none"
+                                              stroke="#708C91"
+                                              stroke-width="2"
+                                              stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                              stroke-miterlimit="10"
+                                              points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <div class="sc-nVkyK byfaVK kirk-drawer-dimmer" aria-hidden="true"></div>
+    <main class="mainContent relative"
+          id="MainContent"
+          tabindex="-1"
+          style="min-height: 685px; height: auto">
+        <div class="transition-wrapper relative "
+             style="min-height: 685px; height: auto">
+            <div class="sc-bYoBSM cxfGep page-wrapper"
+                 style="min-height: 685px; height: auto">
+                <div class="transition-wrapper relative "
+                     style="min-height: 685px; height: auto">
+                    <div class="sc-bYoBSM cxfGep page-wrapper"
+                         style=" height: auto">
+                        <article>
+                            <div role="presentation" class="sc-fbyfCU ghIEhT">
+                                <div class="section-content">
+                                    <div class="kirk-item sc-Galmp sc-djWRfJ kNDdlo gneWBo kirk-profile-size-medium">
+                                        <span class="kirk-item-leftWrapper">
+                                            <span class="kirk-item-leftText">
+                                                <span class="kirk-text kirk-text-display1 sc-faUpoM gHhpVx">@Model.UserName</span><span class="kirk-text kirk-text-body sc-faUpoM gHhpVx kirk-item-body">
+                                                    <div class="sc-fyrocj eWkuQB">
+                                                        <span class="sc-gsDKAQ sc-gKclnd erBbkF bEOvQm">@Model.Age y/o</span>
+                                                    </div>
+                                                </span>
+                                            </span>
+                                        </span><span class="kirk-item-rightAddon">
+                                            <div class="sc-fWCJzd ctNlLp kirk-avatar--medium kirk-avatar--image kirk-avatar">
+
+                                                @if (Model.ProfileImage == null)
+                                                {
+                                                    <img src="~/img/avtar.png" />
+
+                                                    @*<img src="https://cdn.blablacar.com/comuto3/images/avatar/pixar/passenger-m-02.svg"
+                                                        alt="" />*@
+                                                }
+                                                else
+                                                {
+                                                    <img src=@Model.ProfileImage
+                                                         alt="" />
+                                                }
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        <div role="presentation" class="sc-fbyfCU ghIEhT">
+                            <div class="section-content">
+                                @* Ratiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiing *@
+                                @*<ul class="sc-gGCDDS bZCmSV kirk-items-list">
+                                        <li class="kirk-items-list-item">
+                                            <a type="button"
+                                               class="kirk-item kirk-item--clickable sc-Galmp kNDdlo kirk-item-choice"
+                                               href="/user/show/34a2ba9a-8f17-4f2f-ba29-fdb682f5c466/reviews">
+                                                <span class="kirk-item-leftWrapper">
+                                                    <span class="kirk-item-leftAddon">
+                                                        <svg viewBox="-2 -4 84 82"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             class="kirk-icon sc-ksdxgE eqtwsd"
+                                                             width="24"
+                                                             height="24"
+                                                             aria-hidden="true">
+                                                            <g>
+                                                                <linearGradient y2="0%"
+                                                                                x2="100%"
+                                                                                y1="0%"
+                                                                                x1="0%"
+                                                                                id="gradient-1">
+                                                                    <stop stop-color="#708C91"
+                                                                          offset="100%"></stop>
+                                                                    <stop stop-color="#FFF" offset="0%"></stop>
+                                                                </linearGradient>
+                                                                <path stroke="#708C91"
+                                                                      stroke-width="4"
+                                                                      fill="url(#gradient-1)"
+                                                                      d="M 40.000 60.000 L 63.511 72.361 L 59.021 46.180 L 78.042 27.639 L 51.756 23.820 L 40.000 0.000 L 28.244 23.820 L 1.958 27.639 L 20.979 46.180 L 16.489 72.361 L 40.000 60.000"></path>
+                                                            </g>
+                                                        </svg>
+                                                    </span><span class="kirk-item-leftText">
+                                                        <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx"
+                                                              style="color: rgb(5, 71, 82)">
+                                                            4.1/5 – 14 ratings
+                                                        </span>
+                                                    </span>
+                                                </span><span class="kirk-item-rightAddon">
+                                                    <svg viewBox="0 0 24 24"
+                                                         xmlns="http://www.w3.org/2000/svg"
+                                                         class="kirk-icon sc-ksdxgE eqtwsd"
+                                                         width="24"
+                                                         height="24"
+                                                         aria-hidden="true">
+                                                        <polyline fill="none"
+                                                                  stroke="#708C91"
+                                                                  stroke-width="2"
+                                                                  stroke-linecap="round"
+                                                                  stroke-linejoin="round"
+                                                                  stroke-miterlimit="10"
+                                                                  points="9 18 15 12 9 6"></polyline>
+                                                    </svg>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="kirk-items-list-item">
+                                            <div class="kirk-item sc-Galmp kNDdlo">
+                                                <span class="kirk-item-leftWrapper">
+                                                    <span class="kirk-item-leftAddon">
+                                                        <svg viewBox="0 0 24 24"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             class="kirk-icon sc-ksdxgE eqtwsd"
+                                                             width="24"
+                                                             height="24"
+                                                             aria-hidden="true">
+                                                            <path fill-rule="evenodd"
+                                                                  clip-rule="evenodd"
+                                                                  d="M13.385 20.894a9.075 9.075 0 0 1-2.401.05v-2.217a5.5 5.5 0 0 0-5.5-5.5H3.083a9.082 9.082 0 0 1 .07-2.893 17.931 17.931 0 0 1 17.693 0 9.049 9.049 0 0 1 .071 2.893h-2.032a5.5 5.5 0 0 0-5.5 5.5v2.167ZM12 3a9.004 9.004 0 0 0-8.492 6.012 18.932 18.932 0 0 1 16.984 0A9.004 9.004 0 0 0 12 3Zm2.385 17.68a9.017 9.017 0 0 0 6.338-6.453h-1.838a4.5 4.5 0 0 0-4.5 4.5v1.954ZM3.278 14.228a9.014 9.014 0 0 0 6.706 6.546v-2.046a4.5 4.5 0 0 0-4.5-4.5H3.278ZM22 12c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2s10 4.477 10 10Zm-8.955-.001a1.045 1.045 0 1 1-2.09 0 1.045 1.045 0 0 1 2.09 0Zm1 0a2.045 2.045 0 1 1-4.09 0 2.045 2.045 0 0 1 4.09 0Z"
+                                                                  fill="#708C91"></path>
+                                                        </svg>
+                                                    </span><span class="kirk-item-leftText">
+                                                        <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx"
+                                                              style="color: rgb(112, 140, 145)">2.7/3 - Good driving skills</span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    </ul>*@
+
+
+                                @if (Model.Preferences.Count > 0)
+                                {
+                                    <div aria-hidden="true"
+                                         class="sc-ehCJOs sc-lcepkR eXHFUG hBGTps">
+                                        <hr />
+                                    </div>
+                                    <h2 class="sc-gsDKAQ sc-cNKqjZ sc-AjmGg sc-khQegj erBbkF PEdbg eCTxfx gDyKsp">
+                                        About @Model.UserName
+                                    </h2>
+                                }
+                                <section class="" aria-label="Ride preferences">
+                                    <ul>
+                                        @foreach (var item in Model.Preferences)
+                                        {
+                                            <li class="kirk-item sc-Galmp kNDdlo">
+                                                <span class="kirk-item-leftWrapper">
+                                                    <span class="kirk-item-leftAddon">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.1.1 by fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="#708C91" d="M246.6 233.4l-160-160c-12.5-12.5-32.75-12.5-45.25 0s-12.5 32.75 0 45.25L178.8 256l-137.4 137.4c-12.5 12.5-12.5 32.75 0 45.25C47.63 444.9 55.81 448 64 448s16.38-3.125 22.62-9.375l160-160C259.1 266.1 259.1 245.9 246.6 233.4zM438.6 233.4l-160-160c-12.5-12.5-32.75-12.5-45.25 0s-12.5 32.75 0 45.25L370.8 256l-137.4 137.4c-12.5 12.5-12.5 32.75 0 45.25C239.6 444.9 247.8 448 256 448s16.38-3.125 22.62-9.375l160-160C451.1 266.1 451.1 245.9 438.6 233.4z" /></svg>
+                                                    </span><span class="kirk-item-leftText">
+                                                        <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx"
+                                                              style="color: rgb(112, 140, 145)">@item</span>
+                                                        </span>
+                                                    </span>
+                                                </li>
+                                            }
+
+
+                                    </ul>
+                                </section>
+                                <div aria-hidden="true"
+                                     class="sc-ehCJOs sc-xiLah eXHFUG gCuPID">
+                                    <hr />
+                                </div>
+                                <ul class="sc-gGCDDS bZCmSV kirk-items-list">
+                                    <li class="kirk-items-list-item">
+                                        <div class="kirk-item sc-Galmp kNDdlo">
+                                            <span class="kirk-item-leftWrapper">
+                                                <span class="kirk-item-leftText">
+                                                    <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx"
+                                                          style="color: rgb(112, 140, 145)">
+                                                        @(Model.TotalRides > 0 ? Model.TotalRides+" rides published" : "No ride " )
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </li>
+                                    <li class="kirk-items-list-item">
+                                        <div class="kirk-item sc-Galmp kNDdlo">
+                                            <span class="kirk-item-leftWrapper">
+                                                <span class="kirk-item-leftText">
+                                                    <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx"
+                                                          style="color: rgb(112, 140, 145)">Member since @Model.RegistrationDate.ToString("Y")</span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div aria-hidden="true"
+                                         class="sc-ehCJOs sc-xiLah eXHFUG gCuPID">
+                                        <hr />
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>

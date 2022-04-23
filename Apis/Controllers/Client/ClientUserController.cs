@@ -58,7 +58,7 @@ namespace Apis.Controllers.Client
 
         }
 
-
+        //Public Profile // Doing
         [HttpGet("PublicProfile/{UserId}")]
         public async Task<IActionResult> PublicProfile(int UserId)
         {

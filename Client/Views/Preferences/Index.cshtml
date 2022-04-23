@@ -18,13 +18,13 @@
                 <h1 class="sc-gsDKAQ sc-hUpaCq sc-jgrJph erBbkF daGzFx JGsMk">
                     Travel preferences
                 </h1>
-                <ul>
+                <ul style="margin-top:10px">
 
                     @foreach (var item in Model)
                     {
 
                         <li>
-                            <a type="button" asp-controller="Preferences" asp-action="Choice" asp-route-Id="@item.Id"
+                            <a type="button" asp-controller="Preferences" asp-action="Choice" asp-route-TypeId="@item.Id"
                                     asp-route-Type="@item.Title"
                                     class="kirk-item kirk-item--clickable sc-Galmp kNDdlo">
                                 <span class="kirk-item-leftWrapper">

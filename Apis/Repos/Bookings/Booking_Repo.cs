@@ -79,7 +79,7 @@ namespace Apis.Repos.Bookings
                 .Include(x => x.Rider)
                 .Select(x => new RidePartners()
                 { 
-
+                    Id = x.RiderId,
                     RiderName =x.Rider.Name,
                     RiderProfile = x.Rider.ProfileImage,
                     SeatQty = x.SeatQty

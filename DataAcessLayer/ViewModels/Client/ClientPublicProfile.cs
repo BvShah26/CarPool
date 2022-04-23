@@ -16,7 +16,7 @@ namespace DataAcessLayer.ViewModels.Client
         public int TotalRides { get; set; }
         public DateTime RegistrationDate { get; set; }
 
-        public List<TravelPreference> Preferences { get; set; }
+        public List<string> Preferences { get; set; }
 
     }
 }

@@ -40,15 +40,23 @@ namespace Client.Controllers
         }
 
         [HttpGet]
-        public IActionResult Choice(int Id,string Type)
+        public IActionResult Choice(int TypeId,string Type)
         {
-            HttpResponseMessage responsePrefType = httpClient.GetAsync($"PreferenceSubType/Type/{Id}").Result;
+            int UserId = (int)HttpContext.Session.GetInt32("UserId");
+            HttpResponseMessage responsePrefType = httpClient.GetAsync($"UserPreference/GetSelectedPreferences/{TypeId}/{UserId}").Result;
             if (responsePrefType.IsSuccessStatusCode)
             {
+                List<TravelPreference> preferences = null;
+                var responseDefinition = new { selectedPreference = 0, preferences = preferences };
+
+
                 string res = responsePrefType.Content.ReadAsStringAsync().Result;
-                List<TravelPreference> preferenceTypes = JsonConvert.DeserializeObject<List<TravelPreference>>(res);
+                 var data = JsonConvert.DeserializeAnonymousType(res, responseDefinition);
                 ViewBag.Type = Type;
-                return View(preferenceTypes);
+
+                ViewBag.SelectedPrefId = data.selectedPreference;
+                preferences = data.preferences;
+                return View(preferences);
             }
 
             return View();

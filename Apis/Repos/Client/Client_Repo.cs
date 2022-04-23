@@ -1,5 +1,6 @@
 ﻿using Apis.Data;
 using Apis.Infrastructure.Client;
+using DataAcessLayer.Models.Preferences;
 using DataAcessLayer.Models.Users;
 using DataAcessLayer.ViewModels.Client;
 using Microsoft.AspNetCore.Identity;
@@ -20,6 +21,22 @@ namespace Apis.Repos.Client
             _context = context;
             _userManager = userManager;
         }
+
+        public async Task<object> GetUserPreferences(int TypeId, int UserId)
+        {
+            //Get Selected Id and AllOther Pref by it's TypeId
+            int SelectedPrefId = await _context.TravelPreferences.Where(x => x.TypeId == TypeId).Include(x => x.User_preference)
+                .Where(x => x.User_preference.Where(userPref => userPref.Travel_PreferenceId == x.Id && userPref.UserId == UserId).Count() > 0)
+                .Select(x => x.Id)
+                .FirstOrDefaultAsync();
+
+            //Other Pref
+            List<TravelPreference> preferences = await _context.TravelPreferences.Where(pref => pref.TypeId == TypeId).ToListAsync();
+            return new { selectedPreference = SelectedPrefId, preferences = preferences };
+        }
+
+
+
         public List<ClientUsers> GetUsers()
         {
             return _context.ClientUsers.ToList();
@@ -41,8 +58,9 @@ namespace Apis.Repos.Client
                     ProfileImage = x.ProfileImage,
                     RegistrationDate = x.RegistrationDate,
                     TotalRides = x.Published_Rides.Count,
-                    Preferences = x.UserPreference.Select(userPreference => userPreference.Travel_Preference).ToList()
-                    
+                    Preferences = x.UserPreference.Select(userPreference => userPreference.Travel_Preference.Title).ToList(),
+                    Age = DateTime.Now.Subtract(x.BirthDate).Days / 365,
+
                 })
                 .FirstOrDefaultAsync();
 
@@ -72,6 +90,41 @@ namespace Apis.Repos.Client
 
             return result.Entity;
 
+        }
+
+        public async Task SavePreference(User_TravelPreference userPreferences)
+        {
+            if (userPreferences != null)
+            {
+                //check type
+                //User_TravelPreference existedPreference = await _context.User_TravelPreferences
+                //    .Include(usePref => usePref.Travel_Preference)
+                //    .Where(x => x.UserId == userPreferences.UserId && x.Travel_PreferenceId == userPreferences.Travel_PreferenceId)
+                //    .FirstOrDefaultAsync();
+
+
+                //Get Type of Input Data and
+
+                int Input_PrefTypeId = await _context.TravelPreferences.Where(x => x.Id == userPreferences.Travel_PreferenceId)
+                    .Select(x => x.TypeId)
+                    .FirstOrDefaultAsync();
+
+                User_TravelPreference existedPreference = await _context.User_TravelPreferences
+                   .Include(usePref => usePref.Travel_Preference)
+                   .Where(x => x.UserId == userPreferences.UserId && x.Travel_Preference.TypeId == Input_PrefTypeId)
+                   .FirstOrDefaultAsync();
+
+                if (existedPreference == null)
+                {
+                    var res = await _context.User_TravelPreferences.AddAsync(userPreferences);
+                }
+                else
+                {
+                    existedPreference.Travel_PreferenceId = userPreferences.Travel_PreferenceId;
+                    _context.User_TravelPreferences.Update(existedPreference);
+                }
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

@@ -20,7 +20,7 @@
                         <h1 class="sc-gsDKAQ sc-hUpaCq sc-jgrJph erBbkF daGzFx JGsMk">
                             @ViewBag.Type
                         </h1>
-                        <ul class="sc-gGCDDS bZCmSV kirk-items-list" role="radiogroup">
+                        <ul class="sc-gGCDDS bZCmSV kirk-items-list" style="margin-top:10px" role="radiogroup">
 
                             @foreach (var item in Model)
                             {
@@ -31,7 +31,7 @@
                                     <span class="kirk-item-leftWrapper">
                                         <span class="kirk-item-leftText"><span class="kirk-text kirk-text-title sc-faUpoM gHhpVx">@item.Title</span></span>
                                     </span><span class="kirk-item-rightAddon">
-                                        <input type="radio" name="PrefId" value="@item.Id" ><svg viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg" class="kirk-icon kirk-icon-circle sc-ksdxgE dNZZtF sc-ikJyIC gaPuLV" width="24" height="24" aria-hidden="true">
+                                        <input type="radio" name="PrefId" @(ViewBag.SelectedPrefId == item.Id ? "checked=checked" : "") value="@item.Id" ><svg viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg" class="kirk-icon kirk-icon-circle sc-ksdxgE dNZZtF sc-ikJyIC gaPuLV" width="24" height="24" aria-hidden="true">
                                             <circle class="outer" cx="33" cy="33" r="30" fill="none"></circle>
                                         </svg>
                                     </span>
@@ -49,6 +49,9 @@
                     <button class="kirk-button kirk-button-primary sc-iUKqMP jKcvnS" type="submit">
                         <span class="button-label"><span>Save</span></span>
                     </button>
+                    <a class="kirk-button kirk-button-primary sc-iUKqMP jKcvnS" asp-controller="Preferences" asp-action="Index" >
+                        <span class="button-label"><span>Back</span></span>
+                    </a>
                 </div>
             </div>
         </form>

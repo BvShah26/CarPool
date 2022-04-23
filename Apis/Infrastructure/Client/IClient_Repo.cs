@@ -1,4 +1,5 @@
-﻿using DataAcessLayer.Models.Users;
+﻿using DataAcessLayer.Models.Preferences;
+using DataAcessLayer.Models.Users;
 using DataAcessLayer.ViewModels.Client;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,9 @@ namespace Apis.Infrastructure.Client
         ClientUsers LoginUser(ClientUsers clientUsers);
 
         Task<ClientPublicProfile> PublicProfile(int UserId);
+
+
+        Task<object> GetUserPreferences(int TypeId,int UserId);
+        Task SavePreference(User_TravelPreference userPreferences);
     }
 }

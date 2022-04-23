@@ -234,7 +234,7 @@
                                                                             <hr />
                                                                         </div>
                                                                         <a class="publisherCard kirk-item kirk-item--clickable sc-Galmp sc-cLpAjG kNDdlo dTtSfA"
-                                                                           href="/user/show/cf54dde5-ad04-4b2e-a4aa-6c7452cb0fd4">
+                                                                           asp-action="Profile" asp-controller="User" asp-route-id="@Model.PublisherId">
                                                                             <span class="kirk-item-leftWrapper">
                                                                                 <span class="kirk-item-leftText">
                                                                                     <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx">@Model.PublisherName</span><span class="kirk-text kirk-text-body sc-faUpoM gHhpVx kirk-item-body">
@@ -418,7 +418,8 @@
                                                                                     <li>
                                                                                         <a class="kirk-item kirk-item--clickable sc-Galmp sc-cLpAjG kNDdlo dTtSfA"
                                                                                            style="position: relative; display: flex; padding-top: 16px; padding-bottom: 16px; -webkit-box-align: center; align-items: center; flex: 1 1 0%; border: 0px; "
-                                                                                           href="/user/show/a12ac288-7703-456d-9de5-848cd16c8383">
+                                                                                           asp-action="Profile" asp-controller="User" asp-route-id="@item.Id"
+                                                                                           >
                                                                                             <span class="kirk-item-leftWrapper">
                                                                                                 <span class="kirk-item-leftText">
                                                                                                     <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx">@item.RiderName</span>
@@ -462,7 +463,7 @@
                                                                 <div class="sc-avest hhmynR">
                                                                     <div class="sc-kmQMED Uwbpz">
                                                                         <a class="kirk-button kirk-button-primary sc-iUKqMP jKcvnS"
-                                                                           asp-route-Seat="@ViewBag.Seats" asp-route-RideId="@Model.Id" asp-action="Index" asp-controller="Book"><span class="button-label">Continue</span></a>
+                                                                           asp-route-Seat="@ViewBag.Seats" asp-route-RideId="@Model.RideId" asp-action="Index" asp-controller="Book"><span class="button-label">Continue</span></a>
                                                                     </div>
                                                                 </div>
                                                             </div>

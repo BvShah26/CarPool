@@ -17,6 +17,9 @@ namespace Apis.Infrastructure.Preference
         Task<TravelPreference> Delete_PrefrenceSubType(int id);
 
         Task<List<TravelPreference>> GetPreferencesByType(int TypeId);
+
+        
+
         bool SubType_Exists(int id);
     }
 }
