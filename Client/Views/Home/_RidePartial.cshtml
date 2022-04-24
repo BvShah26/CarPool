@@ -1,0 +1,247 @@
+﻿@model IEnumerable<DataAcessLayer.ViewModels.RideDetailsView>
+
+
+
+@foreach (var item in Model)
+{
+
+    <li class="kirk-cardItem mt-2">
+        <div class="kirk-card sc-lkgTHX sc-gyElHZ NGnPK coHaIU kirk-tripCard">
+            <div class="sc-iqVWFU htbXWo"></div>
+            @{
+                var parms = new Dictionary<string, string> { { "RideId", item.Id.ToString() },
+                                //{"From",ViewBag.Pickup },
+                                //{"To",ViewBag.Destination },
+                                { "Seat",ViewBag.Seat.ToString()},
+                                { "Pickup_dist", item.Pickup_DifferDistance.ToString() },
+                                { "Drop_dist", item.Drop_DifferDistance.ToString() },
+                                { "Publisher",item.PublisherId.ToString() } };
+            }
+            <a asp-action="Details" asp-all-route-data="parms">
+                <div class="kirk-tripCard-mainContainer">
+                    <div class="kirk-tripCard-main">
+                        <div class="kirk-tripCard-itinerary">
+                            <ul class="sc-iCfMLu hTHQWP">
+                                <li class="sc-furwcr dgJGMH">
+                                    <div>
+                                        <div class="sc-pVTFL dolFzq kirk-timeDuration notranslate">
+                                            <time aria-hidden="false"
+                                                  class="sc-gsDKAQ sc-eCImPb sc-jRQBWg erBbkF cgfVyE grmCxQ">@item.PickUp_Time.ToShortTimeString()</time><span aria-label="Duration of ride"
+                                                                                                                                                               class="sc-gsDKAQ sc-gKclnd sc-jrQzAO erBbkF bEOvQm cDkwFE">@((item.DropOff_Time - item.PickUp_Time).TotalHours)h</span>
+                                            </div>
+                                            <div aria-hidden="true" class="sc-kDTinF fTujgh">
+                                                <div class="sc-iqseJM jFjUqa"></div>
+                                                <div class="sc-crHmcD dlbSDa">
+                                                    <div class="sc-bdvvtL bhkYMD kirk-bullet kirk-bullet--default"
+                                                         aria-hidden="true"></div>
+                                                </div>
+                                                <div class="sc-iqseJM dSOAKu"></div>
+                                            </div>
+                                            <div class="sc-bkkeKt gAqCcU">
+                                                <span class="sc-gsDKAQ sc-eCImPb sc-jRQBWg sc-ieecCq erBbkF cgfVyE grmCxQ bJuKmu">@item.DepartureCity</span>
+                                                <div class="sc-hGPBjI jyJEgP">
+                                                    <div class="sc-llYSUQ eImWfY kirk-proximity">
+                                                        <svg viewBox="0 0 20 20"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             class="kirk-icon sc-ksdxgE hcEKjk"
+                                                             width="20px"
+                                                             height="20px"
+                                                             aria-hidden="true">
+
+
+                                                            @if (item.Pickup_DifferDistance < 3)
+                                                            {
+                                                                <title>Very close to you</title>
+                                                            }
+                                                            <path fill=@(item.Pickup_DifferDistance < 3 ? "#5DD167" : "#EDEDED" )
+                                                                  d="M10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10zm1.202-14.863a1.568 1.568 0 1 0 0-3.136 1.568 1.568 0 0 0 0 3.136zm.94 1.868h-.005a1.568 1.568 0 0 0-1.563-1.554h-.007c-2.252 0-3.896 1.32-4.288 2.692L5.5 11.051H6.926l.723-2.72 1.166-.825-.874 3.264L6.003 18h1.569l1.83-5.661 1.526 1.269.314 4.392h1.528v-5.02l-1.757-1.756.473-1.767a3.753 3.753 0 0 0 2.853 1.313h.314V9.515a2.51 2.51 0 0 1-2.51-2.51z"></path>
+                                                        </svg><svg viewBox="0 0 20 20"
+                                                                   xmlns="http://www.w3.org/2000/svg"
+                                                                   class="kirk-icon sc-ksdxgE dCzRrk"
+                                                                   width="20px"
+                                                                   height="20px"
+                                                                   aria-hidden="false">
+
+                                                            @if ((item.Pickup_DifferDistance >= 3) && (item.Pickup_DifferDistance < 8))
+                                                            {
+                                                                <title>A bit away from you</title>
+                                                            }
+                                                            <path fill=@((item.Pickup_DifferDistance >=3 ) && (item.Pickup_DifferDistance < 8 )? "#FFCA0C" : "#EDEDED" )
+                                                                  d="M10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10zm1.202-14.863a1.568 1.568 0 1 0 0-3.136 1.568 1.568 0 0 0 0 3.136zm.94 1.868h-.005a1.568 1.568 0 0 0-1.563-1.554h-.007c-2.252 0-3.896 1.32-4.288 2.692L5.5 11.051H6.926l.723-2.72 1.166-.825-.874 3.264L6.003 18h1.569l1.83-5.661 1.526 1.269.314 4.392h1.528v-5.02l-1.757-1.756.473-1.767a3.753 3.753 0 0 0 2.853 1.313h.314V9.515a2.51 2.51 0 0 1-2.51-2.51z"></path>
+                                                        </svg><svg viewBox="0 0 20 20"
+                                                                   xmlns="http://www.w3.org/2000/svg"
+                                                                   class="kirk-icon sc-ksdxgE hcEKjk"
+                                                                   width="20px"
+                                                                   height="20px"
+                                                                   aria-hidden="true">
+                                                            @if (item.Pickup_DifferDistance >= 8)
+                                                            {
+                                                                <title>You might need another transport to get there</title>
+                                                            }
+                                                            <path fill=@((item.Pickup_DifferDistance >=8 ) ? "#F78B00" : "#EDEDED" )
+                                                                  d="M10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10zm1.202-14.863a1.568 1.568 0 1 0 0-3.136 1.568 1.568 0 0 0 0 3.136zm.94 1.868h-.005a1.568 1.568 0 0 0-1.563-1.554h-.007c-2.252 0-3.896 1.32-4.288 2.692L5.5 11.051H6.926l.723-2.72 1.166-.825-.874 3.264L6.003 18h1.569l1.83-5.661 1.526 1.269.314 4.392h1.528v-5.02l-1.757-1.756.473-1.767a3.753 3.753 0 0 0 2.853 1.313h.314V9.515a2.51 2.51 0 0 1-2.51-2.51z"></path>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="sc-furwcr dgJGMH">
+                                        <div>
+                                            <div class="sc-pVTFL dolFzq kirk-timeDuration notranslate">
+                                                <time aria-hidden="false"
+                                                      class="sc-gsDKAQ sc-eCImPb sc-jRQBWg erBbkF cgfVyE grmCxQ">@item.DropOff_Time.ToShortTimeString()</time>
+                                                </div>
+                                                <div aria-hidden="true" class="sc-kDTinF fTujgh">
+                                                    <div class="sc-iqseJM dSOAKu"></div>
+                                                    <div class="sc-crHmcD dlbSDa">
+                                                        <div class="sc-bdvvtL bhkYMD kirk-bullet kirk-bullet--default"
+                                                             aria-hidden="true"></div>
+                                                    </div>
+                                                    <div class="sc-iqseJM jFjUqa"></div>
+                                                </div>
+                                                <div class="sc-bkkeKt gAqCcU">
+                                                    <span class="sc-gsDKAQ sc-eCImPb sc-jRQBWg sc-ieecCq erBbkF cgfVyE grmCxQ bJuKmu">@item.DestinationCity</span>
+                                                    <div class="sc-hGPBjI jyJEgP">
+                                                        <div class="sc-llYSUQ eImWfY kirk-proximity">
+                                                            <svg viewBox="0 0 20 20"
+                                                                 xmlns="http://www.w3.org/2000/svg"
+                                                                 class="kirk-icon sc-ksdxgE hcEKjk"
+                                                                 width="20px"
+                                                                 height="20px"
+                                                                 aria-hidden="true">
+                                                                @if (item.Drop_DifferDistance < 3)
+                                                                {
+                                                                    <title>Very close to you</title>
+                                                                }
+                                                                <path fill=@(item.Drop_DifferDistance < 3 ? "#5DD167" : "#EDEDED" )
+                                                                      d="M10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10zm1.202-14.863a1.568 1.568 0 1 0 0-3.136 1.568 1.568 0 0 0 0 3.136zm.94 1.868h-.005a1.568 1.568 0 0 0-1.563-1.554h-.007c-2.252 0-3.896 1.32-4.288 2.692L5.5 11.051H6.926l.723-2.72 1.166-.825-.874 3.264L6.003 18h1.569l1.83-5.661 1.526 1.269.314 4.392h1.528v-5.02l-1.757-1.756.473-1.767a3.753 3.753 0 0 0 2.853 1.313h.314V9.515a2.51 2.51 0 0 1-2.51-2.51z"></path>
+                                                            </svg><svg viewBox="0 0 20 20"
+                                                                       xmlns="http://www.w3.org/2000/svg"
+                                                                       class="kirk-icon sc-ksdxgE dCzRrk"
+                                                                       width="20px"
+                                                                       height="20px"
+                                                                       aria-hidden="false">
+                                                                @if ((item.Drop_DifferDistance >= 3) && (item.Drop_DifferDistance < 8))
+                                                                {
+                                                                    <title>A bit away from you</title>
+                                                                }
+                                                                <path fill=@((item.Drop_DifferDistance >=3 ) && (item.Drop_DifferDistance < 8 )? "#FFCA0C" : "#EDEDED" )
+                                                                      d="M10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10zm1.202-14.863a1.568 1.568 0 1 0 0-3.136 1.568 1.568 0 0 0 0 3.136zm.94 1.868h-.005a1.568 1.568 0 0 0-1.563-1.554h-.007c-2.252 0-3.896 1.32-4.288 2.692L5.5 11.051H6.926l.723-2.72 1.166-.825-.874 3.264L6.003 18h1.569l1.83-5.661 1.526 1.269.314 4.392h1.528v-5.02l-1.757-1.756.473-1.767a3.753 3.753 0 0 0 2.853 1.313h.314V9.515a2.51 2.51 0 0 1-2.51-2.51z"></path>
+                                                            </svg><svg viewBox="0 0 20 20"
+                                                                       xmlns="http://www.w3.org/2000/svg"
+                                                                       class="kirk-icon sc-ksdxgE hcEKjk"
+                                                                       width="20px"
+                                                                       height="20px"
+                                                                       aria-hidden="true">
+
+                                                                @if (item.Drop_DifferDistance >= 8)
+                                                                {
+                                                                    <title>You might need another transport to get there</title>
+                                                                }
+                                                                <path fill=@((item.Drop_DifferDistance >=8 ) ? "#F78B00" : "#EDEDED" )
+                                                                      d="M10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10zm1.202-14.863a1.568 1.568 0 1 0 0-3.136 1.568 1.568 0 0 0 0 3.136zm.94 1.868h-.005a1.568 1.568 0 0 0-1.563-1.554h-.007c-2.252 0-3.896 1.32-4.288 2.692L5.5 11.051H6.926l.723-2.72 1.166-.825-.874 3.264L6.003 18h1.569l1.83-5.661 1.526 1.269.314 4.392h1.528v-5.02l-1.757-1.756.473-1.767a3.753 3.753 0 0 0 2.853 1.313h.314V9.515a2.51 2.51 0 0 1-2.51-2.51z"></path>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div itemscope="" itemtype="http://schema.org/Event">
+                                        <meta itemprop="url"
+                                              content="https://www.blablacar.in/trip?source=CARPOOLING&amp;id=2440807062-surat-ahmedabad" />
+                                        <meta itemprop="name" content="Surat → Ahmedabad" />
+                                        <meta itemprop="startDate"
+                                              content="2022-04-07T22:20:00+05:30" />
+                                        <meta itemprop="endDate"
+                                              content="2022-04-08T03:30:00+05:30" />
+                                        <div itemscope=""
+                                             itemtype="http://schema.org/Place"
+                                             itemprop="location">
+                                            <meta itemprop="name" content="Surat" />
+                                            <meta itemprop="address" content="Surat" />
+                                        </div>
+                                        <div itemscope=""
+                                             itemtype="http://schema.org/Place"
+                                             itemprop="location">
+                                            <meta itemprop="name" content="Ahmedabad" />
+                                            <meta itemprop="address" content="Ahmedabad" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="sc-gsDKAQ sc-eCImPb sc-jRQBWg sc-eXlEPa erBbkF cgfVyE grmCxQ bRjJtV">₹ @item.Price_Seat </span>
+                            </div>
+                            <div class="kirk-item sc-Galmp sc-jlRLRk kNDdlo kpWJyC sc-gjNHFA ginVSb kirk-tripCard-profile">
+                                <span class="kirk-item-leftWrapper">
+                                    <span class="kirk-item-leftAddon">
+                                        <div class="sc-fWCJzd ctNlLp kirk-avatar--image kirk-avatar" style="position: relative; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex;  -webkit-align-items: center; -webkit-box-align: center; -ms-flex-align: center; align-items: center; -webkit-flex: 1; -ms-flex: 1; flex: 1; border: 0; background: none; white-space: unset !important; ">
+                                            @if (item.Publisher_Profile == null)
+                                            {
+                                                <img src="~/img/avtar.png" height="40px" width="40px" alt="Avtar" />
+                                            }
+                                            else
+                                            {
+                                                <img src=@item.Publisher_Profile height="40px" width="40px" alt="Avtar" />
+                                            }
+                                            @*<img src=@(item.Publisher_Profile ?? "~/img/avtar.png") height="40px" width="40px" alt="Avtar" />*@
+
+
+                                        </div>
+                                    </span><span class="kirk-item-leftText">
+                                        <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx"
+                                              data-nosnippet="true">@item.PublisherName</span><span class="kirk-text kirk-text-body sc-faUpoM gHhpVx kirk-item-body">
+                                                <div class="sc-dUbtfd gvUPEB">
+                                                    <span class="sc-htJRVC iStbxd">
+                                                        <svg viewBox="-2 -4 84 82"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             class="kirk-icon sc-ksdxgE eqtwsd"
+                                                             width="16"
+                                                             height="16"
+                                                             aria-hidden="true">
+                                                            <g>
+                                                                <linearGradient y2="0%"
+                                                                                x2="100%"
+                                                                                y1="0%"
+                                                                                x1="0%"
+                                                                                id="gradient-1">
+                                                                    <stop stop-color="#708C91" offset="100%"></stop>
+                                                                    <stop stop-color="#FFF" offset="0%"></stop>
+                                                                </linearGradient>
+                                                                <path stroke="#708C91"
+                                                                      stroke-width="4"
+                                                                      fill="url(#gradient-1)"
+                                                                      d="M 40.000 60.000 L 63.511 72.361 L 59.021 46.180 L 78.042 27.639 L 51.756 23.820 L 40.000 0.000 L 28.244 23.820 L 1.958 27.639 L 20.979 46.180 L 16.489 72.361 L 40.000 60.000"></path>
+                                                            </g>
+                                                        </svg><span class="sc-hjGZqJ cSwDqa">
+                                                            <span class="sc-gsDKAQ sc-gKclnd erBbkF bEOvQm">4.7</span>
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </span>
+                                        </span>
+                                    </span>
+
+                                    @if (item.IsInstant_Approval)
+                                    {
+
+
+                                        <span class="kirk-item-rightAddon">
+                                            <ul class="sc-gUQvok dcqCpy">
+                                                <li title="Automatic approval" class="sc-fXeWAj ioYMtt">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                        <title>AUTOMATIC APPROVAL</title>
+                                                        <g id="AUTOMATIC-APPROVAL" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                            <path d="M15.5,2 L8.5,2 C8.27452447,2 8.07694463,2.15091066 8.01761809,2.3684413 L5.01761809,13.3684413 L5.00259055,13.4476845 C4.9714054,13.7365823 5.19778718,14 5.5,14 L10.859,14 L9.01492875,21.3787322 C8.88604846,21.8942533 9.54392495,22.228315 9.88411064,21.8200922 L19.8841106,9.8200922 L19.9317737,9.75290581 C20.1237649,9.43070237 19.8956576,9 19.5,9 L14.162,9 L15.980762,2.63736056 C16.0720214,2.31795246 15.8321894,2 15.5,2 Z M14.837,3 L13.019238,9.36263944 L13.0031827,9.44227798 C12.9685919,9.73283161 13.195493,10 13.5,10 L18.431,10 L10.516,19.498 L11.9850713,13.6212678 L11.9988874,13.5356695 C12.0198526,13.25264 11.7957142,13 11.5,13 L6.154,13 L8.881,3 L14.837,3 Z" id="Automatic-approval" fill="#708C91" fill-rule="nonzero" />
+                                                        </g>
+                                                    </svg>
+                                                </li>
+                                            </ul>
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </li>
+            }

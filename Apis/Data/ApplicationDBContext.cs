@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DataAcessLayer.Models.Booking;
 using DataAcessLayer.Models.Chat;
 using DataAcessLayer.Models.Preferences;
+using DataAcessLayer.Models.Ratings;
 using DataAcessLayer.Models.Rides;
 using DataAcessLayer.Models.Users;
 using DataAcessLayer.Models.VehicleModels;
@@ -59,6 +60,10 @@ namespace Apis.Data
         public DbSet<ChatRoom> ChatRoom { get; set; }
         public DbSet<ChatMessages> ChatMessages { get; set; }
 
+        //Ratings
+        public DbSet<PublisherRatings> PublisherRatings { get; set; }
+        public DbSet<RidePartnerRating> PartnerRatings { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -72,6 +77,28 @@ namespace Apis.Data
 
             modelBuilder.Entity<ChatRoom>()
                 .HasOne(r => r.Publisher)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<PublisherRatings>()
+                .HasOne(r => r.Publisher)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PublisherRatings>()
+                .HasOne(r => r.User)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<RidePartnerRating>()
+                .HasOne(r => r.Partner)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<RidePartnerRating>()
+                .HasOne(r => r.User)
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
         }

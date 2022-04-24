@@ -32,6 +32,23 @@ namespace Client.Controllers
         }
 
         [HttpPost]
+        public IActionResult sortRecords(IEnumerable<RideDetailsView> rides,int Seat,string field)
+        {
+            
+            ViewBag.Seat = Seat;
+            
+            if(field == "PickUp_Time")
+            {
+                TimeSpan time = TimeSpan.Parse("07:35");
+                List<RideDetailsView> rec = rides.OrderBy(x => TimeSpan.Parse(x.PickUp_Time.ToShortTimeString())).ToList();
+                return PartialView("_RidePartial", rec);
+            }
+            System.Reflection.PropertyInfo prop = typeof(RideDetailsView).GetProperty(field);
+            List<RideDetailsView> records = rides.OrderBy(x => prop.GetValue(x, null)).ToList();
+
+            return PartialView("_RidePartial", records);
+        }
+        [HttpPost]
         public IActionResult Index(SearchRide searchRide)
         {
             HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("SearchRide", searchRide).Result;

@@ -5,6 +5,7 @@ using System.Text;
 using DataAcessLayer.Models.Booking;
 using DataAcessLayer.Models.Chat;
 using DataAcessLayer.Models.Location;
+using DataAcessLayer.Models.Ratings;
 using DataAcessLayer.Models.Rides;
 
 namespace DataAcessLayer.Models.Users
@@ -41,6 +42,10 @@ namespace DataAcessLayer.Models.Users
         public ICollection<RideApproval> RideApprovals { get; set; } = new HashSet<RideApproval>();
         public ICollection<ChatRoom> ChatRooms { get; set; } = new HashSet<ChatRoom>();
         public ICollection<ChatMessages> ChatMessages { get; set; }
+
+        //Ratings
+        public ICollection<PublisherRatings> PublisherRatings { get; set; }
+        public ICollection<RidePartnerRating> PartnerRatings { get; set; }
     }
 
     public enum Gender
