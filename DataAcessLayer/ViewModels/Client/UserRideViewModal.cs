@@ -16,5 +16,7 @@ namespace DataAcessLayer.ViewModels.Client
         public string PublisherProfile { get; set; }
         public int PublisherId { get; set; }
         public string Status { get; set; }
+        public string HasNewRequest { get; set; }
+        public string IsRequestPending { get; set; }
     }
 }

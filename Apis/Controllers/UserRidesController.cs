@@ -32,7 +32,6 @@ namespace Apis.Controllers
                 .Where(x => x.JourneyDate >= DateTime.Now
                 || DateTime.Now.Day - x.JourneyDate.Day <= 7) //Rides of last 7 days
 
-                //View Modal Herw
                 .Select(x => new UserRideViewModal
                 {
                     RideId = x.Id,
@@ -40,10 +39,17 @@ namespace Apis.Controllers
                     Time = x.PickUp_Time,
                     Departure = x.Departure_City,
                     Destination = x.Destination_City,
-                    Publisher = x.Publisher.Name, // Check for session at client
+                    Publisher = x.Publisher.Name,
                     PublisherProfile = x.Publisher.ProfileImage,
                     PublisherId = x.PublisherId,
-                    Status = (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId && rideRequest.IsRejected == true).First() != null) ? "You're Rejected" : ""
+                    Status = (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId && rideRequest.IsRejected == true).First() != null)
+                    ? "You're Rejected" :
+                    (x.Booking.Where(booking => booking.Publish_RideId == x.Id && booking.RiderId == UserId && booking.bookingCancellation.BookingId == booking.Id).First() != null ? "Cancelled" : ""),
+                    //check booking cancellation 
+
+                    //only for publisher
+                    HasNewRequest = (x.IsInstant_Approval == false && x.Ride_Approval.Any(rideRequest => rideRequest.IsRejected == false && rideRequest.IsApproved == false) == true ? "New booking request" : ""),
+                    IsRequestPending = (x.IsInstant_Approval == false && x.Ride_Approval.Any(rideRequest => rideRequest.IsRejected == false && rideRequest.IsApproved == false && rideRequest.UserId == UserId) == true ? "Awaiting approval" : "" )
                 })
                 .ToListAsync();
             return Ok(rides);

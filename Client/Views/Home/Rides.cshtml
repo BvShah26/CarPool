@@ -13,46 +13,73 @@
 
 
 <div class="container">
-    <div class="row">
-        <div class="col-lg-6"></div>
-        <div class="col-lg-4">
-            <div class="listing__filter-right">
-                <div class="listing__filter-shorting-box">
-                    <div class="listing__filter-shorting-box-text">
-                        <p>Sort By:</p>
-                    </div>
-                    <div class="listing__filter-shorting-input">
-                        <div onch class="dropdown bootstrap-select">
-                            <select id="sortType" class="selectpicker" aria-label="Default select example">
-                                <option value="-1" selected="">Select sort type</option>
-                                <option value="@Html.DisplayNameFor(model => model.PickUp_Time)">
-                                    Earliest Departure
-                                </option>
-                                <option value="@Html.DisplayNameFor(model => model.Price_Seat)">
-                                    Lowest Price
-                                </option>
-                                <option value="@Html.DisplayNameFor(model => model.Drop_DifferDistance)">Close to departure point</option>
-                                <option value="@Html.DisplayNameFor(model => model.Pickup_DifferDistance)">Close to arrival point</option>
-                                @*<option value="@Html.DisplayNameFor(model => model.)">shortest ride</option>*@
-                            </select>
+    @if (Model.Count() > 0)
+    {
+        <div class="row">
+            <div class="col-lg-6"></div>
+            <div class="col-lg-4">
+                <div class="listing__filter-right">
+                    <div class="listing__filter-shorting-box">
+                        <div class="listing__filter-shorting-box-text">
+                            <p>Sort By:</p>
+                        </div>
+                        <div class="listing__filter-shorting-input">
+                            <div onch class="dropdown bootstrap-select">
+                                <select id="sortType" class="selectpicker" aria-label="Default select example">
+                                    <option value="-1" selected="">Select sort type</option>
+                                    <option value="@Html.DisplayNameFor(model => model.PickUp_Time)">
+                                        Earliest Departure
+                                    </option>
+                                    <option value="@Html.DisplayNameFor(model => model.Price_Seat)">
+                                        Lowest Price
+                                    </option>
+                                    <option value="@Html.DisplayNameFor(model => model.Drop_DifferDistance)">Close to departure point</option>
+                                    <option value="@Html.DisplayNameFor(model => model.Pickup_DifferDistance)">Close to arrival point</option>
+                                    @*<option value="@Html.DisplayNameFor(model => model.)">shortest ride</option>*@
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-lg-2"></div>
-        <div class="col-lg-8">
-            <ul class="sc-fmBCVi humUME" id="dataContent">
-                @if (Model.Count() > 0)
-                {
-                    <partial name="_RidePartial" model="Model" />
-                }
-            </ul>
+        <div class="row mt-4">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-8">
+                <ul class="sc-fmBCVi humUME" id="dataContent">
+                    @if (Model.Count() > 0)
+                    {
+                        <partial name="_RidePartial" model="Model" />
+                    }
+
+                </ul>
+            </div>
+            <div class="col-lg-2"></div>
         </div>
-        <div class="col-lg-2"></div>
-    </div>
+    }
+    else
+    {
+        <div class="sc-jWEIYm cKZHdw mt-5 mb-5">
+            <div aria-hidden="true" class="sc-eEOqmf dbqsNw"></div>
+            <div aria-hidden="false">
+                <div class="sc-kIKDeO cStvyF">
+                    <div class="sc-dsQDmV hOOrch">
+                        <div role="presentation" class="sc-fctJkW ftnfJP">
+                            <div class="section-content">
+                                <div class="">
+
+                                    <h1 class="sc-gsnTZi sc-hTtwUo sc-jgbSNz GJlVl ipZXlI jlbwlf">
+                                        There are no rides yet between these cities<br /><span class="sc-gsnTZi sc-gKXOVf GJlVl dJWFGW inline-block mt-xl inline-block mt-xl">@ViewBag.FromCity → @ViewBag.ToCity</span>
+                                    </h1>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 
 </div>
 

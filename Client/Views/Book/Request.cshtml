@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+@section Headers{
+    <link href="~/ClientAssets/css/rides.css" rel="stylesheet" />
+}
+
+<html lang="en-IN" style="min-height: 717px; height: auto; overflow: hidden">
+<head>
+    <link href="../rrr.css" rel="stylesheet" />
+</head>
+<body style="min-height: 717px; height: auto">
+    <div class="sc-ZyCDH eJEeCT">
+        <h1 class="sc-gsnTZi sc-hTtwUo sc-jgbSNz GJlVl ipZXlI jlbwlf sc-jOhDuK desRSf sc-jOhDuK desRSf">
+            Request sent!
+        </h1>
+    </div>
+    <div class="button-wrapper p-xl justify-center button-wrapper--auto">
+        <a asp-action="Details" asp-controller="Rides" asp-route-Id="@ViewBag.RideId" >
+            <button class="kirk-button kirk-button-primary sc-iTONeN jDVucc" type="submit">
+                <span class="button-label"><span>Check Details</span></span>
+            </button>
+        </a>
+    </div>
+</body>
+</html>

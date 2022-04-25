@@ -3,6 +3,7 @@ using Apis.Infrastructure.Bookings;
 using DataAcessLayer.Models.Rides;
 using DataAcessLayer.Models.Users;
 using DataAcessLayer.ViewModels;
+using DataAcessLayer.ViewModels.Bookings;
 using DataAcessLayer.ViewModels.Client;
 using DataAcessLayer.ViewModels.Ride;
 using Microsoft.AspNetCore.Http;
@@ -155,12 +156,30 @@ namespace Apis.Controllers.Rides
             return Ok(data);
         }
 
-        [HttpGet("VerifyRide/{RideId}")]
-        public async Task<PublishRide> VerifyRide(int RideId)
+        [HttpGet("VerifyRide/{RideId}/{SeatQty}/{UserId}")]
+        public async Task<IActionResult> VerifyRide(int RideId,int SeatQty,int UserId)
         {
-            PublishRide ride = await _context.Publish_Rides.Where(item => item.Id == RideId)
-                .Include(x => x.Publisher).FirstOrDefaultAsync();
-            return ride;
+            var ride = await _context.Publish_Rides.Where(item => item.Id == RideId)
+                .Include(x => x.Publisher).Select(x => new BookigConfirmationViewModel()
+                {
+                    Id = x.Id,
+                    FromLocation = x.PickUp_Location,
+                    ToLocation = x.DropOff_Location,
+                    JourneyDate = x.JourneyDate,
+                    IsInstantApproval = x.IsInstant_Approval,
+                    PickupTime = x.PickUp_Time.ToShortTimeString(),
+                    DropTime = x.DropOff_Time.ToShortTimeString(),
+                    Price = x.Price_Seat * SeatQty,
+                    SeatQty = SeatQty,
+                    Publisher = x.Publisher.Name,
+                    PublisherProfile = x.Publisher.ProfileImage,
+                    //status = (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId ).First() != null) ? "You're Rejected" : ""
+                    status = (x.Booking.Where(booking => booking.RiderId == UserId ).First() != null)
+                    ? "You can't book again" : (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId ).First() != null) ? "You can't request again" : ""
+                    
+
+                }).FirstOrDefaultAsync();
+            return Ok(ride);
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿using DataAcessLayer.Models.Booking;
 using DataAcessLayer.Models.Rides;
+using DataAcessLayer.ViewModels.Bookings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -31,34 +32,43 @@ namespace Client.Controllers
             if (IsLogin() == true)
             {
                 //Confirmation Page Here
-
-                HttpResponseMessage responseMessage = httpClient.GetAsync($"SearchRide/VerifyRide/{RideId}").Result;
-                if (responseMessage.IsSuccessStatusCode)
+                int UserId = (int)HttpContext.Session.GetInt32("UserId");
+                HttpResponseMessage responseMessage = httpClient.GetAsync($"SearchRide/VerifyRide/{RideId}/{Seat}/{UserId}").Result;
+                if(responseMessage.IsSuccessStatusCode)
                 {
                     string res = responseMessage.Content.ReadAsStringAsync().Result;
-                    PublishRide ride = JsonConvert.DeserializeObject<PublishRide>(res);
-
-                    ride.Price_Seat = ride.Price_Seat * Seat;
-
-                    if (ride.IsInstant_Approval == false)
-                    {
-                        var UserId = HttpContext.Session.GetInt32("UserId");
-                        HttpResponseMessage approvalResponse = httpClient.GetAsync($"RideApprovals/GetUserRideRequest/{RideId}/{UserId}").Result;
-
-                        //Checking For Already Rejection
-                        if (approvalResponse.IsSuccessStatusCode)
-                        {
-                            string responseApproval = approvalResponse.Content.ReadAsStringAsync().Result;
-                            if(responseApproval != "")
-                            {
-                                ViewBag.HasDeclined = true;
-                            }
-                        }
-                    }
-
-                    ViewBag.Seat = Seat;
-                    return View(ride);
+                    BookigConfirmationViewModel record = JsonConvert.DeserializeObject<BookigConfirmationViewModel>(res);
+                    return View(record);
                 }
+                //if (responseMessage.IsSuccessStatusCode)
+                //{
+                //    string res = responseMessage.Content.ReadAsStringAsync().Result;
+
+
+                //    //Change Res Type
+                //    PublishRide ride = JsonConvert.DeserializeObject<PublishRide>(res);
+
+                //    ride.Price_Seat = ride.Price_Seat * Seat;
+
+                //    if (ride.IsInstant_Approval == false)
+                //    {
+                //        var UserId = HttpContext.Session.GetInt32("UserId");
+                //        HttpResponseMessage approvalResponse = httpClient.GetAsync($"RideApprovals/GetUserRideRequest/{RideId}/{UserId}").Result;
+
+                //        //Checking For Already Rejection
+                //        if (approvalResponse.IsSuccessStatusCode)
+                //        {
+                //            string responseApproval = approvalResponse.Content.ReadAsStringAsync().Result;
+                //            if(responseApproval != "")
+                //            {
+                //                ViewBag.HasDeclined = true;
+                //            }
+                //        }
+                //    }
+
+                //    ViewBag.Seat = Seat;
+                //    return View(ride);
+                //}
                 return BadRequest();
             }
             return RedirectToAction("Login", "Account", new { url = returnUrl });
@@ -104,6 +114,7 @@ namespace Client.Controllers
                 HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("Books", book).Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {
+                    ViewBag.RideId = Id;
                     string res = responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
@@ -130,6 +141,7 @@ namespace Client.Controllers
             if (responseMessage.IsSuccessStatusCode)
             {
                 //Validations
+                ViewBag.RideId = Id;
             }
 
             return View();

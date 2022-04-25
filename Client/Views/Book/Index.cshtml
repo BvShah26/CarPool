@@ -1,146 +1,169 @@
-﻿@model DataAcessLayer.Models.Rides.PublishRide
-
+﻿@model DataAcessLayer.ViewModels.Bookings.BookigConfirmationViewModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
+@section Headers{
+    <link href="~/ClientAssets/css/rides.css" rel="stylesheet" />
+}
+<div id="root" class="" style="min-height: 732px; height: auto">
 
-<h1>Index</h1>
+    <main class="mainContent relative"
+          id="MainContent"
+          tabindex="-1"
+          style="min-height: 732px; height: auto">
+        <div class="transition-wrapper relative slideX"
+             style="min-height: 732px; height: auto">
+            <div class="sc-bZkfAO dfCmkc page-wrapper  fade-forward-enter-done"
+                 style="min-height: 732px; height: auto">
+                <div class="transition-wrapper relative slideX"
+                     style="min-height: 732px; height: auto">
+                    <div class="sc-bZkfAO dfCmkc page-wrapper"
+                         style="min-height: 732px; height: auto">
+                        <div role="presentation" class="sc-gicCDI dDCeGO">
+                            <div role="presentation" class="sc-fctJkW ftnfJP">
+                                <div class="section-content">
+                                    <h1 id="4068704b528b16ec5dd3da4eecd380db"
+                                        class="sc-gsnTZi sc-hTtwUo sc-jgbSNz GJlVl ipZXlI jlbwlf">
+                                        Check details and book!
+                                    </h1>
+                                </div>
+                            </div>
+                            <div role="presentation" class="sc-fctJkW ftnfJP">
+                                <div class="section-content">
+                                    <h2 class="sc-gsnTZi sc-cOFTSb sc-BeQoi sc-kgUAyh GJlVl elNBBy fboqB fGBVQQ">
+                                        @Model.JourneyDate.ToString("ddd"), @Model.JourneyDate.ToString("M");
+                                    </h2>
+                                    <ul aria-labelledby="4068704b528b16ec5dd3da4eecd380db"
+                                        class="sc-iBkjds jFXfSQ">
+                                        <li aria-label="Departure:" class="sc-ftvSup hEveiQ">
+                                            <div>
+                                                <div class="sc-papXJ kCoNOj kirk-timeDuration notranslate">
+                                                    <time aria-hidden="false"
+                                                          class="sc-gsnTZi sc-eCYdqJ sc-jSMfEi GJlVl NfozK iuhvyf">@Model.PickupTime</time>
+                                                    </div>
+                                                    <div aria-hidden="true" class="sc-kDDrLX fcQvzA">
+                                                        <div class="sc-iqcoie dVexZR"></div>
+                                                        <div class="sc-crXcEl cvoNRg">
+                                                            <div class="sc-bczRLJ fnUAXU kirk-bullet kirk-bullet--default"
+                                                                 aria-hidden="true"></div>
+                                                        </div>
+                                                        <div class="sc-iqcoie biKqgB"></div>
+                                                    </div>
+                                                    <div class="sc-bjUoiL ldeDBZ">
+                                                        <span class="sc-gsnTZi sc-eCYdqJ sc-jSMfEi sc-idiyUo GJlVl NfozK iuhvyf dWGBOT">@Model.FromLocation</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li aria-label="Drop-off location:"
+                                                class="sc-ftvSup hEveiQ">
+                                                <div>
+                                                    <div class="sc-papXJ kCoNOj kirk-timeDuration notranslate">
+                                                        <time aria-hidden="false"
+                                                              class="sc-gsnTZi sc-eCYdqJ sc-jSMfEi GJlVl NfozK iuhvyf">@Model.DropTime</time>
+                                                        </div>
+                                                        <div aria-hidden="true" class="sc-kDDrLX fcQvzA">
+                                                            <div class="sc-iqcoie biKqgB"></div>
+                                                            <div class="sc-crXcEl cvoNRg">
+                                                                <div class="sc-bczRLJ fnUAXU kirk-bullet kirk-bullet--default"
+                                                                     aria-hidden="true"></div>
+                                                            </div>
+                                                            <div class="sc-iqcoie dVexZR"></div>
+                                                        </div>
+                                                        <div class="sc-bjUoiL ldeDBZ">
+                                                            <span class="sc-gsnTZi sc-eCYdqJ sc-jSMfEi sc-idiyUo GJlVl NfozK iuhvyf dWGBOT">@Model.ToLocation</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div role="presentation" class="sc-fctJkW ftnfJP">
+                                        <div class="section-content">
+                                            <div class="kirk-item sc-GVOUr sc-dUWWNf CcFKY iEWkBw" style="position: relative; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-align-items: center; -webkit-box-align: center; -ms-flex-align: center; align-items: center; -webkit-flex: 1; -ms-flex: 1; flex: 1; border: 0; background: none; white-space: unset !important; ">
+                                                <span class="kirk-item-leftWrapper">
+                                                    <span class="kirk-item-leftAddon">
+                                                        <div class="sc-fXynhf FdgvG kirk-avatar--image kirk-avatar">
+                                                            @if (Model.PublisherProfile == null)
+                                                            {
+                                                                <img src="https://cdn.blablacar.com/comuto3/images/avatar/pixar/passenger-m-02.svg"
+                                                                     alt="Bhavya" />
+                                                            }
+                                                            else
+                                                            {
+                                                                <img src=@Model.PublisherProfile alt="@Model.Publisher" />
+                                                            }
 
-<div>
-    <h4>PublishRide</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Publisher)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Publisher.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Vehicle)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Vehicle.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.JourneyDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.JourneyDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MaxPassengers)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MaxPassengers)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Departure_City)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Departure_City)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Destination_City)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Destination_City)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PickUp_Location)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PickUp_Location)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DropOff_Location)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DropOff_Location)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PickUp_LatLong)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PickUp_LatLong)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DropOff_LatLong)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DropOff_LatLong)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PickUp_Time)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PickUp_Time)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DropOff_Time)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DropOff_Time)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IsInstant_Approval)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsInstant_Approval)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Price_Seat)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Price_Seat)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Ride_Note)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Ride_Note)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Publishing_Timestamp)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Publishing_Timestamp)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IsCompletelyBooked)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsCompletelyBooked)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IsCancelled)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsCancelled)
-        </dd>
-    </dl>
-</div>
-<div>
-    @*changing Post To Get*@
-    @* BookController Confirmed and Request *@
+                                                        </div>
+                                                    </span><span class="kirk-item-leftText">
+                                                        <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU">Bhavya</span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div role="presentation" class="sc-fctJkW ftnfJP">
+                                        <div class="section-content">
+                                            <div aria-hidden="true"
+                                                 class="sc-ehmTmK sc-yeoIj gANVXG pWqRB">
+                                                <hr />
+                                            </div>
+                                            <h2 class="sc-gsnTZi sc-cOFTSb sc-BeQoi sc-kgUAyh GJlVl elNBBy fboqB fGBVQQ">
+                                                Price summary
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div role="presentation" class="sc-fctJkW ftnfJP">
+                                        <div class="section-content">
+                                            <div class="kirk-item sc-GVOUr CcFKY"
+                                                 aria-label="Price information:">
+                                                <span class="kirk-item-leftWrapper">
+                                                    <span class="kirk-item-leftText">
+                                                        <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU">@Model.SeatQty seat: ₹@Model.Price</span><span class="kirk-text kirk-text-body sc-fbPSWO ldKURU kirk-item-body">Pay in the car</span>
+                                                    </span>
+                                                </span><span class="kirk-item-rightText">
+                                                    <div class="kirk-text kirk-text-subheaderStrong sc-fbPSWO ldKURU kirk-item-title">
+                                                        Cash
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div role="presentation" class="sc-fctJkW ftnfJP">
+                                        <div class="section-content">
+                                            <div aria-hidden="true"
+                                                 class="sc-ehmTmK sc-yeoIj gANVXG pWqRB">
+                                                <hr />
+                                            </div>
+                                        </div>
+                                    </div>
 
-    @*<form asp-action=@(Model.IsInstant_Approval ? "Confirmed" : "Request" ) method="post">
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" id="SeatQty" name="SeatQty" value="@ViewBag.Seat" />
-            <button> @(Model.IsInstant_Approval ? "Book" : "Request" ) </button>
-        </form>*@
-
-
-    @if (ViewBag.HasDeclined == null)
-    {
-        <form asp-action=@(Model.IsInstant_Approval ? "Confirmed" : "Request" ) method="get">
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" id="SeatQty" name="SeatQty" value="@ViewBag.Seat" />
-            <button> @(Model.IsInstant_Approval ? "Book" : "Request" ) </button>
-        </form>
-            }
-            else
-            {
-                <span>You Can't Request Again as You're Already Rejected...</span>
-            }
-</div>
+                                    @if (Model.status == "")
+                                    {
+                                        <div class="button-wrapper p-xl justify-center button-wrapper--auto">
+                                            <form asp-action=@(Model.IsInstantApproval? "Confirmed" : "Request" ) method="get">
+                                                <input type="hidden" name="Id" value="@Model.Id" />
+                                                <input type="hidden" id="SeatQty" name="SeatQty" value="@Model.SeatQty" />
+                                                <button class="kirk-button kirk-button-primary sc-iTONeN jDVucc"
+                                                        type="submit">
+                                                    <span class="button-label"><span>@(Model.IsInstantApproval ? "Book" : "Request" )</span></span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="button-wrapper p-xl justify-center button-wrapper--auto">
+                                                <button class="kirk-button kirk-button-primary sc-iTONeN jDVucc"
+                                                        type="button">
+                                                    <span class="button-label"><span>@Model.status</span></span>
+                                                </button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>

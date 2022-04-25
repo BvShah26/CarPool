@@ -100,6 +100,10 @@ namespace Client.Controllers
                 ViewBag.Seat = searchRide.SeatCount;
                 ViewBag.Pickup = searchRide.PickUp_LatLong;
                 ViewBag.Destination= searchRide.DropOff_LatLong;
+
+                //FOR NO RIDE
+                ViewBag.FromCity = searchRide.Departure_City;
+                ViewBag.ToCity = searchRide.Destination_City;
                 return View("Rides", rides);
             }
             return View();
