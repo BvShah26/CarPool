@@ -1,5 +1,6 @@
 ﻿using Apis.Data;
 using Apis.Infrastructure.Client;
+using Apis.Infrastructure.Ratings;
 using DataAcessLayer.Models.Preferences;
 using DataAcessLayer.Models.Users;
 using DataAcessLayer.ViewModels.Client;
@@ -16,10 +17,16 @@ namespace Apis.Repos.Client
     {
         private readonly ApplicationDBContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public Client_Repo(ApplicationDBContext context, UserManager<ApplicationUser> userManager)
+        
+        /// <summary>
+        /// Repo inside repo 
+        /// </summary>
+        private readonly IRatings_Repo _rartingRepo;
+        public Client_Repo(ApplicationDBContext context, UserManager<ApplicationUser> userManager, IRatings_Repo rartingRepo)
         {
             _context = context;
             _userManager = userManager;
+            _rartingRepo = rartingRepo;
         }
 
         public async Task<object> GetUserPreferences(int TypeId, int UserId)
@@ -60,6 +67,8 @@ namespace Apis.Repos.Client
                     TotalRides = x.Published_Rides.Count,
                     Preferences = x.UserPreference.Select(userPreference => userPreference.Travel_Preference.Title).ToList(),
                     Age = DateTime.Now.Subtract(x.BirthDate).Days / 365,
+                    PartnerRating = _rartingRepo.GetPatrtnerRatings(UserId),
+                    PublisherRating = _rartingRepo.GetPublisherRating(UserId)
 
                 })
                 .FirstOrDefaultAsync();

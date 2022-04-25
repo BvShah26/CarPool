@@ -17,6 +17,8 @@ namespace DataAcessLayer.ViewModels.Client
         public DateTime RegistrationDate { get; set; }
 
         public List<string> Preferences { get; set; }
+        public double PublisherRating { get; set; }
+        public double PartnerRating { get; set; }
 
     }
 }

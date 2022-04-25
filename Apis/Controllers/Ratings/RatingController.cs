@@ -47,5 +47,9 @@ namespace Apis.Controllers.Ratings
             return Ok();
         }
 
+
+        //api for has already rated or not 
+        //add Rating in Public Profile ViewModel and display in ClientSide View
+
     }
 }

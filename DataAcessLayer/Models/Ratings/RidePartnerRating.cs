@@ -14,7 +14,7 @@ namespace DataAcessLayer.Models.Ratings
         public int UserId { get; set; }
         public ClientUsers User { get; set; }
 
-        public int Rating { get; set; }
+        public int Rate { get; set; }
 
     }
 }

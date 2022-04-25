@@ -7,11 +7,13 @@ using Apis.Infrastructure.Bookings;
 using Apis.Infrastructure.Chat;
 using Apis.Infrastructure.Client;
 using Apis.Infrastructure.Preference;
+using Apis.Infrastructure.Ratings;
 using Apis.Infrastructure.Vehicles;
 using Apis.Repos.Bookings;
 using Apis.Repos.Chat;
 using Apis.Repos.Client;
 using Apis.Repos.Preference;
+using Apis.Repos.Ratings;
 using Apis.Repos.Vehicles;
 using DataAcessLayer.Models.Users;
 using Microsoft.AspNetCore.Builder;
@@ -68,6 +70,9 @@ namespace Apis
             //Chat
             services.AddTransient<IChatRoom_Repo, ChatRoom_Repo>();
             services.AddTransient<IChatMessages_Repo, ChatMessages_Repo>();
+
+            //Rating
+            services.AddTransient<IRatings_Repo, Ratings_Repo>();
 
         }
 

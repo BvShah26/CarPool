@@ -31,12 +31,24 @@ namespace Apis.Repos.Ratings
 
         public double GetPatrtnerRatings(int UserId)
         {
-            return _context.PartnerRatings.Where(x => x.PartnerId == UserId).Select(x => x.Rating).Average();
+            var rec = _context.PartnerRatings.Where(x => x.PartnerId == UserId).Select(x => x.Rate).ToList();
+            if(rec.Count > 0)
+            {
+                double averageRating = rec.Average();
+                return averageRating;
+            }
+            return 0;
         }
 
         public double GetPublisherRating(int PublisherId)
         {
-            return _context.PublisherRatings.Where(x => x.PublisherId == PublisherId).Select(x => x.Rating).Average();
+            var rec = _context.PublisherRatings.Where(x => x.PublisherId == PublisherId).Select(x => x.Rating).ToList();
+            if (rec.Count > 0)
+            {
+                double averageRating = rec.Average();
+                return averageRating;
+            }
+            return 0;
         }
 
         public async Task<bool> HasRatedPartner(int PartnerId, int UserId)
@@ -60,4 +72,4 @@ namespace Apis.Repos.Ratings
         }
     }
 }
-}
+
