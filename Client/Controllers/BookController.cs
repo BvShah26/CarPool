@@ -28,47 +28,25 @@ namespace Client.Controllers
         [HttpGet]
         public IActionResult Index(int RideId, int Seat)
         {
-            string returnUrl = HttpContext.Request.Path;
+            string returnUrl = HttpContext.Request.Path + "?RideId=" + RideId + "&Seat=" + Seat;
             if (IsLogin() == true)
             {
                 //Confirmation Page Here
                 int UserId = (int)HttpContext.Session.GetInt32("UserId");
-                HttpResponseMessage responseMessage = httpClient.GetAsync($"SearchRide/VerifyRide/{RideId}/{Seat}/{UserId}").Result;
-                if(responseMessage.IsSuccessStatusCode)
+                try
                 {
-                    string res = responseMessage.Content.ReadAsStringAsync().Result;
-                    BookigConfirmationViewModel record = JsonConvert.DeserializeObject<BookigConfirmationViewModel>(res);
-                    return View(record);
+                    HttpResponseMessage responseMessage = httpClient.GetAsync($"SearchRide/VerifyRide/{RideId}/{Seat}/{UserId}").Result;
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        string res = responseMessage.Content.ReadAsStringAsync().Result;
+                        BookigConfirmationViewModel record = JsonConvert.DeserializeObject<BookigConfirmationViewModel>(res);
+                        return View(record);
+                    }
                 }
-                //if (responseMessage.IsSuccessStatusCode)
-                //{
-                //    string res = responseMessage.Content.ReadAsStringAsync().Result;
-
-
-                //    //Change Res Type
-                //    PublishRide ride = JsonConvert.DeserializeObject<PublishRide>(res);
-
-                //    ride.Price_Seat = ride.Price_Seat * Seat;
-
-                //    if (ride.IsInstant_Approval == false)
-                //    {
-                //        var UserId = HttpContext.Session.GetInt32("UserId");
-                //        HttpResponseMessage approvalResponse = httpClient.GetAsync($"RideApprovals/GetUserRideRequest/{RideId}/{UserId}").Result;
-
-                //        //Checking For Already Rejection
-                //        if (approvalResponse.IsSuccessStatusCode)
-                //        {
-                //            string responseApproval = approvalResponse.Content.ReadAsStringAsync().Result;
-                //            if(responseApproval != "")
-                //            {
-                //                ViewBag.HasDeclined = true;
-                //            }
-                //        }
-                //    }
-
-                //    ViewBag.Seat = Seat;
-                //    return View(ride);
-                //}
+                catch (Exception)
+                {
+                    throw new Exception("Api Not Called");
+                }
                 return BadRequest();
             }
             return RedirectToAction("Login", "Account", new { url = returnUrl });
@@ -77,87 +55,91 @@ namespace Client.Controllers
         [HttpGet]
         public IActionResult Confirmed(int Id, int SeatQty, int? UserId)
         {
-            HttpResponseMessage responseRide = httpClient.GetAsync($"SearchRide/GetRateSeats/{Id}").Result;
-            if (responseRide.IsSuccessStatusCode)
+            if (IsLogin() == true)
             {
-                //int Price = Int32.Parse(responseRide.Content.ReadAsStringAsync().Result);
-
-                var anonymsDefinition = new { rate = "", MaxSeat = 0, AutoApprove = false };
-                string resultRide = responseRide.Content.ReadAsStringAsync().Result;
-                var dataRide = JsonConvert.DeserializeAnonymousType(resultRide, anonymsDefinition);
-
-                //No Need to check
-                //if (dataRide.AutoApprove == false)
-                //{
-
-
-                //    return Ok();
-                //}
-
-                PublishRide publishRide = new PublishRide()
+                HttpResponseMessage responseRide = httpClient.GetAsync($"SearchRide/GetRateSeats/{Id}").Result;
+                if (responseRide.IsSuccessStatusCode)
                 {
-                    MaxPassengers = dataRide.MaxSeat,
-                    Id = Id
+                    //int Price = Int32.Parse(responseRide.Content.ReadAsStringAsync().Result);
 
-                    //Clears Id if we don't specify here ( Model Reference )
-                };
-                Book book = new Book()
-                {
-                    Publish_RideId = Id,
-                    RiderId = (UserId == null) ? (int)HttpContext.Session.GetInt32("UserId") : (int)UserId,
-                    SeatQty = SeatQty,
-                    TotalPrice = SeatQty * Int32.Parse(dataRide.rate),
-                    Publish_Ride = publishRide
-                };
+                    var anonymsDefinition = new { rate = "", MaxSeat = 0, AutoApprove = false };
+                    string resultRide = responseRide.Content.ReadAsStringAsync().Result;
+                    var dataRide = JsonConvert.DeserializeAnonymousType(resultRide, anonymsDefinition);
+
+                    //No Need to check
+                    //if (dataRide.AutoApprove == false)
+                    //{
 
 
-                HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("Books", book).Result;
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    ViewBag.RideId = Id;
-                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    //    return Ok();
+                    //}
+
+                    PublishRide publishRide = new PublishRide()
+                    {
+                        MaxPassengers = dataRide.MaxSeat,
+                        Id = Id
+
+                        //Clears Id if we don't specify here ( Model Reference )
+                    };
+                    Book book = new Book()
+                    {
+                        Publish_RideId = Id,
+                        RiderId = (UserId == null) ? (int)HttpContext.Session.GetInt32("UserId") : (int)UserId,
+                        SeatQty = SeatQty,
+                        TotalPrice = SeatQty * Int32.Parse(dataRide.rate),
+                        Publish_Ride = publishRide
+                    };
+
+
+                    HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("Books", book).Result;
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        ViewBag.RideId = Id;
+                        string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    }
                 }
-            }
-            else
-            {
-                throw new Exception("Api Not Caled");
-            }
+                else
+                {
+                    throw new Exception("Api Not Caled");
+                }
 
-            return View();
+                return View();
+            }
+            return RedirectToAction("Login", "Account");
+
+
         }
 
         [HttpGet]
         public IActionResult Request(int Id, int SeatQty)
         {
-
-            RideApproval rideApproval = new RideApproval()
+            if (IsLogin() == true)
             {
-                RideId = Id,
-                UserId = (int)HttpContext.Session.GetInt32("UserId"),
-                RequestedSeats = SeatQty
-            };
+                RideApproval rideApproval = new RideApproval()
+                {
+                    RideId = Id,
+                    UserId = (int)HttpContext.Session.GetInt32("UserId"),
+                    RequestedSeats = SeatQty
+                };
 
-            HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("RideApprovals/Request", rideApproval).Result;
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                //Validations
-                ViewBag.RideId = Id;
+                try
+                {
+                    HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("RideApprovals/Request", rideApproval).Result;
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        //Validations
+                        ViewBag.RideId = Id;
+                    }
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Ride Request Failed");
+                }
+                return View();
             }
+            return RedirectToAction("Login", "Account");
 
-            return View();
         }
-
-        [HttpGet]
-        public IActionResult Details(int id)
-        {
-            return View();
-        }
-
-        //[HttpPost]
-        //public IActionResult Index(Book book)
-        //{
-        //    return View();
-        //}
 
         public Boolean IsLogin()
         {

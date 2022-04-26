@@ -1,47 +1,115 @@
-﻿@model IEnumerable<DataAcessLayer.Models.Chat.ChatRoom>
-
+﻿@model IEnumerable<DataAcessLayer.ViewModels.Chat.ChatInboxesViewModel>
 @{
-    ViewData["Title"] = "Rooms";
+    ViewData["Title"] = "Inboxes";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
-
-<h1>Rooms</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Rider)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Publisher)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ride)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rider.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Publisher.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ride.Departure_City) -> 
-                @Html.DisplayFor(modelItem => item.Ride.Destination_City)
-
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-RoomId="@item.Id">Details</a> |
-            </td>
-        </tr>
+@section Headers{
+    <link href="~/ClientAssets/css/rides.css" rel="stylesheet" />
 }
-    </tbody>
-</table>
+<div id="root" class="" style="min-height: 717px; height: auto">
+    <main class="mainContent relative"
+          id="MainContent"
+          tabindex="-1"
+          style="min-height: 717px; height: auto">
+        <div class="transition-wrapper relative "
+             style="min-height: 717px; height: auto">
+            <div class="sc-bZkfAO dfCmkc page-wrapper  fade-forward-enter-done"
+                 style="min-height: 717px; height: auto">
+                <div class="transition-wrapper relative "
+                     style="min-height: 717px; height: auto">
+                    <div class="sc-bZkfAO dfCmkc page-wrapper"
+                         style="min-height: 717px; height: auto">
+                        <div role="presentation" class="sc-gicCDI dDCeGO">
+                            <div role="presentation" class="sc-fctJkW ftnfJP">
+                                <div class="section-content">
+                                    <h1 class="sc-gsnTZi sc-hTtwUo sc-jgbSNz GJlVl ipZXlI jlbwlf">
+                                        @(Model.Count() > 0 ? "Inbox" : "No chat found")
+                                    </h1>
+                                </div>
+                            </div>
+                            <div role="presentation" class="sc-fctJkW ftnfJP">
+                                <div class="section-content">
+                                    <div>
+                                        <ul class="sc-gFGZVQ bFkfCY kirk-items-list">
+                                            @foreach (var item in Model)
+                                            {
+
+
+                                                <li class="kirk-items-list-item">
+                                                    <a class="kirk-item kirk-item--clickable sc-GVOUr sc-fThYeS CcFKY fXylkM kirk-messaging-summary-item"
+                                                       asp-action="Details" asp-controller="Chat" asp-route-RoomId="@item.RoomId">
+                                                        <span class="kirk-item-leftWrapper">
+                                                            <span class="kirk-item-leftText">
+                                                                <span class="kirk-text kirk-text-titleStrong sc-fbPSWO ldKURU"
+                                                                      style="color: rgb(112, 140, 145)">@item.UserName</span><span class="kirk-text kirk-text-bodyStrong sc-fbPSWO ldKURU kirk-item-body"
+                                                                                                                                   style="color: rgb(112, 140, 145)">
+                                                                        <span class="kirk-messaging-summary-item-sub-label">
+                                                                            <div class="flex flex-wrap items-center">
+                                                                                @item.DepartureCity<svg viewBox="0 0 24 24"
+                                                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                                                        class="kirk-icon sc-ksZaOG jucjqW mx-m flex-none"
+                                                                                                        width="16"
+                                                                                                        height="16"
+                                                                                                        aria-hidden="true">
+                                                                                    <g fill="none"
+                                                                                       stroke="#708C91"
+                                                                                       stroke-width="2"
+                                                                                       stroke-miterlimit="10"
+                                                                                       stroke-linejoin="round"
+                                                                                       stroke-linecap="round"
+                                                                                       transform="rotate(180 12 12)">
+                                                                                        <path d="M9 19l-7-7 7-7"></path>
+                                                                                        <path d="M22 12H2"></path>
+                                                                                    </g>
+                                                                                </svg>@item.DestinationCity
+                                                                            </div>
+                                                                        </span>
+                                                                    </span><span class="kirk-text kirk-text-caption sc-fbPSWO ldKURU kirk-item-body-annotation">
+                                                                        <time title="Mon, 11 April, 3:35 pm"
+                                                                              datetime="2022-04-11T15:35:33+05:30">Mon, 11 April, 3:35 pm</time>
+                                                                    </span>
+                                                                </span>
+                                                            </span><span class="kirk-item-rightAddon">
+                                                                <div class="sc-fXynhf FdgvG kirk-avatar--image kirk-avatar">
+                                                                    @if (item.UserProfile == null)
+                                                                    {
+
+                                                                        <img src="https://cdn.blablacar.com/comuto3/images/avatar/pixar/passenger-m-02.svg"
+                                                                             alt="" />
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                        <img src="@item.UserProfile" alt="@item.UserName" />
+                                                                    }
+                                                                </div>
+                                                            </span><span class="kirk-item-rightAddon">
+                                                                <svg viewBox="0 0 24 24"
+                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                     class="kirk-icon sc-ksZaOG jucjqW"
+                                                                     width="24"
+                                                                     height="24"
+                                                                     aria-hidden="true">
+                                                                    <polyline fill="none"
+                                                                              stroke="#708C91"
+                                                                              stroke-width="2"
+                                                                              stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              stroke-miterlimit="10"
+                                                                              points="9 18 15 12 9 6"></polyline>
+                                                                </svg>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

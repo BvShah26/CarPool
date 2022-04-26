@@ -12,6 +12,8 @@ namespace Apis.Infrastructure.Preference
         Task<PreferenceType> GetPreferenceType_ById(int id);
         Task<List<PreferenceType>> Search_PreferenceType(string SearchValue);
 
+        
+
         Task<PreferenceType> Add_PreferenceType(PreferenceType PreferenceType);
         Task<PreferenceType> Update_PreferenceType(int id, PreferenceType PreferenceType);
         Task<PreferenceType> Delete_PreferenceType(int id);

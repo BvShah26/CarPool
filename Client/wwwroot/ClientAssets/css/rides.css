@@ -4114,7 +4114,7 @@ data-styled.g70[id="sc-fbPSWO"] {
     flex: 1;
     border: 0;
     background: none;
-    white-space: pre-line;
+    /* white-space: pre-line; */
 }
     /*!sc*/
     .CcFKY.kirk-item--clickable:hover {
@@ -5233,6 +5233,7 @@ data-styled.g155[id="sc-global-iBwqPH2"] {
 .hOOrch {
     grid-column: 3 / 11;
 }
+
 .button-wrapper {
     display: flex;
     flex-direction: column;

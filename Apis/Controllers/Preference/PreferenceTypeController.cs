@@ -30,6 +30,8 @@ namespace Apis.Controllers.Preference
             return await _preferenceType_Repo.GetPreferenceTypes();
         }
 
+        
+
 
         // GET api/<PreferenceTypeController>/5
         [HttpGet("{id}")]

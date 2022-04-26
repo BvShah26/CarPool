@@ -26,10 +26,6 @@ namespace Client.Controllers
             httpClient.BaseAddress = new Uri(_config.GetValue<string>("proxyUrl"));
         }
 
-        public IActionResult Index() //Delete this and view
-        {
-            return View();
-        }
 
         [HttpGet]
         public IActionResult Register()
@@ -40,13 +36,27 @@ namespace Client.Controllers
         [HttpPost]
         public IActionResult Register(ClientUsers clientUsers)
         {
-            HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("ClientUser", clientUsers).Result;
-            if (responseMessage.IsSuccessStatusCode)
+            try
             {
-                return RedirectToAction("Index");
+                if (clientUsers != null)
+                {
+                    HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("ClientUser", clientUsers).Result;
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        string res = responseMessage.Content.ReadAsStringAsync().Result;
+                        ClientUsers client = JsonConvert.DeserializeObject<ClientUsers>(res);
+                        HttpContext.Session.SetString("UserName", client.Name);
+                        HttpContext.Session.SetInt32("UserId", client.Id);
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
             }
+            catch (Exception)
+            {
+                throw new Exception("Registration Failed");
+            }
+            return View(clientUsers);
 
-            return View();
         }
 
         [HttpGet]
@@ -59,22 +69,27 @@ namespace Client.Controllers
         [HttpPost]
         public IActionResult Login(ClientLoginView clientLogin)
         {
-            HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("ClientUser/Login", clientLogin).Result;
-
-            if (responseMessage.IsSuccessStatusCode)
+            if (clientLogin != null)
             {
-                string res = responseMessage.Content.ReadAsStringAsync().Result;
-                ClientUsers client = JsonConvert.DeserializeObject<ClientUsers>(res);
+                HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("ClientUser/Login", clientLogin).Result;
 
-                HttpContext.Session.SetString("UserName", client.Name);
-                HttpContext.Session.SetInt32("UserId", client.Id);
-                if (String.IsNullOrEmpty(clientLogin.ReturnUrl))
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("Index","Home");
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    ClientUsers client = JsonConvert.DeserializeObject<ClientUsers>(res);
+
+                    HttpContext.Session.SetString("UserName", client.Name);
+                    HttpContext.Session.SetInt32("UserId", client.Id);
+                    if (String.IsNullOrEmpty(clientLogin.ReturnUrl))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    return LocalRedirect(clientLogin.ReturnUrl);
                 }
-                return LocalRedirect(clientLogin.ReturnUrl);
+                return View(clientLogin);
+            
             }
-            return View(clientLogin);
+            return View();
         }
 
         //Login Identity

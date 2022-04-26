@@ -48,6 +48,7 @@ namespace Client.Controllers
 
             return PartialView("_RidePartial", records);
         }
+
         [HttpPost]
         public IActionResult Index(SearchRide searchRide)
         {
@@ -109,25 +110,18 @@ namespace Client.Controllers
             return View();
         }
 
-        
-
-        //[HttpPost]
-        //public IActionResult Rides(List<RideDetailsView> rides)
-        //{
-        //    return View(rides);
-        //}
 
         [HttpGet]
         public IActionResult Details(int RideId, int Pickup_dist, int Drop_dist, int Seat,int Publisher)
         {
-            // check for session
-            // if login true then redirect to booking page directly
-            // Check For Login ===== ======= ======== =========
+            //Edit Ride
 
             if(Publisher == HttpContext.Session.GetInt32("UserId"))
             {
                 //Edit Published Ride 
-                return Unauthorized();
+                ViewBag.IsPublisher = true;
+
+                //return to publish ride details .. so can accept decline
             }
             HttpResponseMessage responseMessage = httpClient.GetAsync($"SearchRide/RideDetails/{RideId}").Result;
             if (responseMessage.IsSuccessStatusCode)

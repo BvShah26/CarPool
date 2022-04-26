@@ -1,6 +1,7 @@
 ﻿using Apis.Data;
 using Apis.Infrastructure.Chat;
 using DataAcessLayer.Models.Chat;
+using DataAcessLayer.ViewModels.Chat;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +35,7 @@ namespace Apis.Controllers.Chat
         [HttpGet("UserRooms/{UserId}")]
         public async Task<IActionResult> UserRooms(int UserId)
         {
-            List<ChatRoom> rooms = await _chatRoom_Repo.GetUser_ChatRooms(UserId);
+            List<ChatInboxesViewModel> rooms = await _chatRoom_Repo.GetUser_ChatRooms(UserId);
             return Ok(rooms);
         }
 

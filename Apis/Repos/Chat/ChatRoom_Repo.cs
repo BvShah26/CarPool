@@ -1,6 +1,7 @@
 ﻿using Apis.Data;
 using Apis.Infrastructure.Chat;
 using DataAcessLayer.Models.Chat;
+using DataAcessLayer.ViewModels.Chat;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -39,14 +40,23 @@ namespace Apis.Repos.Chat
             return RoomId;
         }
 
-        public async Task<List<ChatRoom>> GetUser_ChatRooms(int UserId)
+        public async Task<List<ChatInboxesViewModel>> GetUser_ChatRooms(int UserId)
         {
-            List<ChatRoom> rooms = await _context.ChatRoom.Where(x => x.PublisherId == UserId
+            var rooms = await _context.ChatRoom.Where(x => x.PublisherId == UserId
             || x.RiderId == UserId
             )
                 .Include(x => x.Publisher)
                 .Include(y => y.Ride)
                 .Include(x => x.Rider)
+                .Select(x => new ChatInboxesViewModel()
+                {
+                    RoomId = x.Id,
+                    DepartureCity = x.Ride.Departure_City,
+                    DestinationCity = x.Ride.Destination_City,
+                    RideId = x.RideId,
+                    UserName = x.PublisherId == UserId ? x.Rider.Name : x.Publisher.Name,
+                    UserProfile = x.PublisherId == UserId ? x.Rider.ProfileImage : x.Publisher.ProfileImage
+                })
                 .ToListAsync();
 
             return rooms;
