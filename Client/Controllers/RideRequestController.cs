@@ -1,4 +1,5 @@
 ﻿using DataAcessLayer.Models.Rides;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -23,15 +24,30 @@ namespace Client.Controllers
         [HttpGet]
         public IActionResult Index(int RequestId, Boolean status, int? RideId, int? Seat,int? UserId)
         {
-            HttpResponseMessage responseRideStatus = httpClient.PutAsJsonAsync($"RideApprovals/UpdateStatus/{RequestId}", new { IsApproved = status }).Result;
-            if (responseRideStatus.IsSuccessStatusCode)
+            if (IsLogin() == true)
             {
-                if (status == true)
+                HttpResponseMessage responseRideStatus = httpClient.PutAsJsonAsync($"RideApprovals/UpdateStatus/{RequestId}", new { IsApproved = status }).Result;
+                if (responseRideStatus.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("Confirmed", "Book", new { Id = RideId, SeatQty = Seat,UserId= UserId });
+                    if (status == true)
+                    {
+                        return RedirectToAction("Confirmed", "Book", new { Id = RideId, SeatQty = Seat, UserId = UserId });
+                    }
                 }
+                return View();
             }
-            return View();
+            return RedirectToAction("Login", "Account");
+
         }
+
+        public Boolean IsLogin()
+        {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
     }
 }

@@ -30,6 +30,7 @@ namespace Client.Controllers
         //All Vehicles
         public IActionResult Index()
         {
+            string returnUrl = HttpContext.Request.Path;
             if (IsLogin() == true)
             {
                 var UserId = HttpContext.Session.GetInt32("UserId");
@@ -41,35 +42,41 @@ namespace Client.Controllers
                     return View(vehicles);
                 }
                 return RedirectToAction("Add");
-
             }
-            return RedirectToAction("Login", "Account");
-
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
         }
 
         //Add Vehicles
         [HttpGet]
         public IActionResult Add()
         {
-            HttpResponseMessage responseMessage = httpClient.GetAsync("Vehicles").Result;
-            if (responseMessage.IsSuccessStatusCode)
+            string returnUrl = HttpContext.Request.Path;
+
+            if (IsLogin() == true)
             {
-                string res = responseMessage.Content.ReadAsStringAsync().Result;
-                List<Vehicle> vehicles = JsonConvert.DeserializeObject<List<Vehicle>>(res);
 
-                ViewData["Vehicles"] = new SelectList(vehicles, "Id", "Name");
+                HttpResponseMessage responseMessage = httpClient.GetAsync("Vehicles").Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    List<Vehicle> vehicles = JsonConvert.DeserializeObject<List<Vehicle>>(res);
 
+                    ViewData["Vehicles"] = new SelectList(vehicles, "Id", "Name");
+
+                }
+                responseMessage = httpClient.GetAsync("VehicleColors").Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    List<VehicleColor> colors = JsonConvert.DeserializeObject<List<VehicleColor>>(res);
+
+                    ViewData["Colors"] = new SelectList(colors, "Id", "Color");
+
+                }
+                return View();
             }
-            responseMessage = httpClient.GetAsync("VehicleColors").Result;
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                string res = responseMessage.Content.ReadAsStringAsync().Result;
-                List<VehicleColor> colors = JsonConvert.DeserializeObject<List<VehicleColor>>(res);
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
 
-                ViewData["Colors"] = new SelectList(colors, "Id", "Color");
-
-            }
-            return View();
         }
 
         [HttpPost]

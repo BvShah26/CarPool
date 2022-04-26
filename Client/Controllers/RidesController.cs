@@ -26,61 +26,91 @@ namespace Client.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            int UserId = (int)HttpContext.Session.GetInt32("UserId");
-            HttpResponseMessage responseMessage = httpClient.GetAsync($"UserRides/{UserId}").Result;
-
-            if (responseMessage.IsSuccessStatusCode)
+            string returnUrl = HttpContext.Request.Path;
+            if (IsLogin() == true)
             {
-                string res = responseMessage.Content.ReadAsStringAsync().Result;
-                List<UserRideViewModal> rides = JsonConvert.DeserializeObject<List<UserRideViewModal>>(res);
 
-                ViewBag.UserId = UserId;
+                int UserId = (int)HttpContext.Session.GetInt32("UserId");
+                HttpResponseMessage responseMessage = httpClient.GetAsync($"UserRides/{UserId}").Result;
 
-                return View(rides);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    List<UserRideViewModal> rides = JsonConvert.DeserializeObject<List<UserRideViewModal>>(res);
+
+                    ViewBag.UserId = UserId;
+
+                    return View(rides);
+                }
+                return View();
             }
-            return View();
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
         }
 
 
         [HttpGet]
         public IActionResult Details(int id)
         {
-            HttpResponseMessage responseRide = httpClient.GetAsync($"PublishRides/GetRideDetailsUser/{id}").Result;
-            if (responseRide.IsSuccessStatusCode)
+            string returnUrl = HttpContext.Request.Path + "/" + id;
+
+            if (IsLogin() == true)
             {
-                string res = responseRide.Content.ReadAsStringAsync().Result;
-                PublishRide record = JsonConvert.DeserializeObject<PublishRide>(res);
-                // booking of current user
-                
-                //var bookingId = record.Booking.Where()
 
-                //var bookingId = 
-                
+                HttpResponseMessage responseRide = httpClient.GetAsync($"PublishRides/GetRideDetailsUser/{id}").Result;
+                if (responseRide.IsSuccessStatusCode)
+                {
+                    string res = responseRide.Content.ReadAsStringAsync().Result;
+                    PublishRide record = JsonConvert.DeserializeObject<PublishRide>(res);
+                    // booking of current user
 
-                return View(record);
+                    //var bookingId = record.Booking.Where()
+
+                    //var bookingId = 
+
+
+                    return View(record);
+                }
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            return StatusCode(StatusCodes.Status500InternalServerError);
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
+
 
         }
 
         [HttpGet]
         public IActionResult History()
         {
-            int UserId = (int)HttpContext.Session.GetInt32("UserId");
-            HttpResponseMessage responseMessage = httpClient.GetAsync($"UserRides/RideHistory/{UserId}").Result;
+            string returnUrl = HttpContext.Request.Path;
 
-            if (responseMessage.IsSuccessStatusCode)
+            if (IsLogin() == true)
             {
-                string res = responseMessage.Content.ReadAsStringAsync().Result;
-                List<UserRideViewModal> rides = JsonConvert.DeserializeObject<List<UserRideViewModal>>(res);
 
-                ViewBag.UserId = UserId;
+                int UserId = (int)HttpContext.Session.GetInt32("UserId");
+                HttpResponseMessage responseMessage = httpClient.GetAsync($"UserRides/RideHistory/{UserId}").Result;
 
-                return View(rides);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    List<UserRideViewModal> rides = JsonConvert.DeserializeObject<List<UserRideViewModal>>(res);
+
+                    ViewBag.UserId = UserId;
+
+                    return View(rides);
+                }
+                return View();
             }
-            return View();
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
+
         }
 
+        public Boolean IsLogin()
+        {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return false;
+            }
+            return true;
+        }
 
 
     }

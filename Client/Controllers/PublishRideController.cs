@@ -31,6 +31,8 @@ namespace Client.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            string returnUrl = HttpContext.Request.Path;
+
             if (IsLogin() == true)
             {
                 var Name = HttpContext.Session.GetString("UserName");
@@ -49,36 +51,49 @@ namespace Client.Controllers
 
                 return View();
             }
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
+
 
         }
 
         public IActionResult Publish(PublishRide ride)
         {
-            HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("PublishRides", ride).Result;
-            if (responseMessage.IsSuccessStatusCode)
+            if (IsLogin() == true)
             {
-                string res = responseMessage.Content.ReadAsStringAsync().Result;
+                HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("PublishRides", ride).Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
 
-                PublishRide data = JsonConvert.DeserializeObject<PublishRide>(res);
-                return Ok(data);
+                    PublishRide data = JsonConvert.DeserializeObject<PublishRide>(res);
+                    return Ok(data);
 
+                }
+                throw new Exception("Fail Ride Publishing");
             }
-            throw new Exception("Fail Ride Publishing");
+            return RedirectToAction("Login", "Account");
+
         }
 
         //Get All Published Ride of user
         public IActionResult List()
         {
-            var UserId = HttpContext.Session.GetInt32("UserId");
-            HttpResponseMessage responseMessage = httpClient.GetAsync($"PublishRides/UserVehicles/{UserId}").Result;
-            if (responseMessage.IsSuccessStatusCode)
+            string returnUrl = HttpContext.Request.Path;
+
+            if (IsLogin() == true)
             {
-                string res = responseMessage.Content.ReadAsStringAsync().Result;
-                List<PublishRide> rides = JsonConvert.DeserializeObject<List<PublishRide>>(res);
-                return View(rides);
+                var UserId = HttpContext.Session.GetInt32("UserId");
+                HttpResponseMessage responseMessage = httpClient.GetAsync($"PublishRides/UserVehicles/{UserId}").Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    List<PublishRide> rides = JsonConvert.DeserializeObject<List<PublishRide>>(res);
+                    return View(rides);
+                }
+                return BadRequest();
             }
-            return BadRequest();
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
+
         }
 
         //Archived Rides
@@ -92,16 +107,22 @@ namespace Client.Controllers
             //call api of booking
             //Combine it and distinct it
             //Distinct it
+            string returnUrl = HttpContext.Request.Path;
 
-            var UserId = HttpContext.Session.GetInt32("UserId");
-            HttpResponseMessage responseMessage = httpClient.GetAsync($"PublishRides/History/{UserId}").Result;
-            if (responseMessage.IsSuccessStatusCode)
+            if (IsLogin() == true)
             {
-                string res = responseMessage.Content.ReadAsStringAsync().Result;
-                List<PublishRide> rides = JsonConvert.DeserializeObject<List<PublishRide>>(res);
-                return View(rides);
+                var UserId = HttpContext.Session.GetInt32("UserId");
+                HttpResponseMessage responseMessage = httpClient.GetAsync($"PublishRides/History/{UserId}").Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    List<PublishRide> rides = JsonConvert.DeserializeObject<List<PublishRide>>(res);
+                    return View(rides);
+                }
+                return BadRequest();
             }
-            return BadRequest();
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
+
         }
 
 
@@ -112,20 +133,26 @@ namespace Client.Controllers
 
             //Parameter Validation 
             //Also at api side //this id should be of current user only otherwise Unauthorized()
-            
+
             //Return View Accordingly Owner And Search
 
+            string returnUrl = HttpContext.Request.Path;
 
-            HttpResponseMessage responseMessage = httpClient.GetAsync($"PublishRides/{id}").Result;
-            if (responseMessage.IsSuccessStatusCode)
+            if (IsLogin() == true)
             {
-                string res = responseMessage.Content.ReadAsStringAsync().Result;
-                PublishRide ride = JsonConvert.DeserializeObject<PublishRide>(res);
-                //return Ok(ride);
-                return View(ride);
-                //return Ok();
+                HttpResponseMessage responseMessage = httpClient.GetAsync($"PublishRides/{id}").Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    PublishRide ride = JsonConvert.DeserializeObject<PublishRide>(res);
+                    //return Ok(ride);
+                    return View(ride);
+                    //return Ok();
+                }
+                return BadRequest();
             }
-            return BadRequest();
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
+
         }
 
         public Boolean IsLogin()
