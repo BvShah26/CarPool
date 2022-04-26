@@ -1,80 +1,144 @@
 ﻿@model IEnumerable<DataAcessLayer.ViewModels.Client.UserRideViewModal>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "History";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
-<h1>History</h1>
+@section Headers{
+    <link href="~/ClientAssets/css/rides.css" rel="stylesheet" />
+}
 
-<p>
-    <a asp-action="Create">Create New</a>
-    <div id="cardHere" ></div>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.RideId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Time)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Departure)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Destination)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Publisher)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PublisherProfile)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RideId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Time)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Departure)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Destination)
-                </td>
-                <td>
-                    @(ViewBag.UserId == item.PublisherId ? "You" : item.Publisher )
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PublisherProfile)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+<div id="root" class="" style="min-height: 717px; height: auto">
+
+
+    <div class="sc-olbas iVKYbq kirk-drawer-dimmer" aria-hidden="true"></div>
+    <main class="mainContent relative"
+          id="MainContent"
+          tabindex="-1"
+          style="min-height: 717px; height: auto">
+        <div class="transition-wrapper relative "
+             style="min-height: 717px; height: auto">
+            <div class="sc-bZkfAO dfCmkc page-wrapper  fade-forward-enter-done"
+                 style="min-height: 717px; height: auto">
+                <div class="transition-wrapper relative "
+                     style="min-height: 717px; height: auto">
+                    <div class="sc-bZkfAO dfCmkc page-wrapper  fade-backward-enter-done"
+                         style="min-height: 717px; height: auto">
+                        <div class="sc-bZkfAO dfCmkc"
+                             style="min-height: 717px; height: auto">
+                            <div role="presentation" class="sc-gicCDI dDCeGO">
+
+                                <div role="presentation" class="sc-fctJkW ftnfJP">
+                                    <div class="section-content">
+                                        <h1 class="sc-gsnTZi sc-hTtwUo sc-jgbSNz GJlVl ipZXlI jlbwlf">
+                                            Your ride  history
+                                        </h1>
+                                        <ul class="sc-lkwKjF dgNOPE">
+                                            @foreach (var item in Model)
+                                            {
+                                                <li class="kirk-cardItem">
+                                                    <div class="kirk-card sc-jmNpzm sc-gkJlnC iIJdyu jHxAGY kirk-tripCard">
+                                                        <div class="sc-eVQfli kGTyGZ"></div>
+                                                        <a href="#">
+                                                            <div class="kirk-tripCard-mainContainer">
+                                                                @if (item.Status != "")
+                                                                {
+                                                                    <div class="kirk-item kirk-item--highlighted sc-GVOUr CcFKY kirk-tripCard-top-item">
+                                                                        <span class="kirk-item-leftWrapper">
+                                                                            <span class="kirk-item-leftAddon" style="display:flex">
+                                                                                <svg viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" class="kirk-icon sc-ksZaOG jucjqW" width="24" height="24" aria-hidden="true"><path d="M11 1C5.455 1 1 5.455 1 11s4.455 10 10 10 10-4.455 10-10S16.545 1 11 1zm0 3.636c1.09 0 2.09.273 3 .728L5.364 14a6.644 6.644 0 0 1-.728-3A6.324 6.324 0 0 1 11 4.636zm0 12.728c-1.09 0-2.09-.273-3-.728L16.636 8c.455.91.728 1.91.728 3A6.324 6.324 0 0 1 11 17.364z" stroke="#708C91" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>
+
+                                                                            </span><span class="kirk-item-leftText" style="display:flex">
+
+                                                                                <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">@item.Status</span>
+                                                                                <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU">@item.HasNewRequest</span>
+                                                                                <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">@item.IsRequestPending</span>
+
+
+                                                                            </span>
+                                                                        </span>
+                                                                    </div>
+                                                                }
+                                                                <span class="kirk-text kirk-text-subheaderStrong sc-fbPSWO ldKURU kirk-tripCard-title">@item.Date.ToString("M"), @item.Time.ToShortTimeString()</span>
+                                                                <div class="kirk-tripCard-main">
+                                                                    <div class="kirk-tripCard-itinerary">
+                                                                        <ul class="sc-iBkjds dMXhXp">
+                                                                            <li class="sc-ftvSup hEveiQ">
+                                                                                <div>
+                                                                                    <div class="sc-papXJ dcCGwH kirk-timeDuration notranslate">
+                                                                                        <time aria-hidden="true"
+                                                                                              class="sc-gsnTZi sc-eCYdqJ sc-jSMfEi GJlVl NfozK iuhvyf"></time>
+                                                                                    </div>
+                                                                                    <div aria-hidden="true"
+                                                                                         class="sc-kDDrLX fcQvzA">
+                                                                                        <div class="sc-iqcoie dVexZR"></div>
+                                                                                        <div class="sc-crXcEl cvoNRg">
+                                                                                            <div class="sc-bczRLJ fnUAXU kirk-bullet kirk-bullet--default"
+                                                                                                 aria-hidden="true"></div>
+                                                                                        </div>
+                                                                                        <div class="sc-iqcoie biKqgB"></div>
+                                                                                    </div>
+                                                                                    <div class="sc-bjUoiL ldeDBZ">
+                                                                                        <span class="sc-gsnTZi sc-eCYdqJ sc-jSMfEi sc-idiyUo GJlVl NfozK iuhvyf dWGBOT">@item.Departure</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="sc-ftvSup hEveiQ">
+                                                                                <div>
+                                                                                    <div class="sc-papXJ dcCGwH kirk-timeDuration notranslate">
+                                                                                        <time aria-hidden="true"
+                                                                                              class="sc-gsnTZi sc-eCYdqJ sc-jSMfEi GJlVl NfozK iuhvyf"></time>
+                                                                                    </div>
+                                                                                    <div aria-hidden="true"
+                                                                                         class="sc-kDDrLX fcQvzA">
+                                                                                        <div class="sc-iqcoie biKqgB"></div>
+                                                                                        <div class="sc-crXcEl cvoNRg">
+                                                                                            <div class="sc-bczRLJ fnUAXU kirk-bullet kirk-bullet--default"
+                                                                                                 aria-hidden="true"></div>
+                                                                                        </div>
+                                                                                        <div class="sc-iqcoie dVexZR"></div>
+                                                                                    </div>
+                                                                                    <div class="sc-bjUoiL ldeDBZ">
+                                                                                        <span class="sc-gsnTZi sc-eCYdqJ sc-jSMfEi sc-idiyUo GJlVl NfozK iuhvyf dWGBOT">@item.Destination</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <span class="sc-gsnTZi sc-eCYdqJ sc-jSMfEi sc-iFwKgL GJlVl NfozK iuhvyf hUqJiW"></span>
+                                                                </div>
+                                                                <div class="kirk-item sc-GVOUr sc-dUWWNf CcFKY iEWkBw sc-fmrZth cHqxHW kirk-tripCard-profile" style="position: relative; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-align-items: center; -webkit-box-align: center; -ms-flex-align: center; align-items: center; -webkit-flex: 1; -ms-flex: 1; flex: 1; border: 0; background: none; white-space: unset !important; ">
+                                                                    <span class="kirk-item-leftWrapper">
+                                                                        <span class="kirk-item-leftAddon">
+                                                                            <div class="sc-fXynhf FdgvG kirk-avatar--image kirk-avatar">
+                                                                                @if (item.PublisherProfile == null)
+                                                                                {
+                                                                                    <img src="https://cdn.blablacar.com/comuto3/images/avatar/pixar/passenger-m-02.svg" alt="@item.Publisher">
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <img src=@item.PublisherProfile />
+                                                                                }
+                                                                            </div>
+                                                                        </span>
+                                                                        <span class="kirk-item-leftText"><span class="kirk-text kirk-text-title sc-fbPSWO ldKURU">@(ViewBag.UserId == item.PublisherId ? "You" : item.Publisher ) </span></span>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ul>                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

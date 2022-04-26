@@ -1,5 +1,8 @@
 ﻿using Apis.Data;
+using Apis.Infrastructure.Bookings;
+using Apis.Infrastructure.Ratings;
 using DataAcessLayer.ViewModels.Client;
+using DataAcessLayer.ViewModels.Ride;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +18,14 @@ namespace Apis.Controllers
     public class UserRidesController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
+        private readonly IRatings_Repo _ratingRepo;
+        private readonly IBooking_Repo _bookingRepo;
 
-        public UserRidesController(ApplicationDBContext context)
+        public UserRidesController(ApplicationDBContext context, IRatings_Repo ratingRepo,IBooking_Repo booking_Repo)
         {
             _context = context;
+            _ratingRepo = ratingRepo;
+            _bookingRepo = booking_Repo;
         }
 
         [HttpGet("{UserId}")]
@@ -43,13 +50,16 @@ namespace Apis.Controllers
                     PublisherProfile = x.Publisher.ProfileImage,
                     PublisherId = x.PublisherId,
                     Status = (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId && rideRequest.IsRejected == true).First() != null)
-                    ? "You're Rejected" :
-                    (x.Booking.Where(booking => booking.Publish_RideId == x.Id && booking.RiderId == UserId && booking.bookingCancellation.BookingId == booking.Id).First() != null ? "Cancelled" : ""),
-                    //check booking cancellation 
+                   ? "You're Rejected" :
+                   (x.Booking.Where(booking => booking.Publish_RideId == x.Id && booking.RiderId == UserId && booking.bookingCancellation.BookingId == booking.Id).First() != null ? "Cancelled" : ""),
+                    //check booking cancellation
 
                     //only for publisher
-                    HasNewRequest = (x.IsInstant_Approval == false && x.Ride_Approval.Any(rideRequest => rideRequest.IsRejected == false && rideRequest.IsApproved == false) == true ? "New booking request" : ""),
-                    IsRequestPending = (x.IsInstant_Approval == false && x.Ride_Approval.Any(rideRequest => rideRequest.IsRejected == false && rideRequest.IsApproved == false && rideRequest.UserId == UserId) == true ? "Awaiting approval" : "" )
+                    HasNewRequest = (x.JourneyDate.Date > DateTime.Now.Date ? (x.IsInstant_Approval == false && x.Ride_Approval.Any(rideRequest => rideRequest.IsRejected == false && rideRequest.IsApproved == false) == true ? "New booking request" : "") : ""),
+                    IsRequestPending = (x.JourneyDate.Date > DateTime.Now.Date ? (x.IsInstant_Approval == false && x.Ride_Approval.Any(rideRequest => rideRequest.IsRejected == false && rideRequest.IsApproved == false && rideRequest.UserId == UserId) == true ? "Awaiting approval" : "") : "" ),
+                    HasRated = (x.JourneyDate.Date > DateTime.Now.Date ?
+                   true : ((x.PublisherId == UserId ? _ratingRepo.HasRated_AllPartner(x.Id, UserId) : _ratingRepo.HasRatedPublisher(x.Id, UserId))))
+
                 })
                 .ToListAsync();
             return Ok(rides);
@@ -78,10 +88,60 @@ namespace Apis.Controllers
                     Publisher = x.Publisher.Name, // Check for session at client
                     PublisherProfile = x.Publisher.ProfileImage,
                     PublisherId = x.PublisherId,
-                    Status = (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId && rideRequest.IsRejected == true).First() != null) ? "You're Rejected" : ""
+                    Status = (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId && rideRequest.IsRejected == true).First() != null)
+                    ? "You're Rejected" :
+                    (x.Booking.Where(booking => booking.Publish_RideId == x.Id && booking.RiderId == UserId && booking.bookingCancellation.BookingId == booking.Id).First() != null ? "Cancelled" : ""),
                 })
                 .ToListAsync();
             return Ok(rides);
+        }
+
+        [HttpGet("BookingDetails/{RideId}/{UserId}")]
+        public async Task<IActionResult> BookingDetails(int RideId,int UserId)
+        {
+            var rideDetails = await _context.Publish_Rides.Where(item => item.Id == RideId)
+                .Include(x => x.Publisher)
+                .Include(x => x.Vehicle).ThenInclude(userVehicle => userVehicle.Vehicle).ThenInclude(vehicle => vehicle.VehicleBrand)
+                .Include(x => x.Vehicle).ThenInclude(vehicle => vehicle.Color)
+
+                .Select(x => new UserRideDetailsViewModel()
+                {
+                    Departure_City = x.Departure_City,
+                    Destination_City = x.Destination_City,
+
+                    DropOff_Location = x.DropOff_Location,
+                    PickUp_Location = x.PickUp_Location,
+
+                    PickUp_Time = x.PickUp_Time,
+                    DropOff_Time = x.DropOff_Time,
+
+                    Seat = x.Booking.Where(booking => booking.Publish_RideId == x.Id && booking.RiderId == UserId).Select(booking => booking.SeatQty).FirstOrDefault(),
+                    Price_Seat = x.Price_Seat,
+
+
+                    PublisherName = x.Publisher.Name,
+                    PublisherId = x.PublisherId,
+                    PublisherProfile = x.Publisher.ProfileImage,
+
+                    RideId = x.Id,
+                    Ride_Note = x.Ride_Note,
+
+                    MaxPassengers = x.MaxPassengers,
+
+                    VehicleImage = x.Vehicle.VehicleImage,
+                    VehicleName = x.Vehicle.Vehicle.VehicleBrand.Name + " " + x.Vehicle.Vehicle.Name,
+                    VehicleColor = x.Vehicle.Color.Color,
+
+                    JourneyDate = x.JourneyDate,
+                    HasRatedPubllisher = (x.JourneyDate.Date > DateTime.Now.Date ? true : _ratingRepo.HasRatedPublisher(x.PublisherId, UserId))
+
+                }).FirstOrDefaultAsync();
+
+            List<RidePartners> partners = await _bookingRepo.GetRideBookings(RideId);
+            rideDetails.Partners = partners;
+
+
+            return Ok(rideDetails);
         }
 
     }

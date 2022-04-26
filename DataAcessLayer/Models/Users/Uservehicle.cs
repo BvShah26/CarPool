@@ -10,8 +10,8 @@ namespace DataAcessLayer.Models.Users
     {
         public int Id { get; set; }
         public string VehicleImage { get; set; }
-        public Boolean IsCar_NumberDisclosed { get; set; }
-        public string CarNumber { get; set; }
+        //public Boolean IsCar_NumberDisclosed { get; set; }
+        //public string CarNumber { get; set; }
 
 
         public Vehicle Vehicle { get; set; } //seltos,creta...

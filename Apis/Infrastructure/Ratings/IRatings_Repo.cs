@@ -11,7 +11,10 @@ namespace Apis.Infrastructure.Ratings
         Task AddPublisherRating(PublisherRatings ratings);
         Task AddPartnerRating(RidePartnerRating ratings);
 
-        Task<bool> HasRatedPublisher(int PublisherId, int UserId);
+        bool HasRatedPublisher(int PublisherId, int UserId);
         Task<bool> HasRatedPartner(int PartnerId, int UserId);
+
+
+        bool HasRated_AllPartner(int RideId, int SessionUserId);
     }
 }

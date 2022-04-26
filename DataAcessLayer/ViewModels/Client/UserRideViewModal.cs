@@ -18,5 +18,6 @@ namespace DataAcessLayer.ViewModels.Client
         public string Status { get; set; }
         public string HasNewRequest { get; set; }
         public string IsRequestPending { get; set; }
+        public bool HasRated { get; set; }
     }
 }

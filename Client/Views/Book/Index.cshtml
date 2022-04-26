@@ -138,26 +138,40 @@
                                         </div>
                                     </div>
 
-                                    @if (Model.status == "")
+                                    @if (Model.PublisherId != ViewBag.UserId)
                                     {
-                                        <div class="button-wrapper p-xl justify-center button-wrapper--auto">
-                                            <form asp-action=@(Model.IsInstantApproval? "Confirmed" : "Request" ) method="get">
-                                                <input type="hidden" name="Id" value="@Model.Id" />
-                                                <input type="hidden" id="SeatQty" name="SeatQty" value="@Model.SeatQty" />
-                                                <button class="kirk-button kirk-button-primary sc-iTONeN jDVucc"
-                                                        type="submit">
-                                                    <span class="button-label"><span>@(Model.IsInstantApproval ? "Book" : "Request" )</span></span>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="button-wrapper p-xl justify-center button-wrapper--auto">
+                                        @if (Model.status == "")
+                                        {
+                                            <div class="button-wrapper p-xl justify-center button-wrapper--auto">
+                                                <form asp-action=@(Model.IsInstantApproval ? "Confirmed" : "Request" ) method="get">
+                                                    <input type="hidden" name="Id" value="@Model.Id" />
+                                                    <input type="hidden" id="SeatQty" name="SeatQty" value="@Model.SeatQty" />
+                                                    <button class="kirk-button kirk-button-primary sc-iTONeN jDVucc"
+                                                            type="submit">
+                                                        <span class="button-label"><span>@(Model.IsInstantApproval ? "Book" : "Request" )</span></span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="button-wrapper p-xl justify-center button-wrapper--auto">
                                                 <button class="kirk-button kirk-button-primary sc-iTONeN jDVucc"
                                                         type="button">
                                                     <span class="button-label"><span>@Model.status</span></span>
                                                 </button>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="button-wrapper p-xl justify-center button-wrapper--auto">
+                                            <a asp-action="Index" asp-controller="Rides">
+                                                <button class="kirk-button kirk-button-primary sc-iTONeN jDVucc"
+                                                        type="button">
+                                                    <span class="button-label"><span>Check your rides</span></span>
+                                                </button>
+                                            </a>
                                         </div>
                                     }
                                 </div>

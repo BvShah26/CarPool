@@ -33,6 +33,7 @@ namespace Client.Controllers
             {
                 //Confirmation Page Here
                 int UserId = (int)HttpContext.Session.GetInt32("UserId");
+                ViewBag.UserId = UserId;
                 try
                 {
                     HttpResponseMessage responseMessage = httpClient.GetAsync($"SearchRide/VerifyRide/{RideId}/{Seat}/{UserId}").Result;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using DataAcessLayer.Helper;
 using DataAcessLayer.Models.Booking;
 using DataAcessLayer.Models.Chat;
 using DataAcessLayer.Models.Location;
@@ -12,6 +13,7 @@ namespace DataAcessLayer.Models.Users
 {
     public class ClientUsers
     {
+        [Key]
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -24,8 +26,10 @@ namespace DataAcessLayer.Models.Users
         public Gender? Gender { get; set; }
 
         public long MobileNumber { get; set; }
+
+        [MinimumAgeAttribute(18)]
         public DateTime BirthDate { get; set; }
-        public int LicenseNumber { get; set; }
+        //public int LicenseNumber { get; set; }
         public string ProfileImage { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }

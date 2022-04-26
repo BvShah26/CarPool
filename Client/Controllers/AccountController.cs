@@ -36,24 +36,27 @@ namespace Client.Controllers
         [HttpPost]
         public IActionResult Register(ClientUsers clientUsers)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (clientUsers != null)
+                try
                 {
-                    HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("ClientUser", clientUsers).Result;
-                    if (responseMessage.IsSuccessStatusCode)
+                    if (clientUsers != null)
                     {
-                        string res = responseMessage.Content.ReadAsStringAsync().Result;
-                        ClientUsers client = JsonConvert.DeserializeObject<ClientUsers>(res);
-                        HttpContext.Session.SetString("UserName", client.Name);
-                        HttpContext.Session.SetInt32("UserId", client.Id);
-                        return RedirectToAction("Index", "Home");
+                        HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("ClientUser", clientUsers).Result;
+                        if (responseMessage.IsSuccessStatusCode)
+                        {
+                            string res = responseMessage.Content.ReadAsStringAsync().Result;
+                            ClientUsers client = JsonConvert.DeserializeObject<ClientUsers>(res);
+                            HttpContext.Session.SetString("UserName", client.Name);
+                            HttpContext.Session.SetInt32("UserId", client.Id);
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                 }
-            }
-            catch (Exception)
-            {
-                throw new Exception("Registration Failed");
+                catch (Exception)
+                {
+                    throw new Exception("Registration Failed");
+                }
             }
             return View(clientUsers);
 
@@ -86,8 +89,12 @@ namespace Client.Controllers
                     }
                     return LocalRedirect(clientLogin.ReturnUrl);
                 }
+                if (responseMessage.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    ViewBag.InvalidCredentials = true;
+                }
                 return View(clientLogin);
-            
+
             }
             return View();
         }

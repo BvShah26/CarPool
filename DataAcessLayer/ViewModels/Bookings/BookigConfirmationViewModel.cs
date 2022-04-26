@@ -12,6 +12,7 @@ namespace DataAcessLayer.ViewModels.Bookings
         public string ToLocation { get; set; }
         public string PickupTime { get; set; }
         public string DropTime { get; set; }
+        public int PublisherId { get; set; }
         public string Publisher { get; set; }
         public string  PublisherProfile { get; set; }
         public int Price { get; set; }

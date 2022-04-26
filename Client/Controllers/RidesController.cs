@@ -49,14 +49,21 @@ namespace Client.Controllers
 
 
         [HttpGet]
-        public IActionResult Details(int id)
+        public IActionResult Details(int RideId,int PublisherId)
         {
-            string returnUrl = HttpContext.Request.Path + "/" + id;
-
+            string returnUrl = HttpContext.Request.Path + "/" + RideId;
             if (IsLogin() == true)
             {
-
-                HttpResponseMessage responseRide = httpClient.GetAsync($"PublishRides/GetRideDetailsUser/{id}").Result;
+                int UserId = (int)HttpContext.Session.GetInt32("UserId");
+                if(PublisherId == UserId)
+                {
+                    return RedirectToAction("Offer");
+                }
+                else
+                {
+                    return RedirectToAction("Bookings",new { RideId });
+                }
+                HttpResponseMessage responseRide = httpClient.GetAsync($"PublishRides/GetRideDetailsUser/{RideId}").Result;
                 if (responseRide.IsSuccessStatusCode)
                 {
                     string res = responseRide.Content.ReadAsStringAsync().Result;
@@ -75,6 +82,23 @@ namespace Client.Controllers
             return RedirectToAction("Login", "Account", new { url = returnUrl });
 
 
+        }
+
+
+        [HttpGet]
+        public IActionResult Bookings(int RideId)
+        {
+            int UserId = (int)HttpContext.Session.GetInt32("UserId");
+
+            HttpResponseMessage responseMessage = httpClient.GetAsync($"UserRides/BookingDetails/{RideId}/{UserId}").Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string res = responseMessage.Content.ReadAsStringAsync().Result;
+                UserRideDetailsViewModel rideDetail = JsonConvert.DeserializeObject<UserRideDetailsViewModel>(res);
+                rideDetail.Price_Seat =  rideDetail.Price_Seat * rideDetail.Seat;
+                return View(rideDetail);
+            }
+            return View();
         }
 
         [HttpGet]

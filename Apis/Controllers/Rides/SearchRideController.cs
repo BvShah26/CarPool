@@ -23,7 +23,7 @@ namespace Apis.Controllers.Rides
     {
         private readonly ApplicationDBContext _context;
         private readonly IBooking_Repo _bookingRepo;
-
+        
         public SearchRideController(ApplicationDBContext context, IBooking_Repo bookingRepo)
         {
             _context = context;
@@ -173,6 +173,7 @@ namespace Apis.Controllers.Rides
                     SeatQty = SeatQty,
                     Publisher = x.Publisher.Name,
                     PublisherProfile = x.Publisher.ProfileImage,
+                    PublisherId = x.PublisherId,
                     //status = (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId ).First() != null) ? "You're Rejected" : ""
                     status = (x.Booking.Where(booking => booking.RiderId == UserId ).First() != null)
                     ? "You can't book again" : (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId ).First() != null) ? "You can't request again" : ""

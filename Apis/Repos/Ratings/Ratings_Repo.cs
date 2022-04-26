@@ -31,8 +31,9 @@ namespace Apis.Repos.Ratings
 
         public double GetPatrtnerRatings(int UserId)
         {
+
             var rec = _context.PartnerRatings.Where(x => x.PartnerId == UserId).Select(x => x.Rate).ToList();
-            if(rec.Count > 0)
+            if (rec.Count > 0)
             {
                 double averageRating = rec.Average();
                 return averageRating;
@@ -42,6 +43,7 @@ namespace Apis.Repos.Ratings
 
         public double GetPublisherRating(int PublisherId)
         {
+
             var rec = _context.PublisherRatings.Where(x => x.PublisherId == PublisherId).Select(x => x.Rating).ToList();
             if (rec.Count > 0)
             {
@@ -61,12 +63,30 @@ namespace Apis.Repos.Ratings
             return true;
         }
 
-        public async Task<bool> HasRatedPublisher(int PublisherId, int UserId)
+        public bool HasRatedPublisher(int PublisherId, int UserId)
         {
-            var result = await _context.PublisherRatings.Where(x => x.PublisherId == PublisherId && x.UserId == UserId).FirstOrDefaultAsync();
+            var result =  _context.PublisherRatings.Where(x => x.PublisherId == PublisherId && x.UserId == UserId).FirstOrDefault();
             if (result == null)
             {
                 return false;
+            }
+            return true;
+        }
+
+        public  bool HasRated_AllPartner(int RideId, int SessionUserId)
+        {
+
+            List<int> PartnerId =  _context.Bookings.Where(x => x.Publish_RideId == RideId && x.IsCancelled == false).Select(x => x.RiderId).ToList();
+            if (PartnerId.Count > 0)
+            {
+                foreach (int partner in PartnerId)
+                {
+                    var rated = _context.PartnerRatings.Where(x => x.PartnerId == partner && x.UserId == SessionUserId).FirstOrDefault();
+                    if (rated == null)
+                    {
+                        return false;
+                    }
+                }
             }
             return true;
         }

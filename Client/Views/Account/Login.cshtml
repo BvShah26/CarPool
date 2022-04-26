@@ -4,40 +4,68 @@
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 
+@section Headers{
+    <link href="~/ClientAssets/css/rides.css" rel="stylesheet" />
+}
+
+<form class="sc-bZkfAO dfCmkc" method="post" asp-action="Login" asp-controller="Account">
+    <div role="presentation" class="sc-gicCDI dDCeGO">
+        <div role="presentation" class="sc-fctJkW ftnfJP">
+            <div class="section-content">
+                <h1 class="sc-gsnTZi sc-hTtwUo sc-jgbSNz GJlVl ipZXlI jlbwlf">
+                    What&#x27;s your email and password?
+                </h1>
+                <div class="sc-kYWVYA DfnDF kirk-textField">
+                    <div class="kirk-textField-wrapper">
+                        <input asp-for="Email"
+                               placeholder="Email"
+                               autocomplete="email"
+                               autoCorrect="off"
+                               title="Enter your email address" />
+
+                    </div>
+                </div>
+                <div class="sc-kYWVYA DfnDF kirk-textField">
+                    <div class="kirk-textField-wrapper">
+                        <input asp-for="Password"
+                               placeholder="Password"
+                               autocomplete="current-password"
+                               autoCorrect="off"
+                               title="Enter your password" />
+
+                        <input type="hidden" asp-for="ReturnUrl" value="@ViewBag.ReturnURL" />
 
 
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form id="account" method="post">
-                <h4>Log In.</h4>
-                <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input type="password" asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <input type="hidden" asp-for="ReturnUrl" value="@ViewBag.ReturnURL" />
-               
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Log in</button>
-                </div>
-                <div class="form-group">
-                    @*<p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>*@
-                    <p>
-                        <a asp-action="Register">Register as a new user</a>
-                    </p>
-                </div>
-            </form>
-        </section>
+
+            </div>
+        </div>
     </div>
-</div>
+
+    @if (ViewBag.InvalidCredentials != null)
+    {
+        <div role="presentation" class="sc-ezWOiH enFVJb">
+            <div class="button-wrapper p-xl justify-center button-wrapper--auto">
+
+                <span class="button-label"><span>Invalid Credentials</span></span>
+
+            </div>
+        </div>
+    }
+
+    <div role="presentation" class="sc-ezWOiH enFVJb">
+        <div class="button-wrapper p-xl justify-center button-wrapper--auto" style="min-height: 40px; margin-top: 12px; " >
+            <button class="kirk-button kirk-button-primary sc-iTONeN jDVucc"
+                    type="submit">
+                <span class="button-label"><span>Log in</span></span>
+            </button>
+        </div>
+    </div>
+
+
+</form>
+
+
+
 

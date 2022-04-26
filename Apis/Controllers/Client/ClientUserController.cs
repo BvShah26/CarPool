@@ -52,7 +52,7 @@ namespace Apis.Controllers.Client
             ClientUsers res = _Repo.LoginUser(clientUsers);
             if (res == null)
             {
-                return NotFound();
+                return Unauthorized();
             }
             return Ok(res);
 
