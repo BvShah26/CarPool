@@ -9,5 +9,7 @@ namespace Apis.Infrastructure.Bookings
     public interface IBookingCancellation_Repo
     {
         Task CancelBooking(int ReasonId, Book booking);
+
+        Task<List<CancellationReason>> GetCancellationReason();
     }
 }

@@ -1,0 +1,63 @@
+﻿@model IEnumerable<DataAcessLayer.Models.Booking.CancellationReason>
+
+@{
+    ViewData["Title"] = "Rides";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+
+@section Headers{
+    <link href="~/ClientAssets/css/rides.css" rel="stylesheet" />
+}
+
+
+<div class="kirk-modal-dialog">
+    <div class="kirk-modal-body">
+        <div role="presentation" class="sc-fbyfCU ghIEhT">
+            <div class="section-content">
+                <h1 class="sc-gsDKAQ sc-hUpaCq sc-jgrJph erBbkF daGzFx JGsMk">
+                    Select Reason For Cancellation
+                </h1>
+                <ul style="margin-top:30px" class="mb-5">
+
+                    @foreach (var item in Model)
+                    {
+                        <li>
+                            <a type="button" asp-controller="Book" asp-action="CancelBooking" asp-route-ReasonId="@item.Id"
+                               asp-route-BookingId="@ViewBag.BookingId"
+                               class="kirk-item kirk-item--clickable sc-Galmp kNDdlo">
+                                <span class="kirk-item-leftWrapper">
+                                    <span class="kirk-item-leftWrapper">
+                                        <span class="kirk-item-leftText">
+                                            <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU">@item.Reason</span>
+                                        </span>
+                                    </span>
+                                </span>
+                                <span class="kirk-item-rightAddon">
+                                    <svg viewBox="0 0 24 24"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         class="kirk-icon sc-ksZaOG jucjqW"
+                                         width="24"
+                                         height="24"
+                                         aria-hidden="true">
+                                        <polyline fill="none"
+                                                  stroke="#708C91"
+                                                  stroke-width="2"
+                                                  stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  stroke-miterlimit="10"
+                                                  points="9 18 15 12 9 6"></polyline>
+                                    </svg>
+                                </span>
+                                <div aria-hidden="true"
+                                     class="sc-ehmTmK sc-lbOyJj gANVXG hrAVid">
+                                    <hr />
+                                </div>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

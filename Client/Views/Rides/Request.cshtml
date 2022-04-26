@@ -1,0 +1,135 @@
+﻿@model DataAcessLayer.Models.Rides.RideApproval
+
+@{
+    ViewData["Title"] = "Offer";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+@section Headers{
+    <link href="~/ClientAssets/css/rides.css" rel="stylesheet" />
+}
+<div id="root" class="" style="min-height: 342px; height: auto">
+    <div class="sc-olbas iVKYbq kirk-drawer-dimmer" aria-hidden="true"></div>
+    <main class="mainContent relative"
+          id="MainContent"
+          tabindex="-1"
+          style="min-height: 342px; height: auto">
+        <div class="transition-wrapper relative "
+             style="min-height: 342px; height: auto">
+            <div class="sc-bZkfAO dfCmkc page-wrapper  fade-forward-enter-done"
+                 style="min-height: 342px; height: auto">
+                <div class="transition-wrapper relative "
+                     style="min-height: 342px; height: auto">
+                    <div class="sc-bZkfAO dfCmkc page-wrapper"
+                         style="min-height: 342px; height: auto">
+                        <div role="presentation" class="sc-gicCDI dDCeGO">
+                            <div role="presentation" class="sc-fctJkW ftnfJP">
+                                <div class="section-content">
+                                    <h1 class="sc-gsnTZi sc-hTtwUo sc-jgbSNz GJlVl ipZXlI jlbwlf">
+                                        Booking request
+                                    </h1>
+                                </div>
+                            </div>
+
+                            <div role="presentation" class="sc-fctJkW ftnfJP">
+                                <div class="section-content">
+                                    <div aria-hidden="true"
+                                         class="sc-ehmTmK sc-lbOyJj gANVXG hrAVid">
+                                        <hr />
+                                    </div>
+                                    <a class="kirk-item kirk-item--clickable sc-GVOUr sc-afnQL
+                      CcFKY gpzYld" href=" ><span class="kirk-item-leftWrapper">
+                                        <span class="kirk-item-leftText">
+                                            <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU">@Model.User.Name</span><span class="kirk-text kirk-text-body sc-fbPSWO ldKURU kirk-item-body">
+                                                <div class="sc-cwpsFg eUnQiy"></div>
+                                            </span>
+                                        </span></span
+                                        ><span class="kirk-item-rightAddon">
+                                            <div class="sc-fXynhf FdgvG kirk-avatar--image kirk-avatar">
+                                                @if (Model.User.ProfileImage == null)
+                                                {
+
+                                                    <img src="https://cdn.blablacar.com/comuto3/images/avatar/pixar/passenger-m-02.svg"
+                                                         alt="" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="@Model.User.ProfileImage" />
+                                                }
+                                            </div>
+                                        </span><span class="kirk-item-rightAddon">
+                                            <svg viewBox="0 0 24 24"
+                                                 xmlns="http://www.w3.org/2000/svg"
+                                                 class="kirk-icon sc-ksZaOG jucjqW"
+                                                 width="24"
+                                                 height="24"
+                                                 aria-hidden="true">
+                                                <polyline fill="none"
+                                                          stroke="#708C91"
+                                                          stroke-width="2"
+                                                          stroke-linecap="round"
+                                                          stroke-linejoin="round"
+                                                          stroke-miterlimit="10"
+                                                          points="9 18 15 12 9 6"></polyline>
+                                            </svg>
+                                        </span><a class="kirk-item kirk-item--highlighted kirk-item--clickable sc-GVOUr CcFKY"
+                                                  asp-route-RideId="@Model.RideId" asp-route-publisherId="@Model.Ride.PublisherId" asp-route-PartnerId="@Model.UserId" asp-action="Index" asp-controller="Chat">
+
+                                            <span class="kirk-item-leftWrapper">
+                                                <span class="kirk-item-leftText">
+                                                    <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU">Ask @Model.User.Name a question</span>
+                                                </span>
+                                            </span>
+                                        </a>
+                                        <div aria-hidden="true"
+                                             class="sc-ehmTmK sc-lbOyJj gANVXG hrAVid">
+                                            <hr />
+                                        </div>
+                                        <div class="kirk-item sc-GVOUr CcFKY">
+                                            <span class="kirk-item-leftWrapper">
+                                                <span class="kirk-item-leftText">
+                                                    <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU"
+                                                          style="color: rgb(112, 140, 145)">@Model.RequestedSeats seat</span>
+                                                    </span>
+                                                </span><span class="kirk-item-rightText">
+                                                    <div class="kirk-text kirk-text-subheaderStrong sc-fbPSWO ldKURU kirk-item-title">
+                                                        Rs.@(Model.RequestedSeats*Model.Ride.Price_Seat)
+                                                    </div>
+                                                </span>
+                                            </div>
+                                            <div aria-hidden="true"
+                                                 class="sc-ehmTmK sc-lbOyJj gANVXG hrAVid">
+                                                <hr />
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="presentation" class="sc-ezWOiH enFVJb">
+                                <div role="presentation" class="sc-fctJkW ftnfJP">
+                                    <div class="section-content">
+                                        <ul class="sc-grVGCS frNuuV">
+                                            <li>
+                                                <a asp-controller="RideRequest" asp-route-UserId="@Model.UserId" asp-route-Seat=@Model.RequestedSeats asp-route-RideId=@Model.RideId asp-route-RequestId=@Model.Id asp-action="Index" asp-route-status=true >
+
+                                                    <button class="kirk-button kirk-button-primary sc-iTONeN jDVucc"
+                                                            type="button"
+                                                            index="agree">
+                                                        <span class="button-label">Approve</span>
+                                                    </button>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="kirk-button kirk-button-tertiary sc-iTONeN jDVucc"
+                                                   index="1"
+                                                   <a asp-controller="RideRequest" asp-route-RequestId=@Model.Id asp-action="Index" asp-route-status=false class="btn btn-danger"><span class="button-label">Decline</span></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>

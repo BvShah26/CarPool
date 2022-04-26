@@ -41,5 +41,10 @@ namespace DataAcessLayer.ViewModels.Client
         //For Booking
         public bool HasRatedPubllisher { get; set; }
         public int Seat { get; set; }
+        public bool AllowCancel { get; set; }
+        public string IsRequestPending { get; set; }
+        public string Status { get; set; }
+        public int BookingId { get; set; }
+
     }
 }

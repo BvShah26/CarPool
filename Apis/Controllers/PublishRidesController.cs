@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Apis.Data;
 using DataAcessLayer.Models.Rides;
+using DataAcessLayer.ViewModels.Ride;
 
 namespace Apis.Controllers
 {
@@ -152,6 +153,44 @@ namespace Apis.Controllers
         private bool PublishRideExists(int id)
         {
             return _context.Publish_Rides.Any(e => e.Id == id);
+        }
+
+
+        [HttpGet("GetOffer/{RideId}")]
+        public IActionResult GetOffer(int RideId)
+        {
+            var rec = _context.Publish_Rides.Where(x => x.Id == RideId)
+                .Include(x => x.Ride_Approval).ThenInclude(rideReq => rideReq.User)
+                .Include(x => x.Booking).ThenInclude(booking => booking.Rider)
+                .Select(
+                x => new RideOfferViewModel()
+                {
+                    RideId = x.Id,
+                    Departure_City = x.Departure_City,
+                    Destination_City = x.Destination_City,
+                    PickUp_Location = x.PickUp_Location,
+                    DropOff_Location = x.DropOff_Location,
+                    PickUp_Time = x.PickUp_Time,
+                    DropOff_Time = x.DropOff_Time,
+                    JourneyDate = x.JourneyDate,
+                    NewRequests = x.Ride_Approval.Where(request => request.RideId == RideId && request.IsRejected == false && request.IsApproved == false)
+                    .Select(item => new RideReqests_ViewModel()
+                    {
+                        RequestId = item.Id,
+                        RiderName = item.User.Name
+                    }).ToList(),
+                    Partners = x.Booking.Where(booking => booking.Publish_RideId == RideId && booking.IsCancelled == false)
+                    .Select(item => new RidePartners()
+                    {
+                        Id = item.RiderId,
+                        RiderName = item.Rider.Name,
+                        RiderProfile = item.Rider.ProfileImage,
+                        SeatQty = item.SeatQty
+                    })
+                    .ToList()
+                }).FirstOrDefault();
+
+            return Ok(rec);
         }
     }
 }

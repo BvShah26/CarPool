@@ -18,7 +18,8 @@ namespace Apis.Repos.Bookings
         }
         public async Task<RideApproval> GetRequest(int id)
         {
-            return await _context.RideApprovals.FindAsync(id);
+            //Make ViewModel
+            return await _context.RideApprovals.Include(x => x.User).Include(x => x.Ride).Where(x=> x.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<RideApproval> GetUserRideRequest(int RideId,int UserId)

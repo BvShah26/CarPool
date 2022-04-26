@@ -204,7 +204,7 @@
 
                     success: function (r) {
                         console.log(r);
-                        window.location.href = "/PublishRide/Details/" + r.id;
+                        window.location.href = "/Rides/Offer/?RideId" + r.id;
                     },
                     error: function (req) {
                         alert("Ride Not Published");

@@ -1,5 +1,6 @@
 ﻿using DataAcessLayer.Models.Rides;
 using DataAcessLayer.ViewModels.Client;
+using DataAcessLayer.ViewModels.Ride;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -57,27 +58,27 @@ namespace Client.Controllers
                 int UserId = (int)HttpContext.Session.GetInt32("UserId");
                 if(PublisherId == UserId)
                 {
-                    return RedirectToAction("Offer");
+                    return RedirectToAction("Offer",new { RideId});
                 }
                 else
                 {
                     return RedirectToAction("Bookings",new { RideId });
                 }
-                HttpResponseMessage responseRide = httpClient.GetAsync($"PublishRides/GetRideDetailsUser/{RideId}").Result;
-                if (responseRide.IsSuccessStatusCode)
-                {
-                    string res = responseRide.Content.ReadAsStringAsync().Result;
-                    PublishRide record = JsonConvert.DeserializeObject<PublishRide>(res);
-                    // booking of current user
+                //HttpResponseMessage responseRide = httpClient.GetAsync($"PublishRides/GetRideDetailsUser/{RideId}").Result;
+                //if (responseRide.IsSuccessStatusCode)
+                //{
+                //    string res = responseRide.Content.ReadAsStringAsync().Result;
+                //    PublishRide record = JsonConvert.DeserializeObject<PublishRide>(res);
+                //    // booking of current user
 
-                    //var bookingId = record.Booking.Where()
+                //    //var bookingId = record.Booking.Where()
 
-                    //var bookingId = 
+                //    //var bookingId = 
 
 
-                    return View(record);
-                }
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                //    return View(record);
+                //}
+                //return StatusCode(StatusCodes.Status500InternalServerError);
             }
             return RedirectToAction("Login", "Account", new { url = returnUrl });
 
@@ -88,18 +89,77 @@ namespace Client.Controllers
         [HttpGet]
         public IActionResult Bookings(int RideId)
         {
-            int UserId = (int)HttpContext.Session.GetInt32("UserId");
+            string returnUrl = HttpContext.Request.Path+"?RideId="+RideId;
 
-            HttpResponseMessage responseMessage = httpClient.GetAsync($"UserRides/BookingDetails/{RideId}/{UserId}").Result;
-            if (responseMessage.IsSuccessStatusCode)
+            if (IsLogin() == true)
             {
-                string res = responseMessage.Content.ReadAsStringAsync().Result;
-                UserRideDetailsViewModel rideDetail = JsonConvert.DeserializeObject<UserRideDetailsViewModel>(res);
-                rideDetail.Price_Seat =  rideDetail.Price_Seat * rideDetail.Seat;
-                return View(rideDetail);
+
+                int UserId = (int)HttpContext.Session.GetInt32("UserId");
+
+                HttpResponseMessage responseMessage = httpClient.GetAsync($"UserRides/BookingDetails/{RideId}/{UserId}").Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    UserRideDetailsViewModel rideDetail = JsonConvert.DeserializeObject<UserRideDetailsViewModel>(res);
+                    rideDetail.Price_Seat = rideDetail.Price_Seat * rideDetail.Seat;
+                    ViewBag.UserId = UserId;
+                    return View(rideDetail);
+                }
+                return View();
             }
-            return View();
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
+
         }
+
+
+        [HttpGet]
+        public IActionResult Offer(int RideId)
+        {
+            string returnUrl = HttpContext.Request.Path + "?RideId=" + RideId;
+
+            if (IsLogin() == true)
+            {
+
+                int UserId = (int)HttpContext.Session.GetInt32("UserId");
+
+                HttpResponseMessage responseMessage = httpClient.GetAsync($"PublishRides/GetOffer/{RideId}").Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    RideOfferViewModel rideDetail = JsonConvert.DeserializeObject<RideOfferViewModel>(res);
+                    ViewBag.UserId = UserId;
+                    return View(rideDetail);
+                }
+                return View();
+            }
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
+        }
+
+
+        [HttpGet]
+        public IActionResult Request(int RequestId)
+        {
+            string returnUrl = HttpContext.Request.Path + "?RequestId=" + RequestId;
+
+            if (IsLogin() == true)
+            {
+
+                int UserId = (int)HttpContext.Session.GetInt32("UserId");
+
+                HttpResponseMessage responseMessage = httpClient.GetAsync($"RideApprovals/{RequestId}").Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    RideApproval rideRequest = JsonConvert.DeserializeObject<RideApproval>(res);
+                    ViewBag.UserId = UserId;
+                    return View(rideRequest);
+                }
+                return View();
+            }
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
+        }
+
+
 
         [HttpGet]
         public IActionResult History()

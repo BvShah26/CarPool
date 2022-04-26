@@ -27,15 +27,16 @@ namespace Client.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int RideId, int publisherId)
+        public IActionResult Index(int RideId, int publisherId, int? PartnerId)
         {
 
-            string returnUrl = HttpContext.Request.Path + "?RideId=" + RideId + "&publisherId=" + publisherId;
+            string returnUrl = HttpContext.Request.Path + "?RideId=" + RideId + "&publisherId=" + publisherId+ "&PartnerId="+ PartnerId;
             if (IsLogin() == true)
             {
 
 
-                var UserId = HttpContext.Session.GetInt32("UserId");
+                int UserId = (int)((int)HttpContext.Session.GetInt32("UserId") == publisherId ? PartnerId : publisherId);
+
                 List<ChatMessages> list = null;
 
                 HttpResponseMessage responseMessage = httpClient.GetAsync($"ChatRoom?RideId={RideId}&PublisherId={publisherId}&UserId={UserId}").Result;
@@ -53,6 +54,12 @@ namespace Client.Controllers
 
                     ViewBag.RideId = RideId;
                     ViewBag.PublisherId = publisherId;
+
+                    if(PartnerId != null)
+                    {
+                        ViewBag.Partner = PartnerId;
+                    }
+
                     return View("Details");
 
                 }
@@ -64,13 +71,22 @@ namespace Client.Controllers
 
 
         [HttpPost]
-        public IActionResult PostMessage(string Message, int? RoomId, int? PublisherId, int? RideId)
+        public IActionResult PostMessage(string Message, int? RoomId, int? PublisherId,int? PartnerId, int? RideId)
         {
             if (IsLogin() == true)
             {
                 if (RoomId == null)
                 {
+                    if(PublisherId == HttpContext.Session.GetInt32("UserId"))
+                    {
+                        RoomId = (CreateRoom((int)PublisherId, (int)RideId, (int)PartnerId) );
+
+                    }
+                    else
+                    {
+
                     RoomId = (CreateRoom((int)PublisherId, (int)RideId));
+                    }
                 }
                 if (RoomId != -1)
                 {
@@ -105,6 +121,32 @@ namespace Client.Controllers
                     PublisherId = (int)PublisherId,
                     RideId = (int)RideId,
                     RiderId = (int)UserId,
+
+                };
+                HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("ChatRoom/CreateRoom", room).Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    ChatRoom record = JsonConvert.DeserializeObject<ChatRoom>(res);
+                    return record.Id;
+                }
+                return -1;
+            }
+            return -1;
+
+        }
+
+        [HttpGet]
+        public int CreateRoom(int PublisherId, int RideId,int PartnerId)
+        {
+            if (IsLogin() == true)
+            {
+                ChatRoom room = new ChatRoom()
+                {
+
+                    PublisherId = (int)PublisherId,
+                    RideId = (int)RideId,
+                    RiderId = (int)PartnerId,
 
                 };
                 HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("ChatRoom/CreateRoom", room).Result;

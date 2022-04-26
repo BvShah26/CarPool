@@ -34,7 +34,7 @@ namespace Client.Controllers
                         return RedirectToAction("Confirmed", "Book", new { Id = RideId, SeatQty = Seat, UserId = UserId });
                     }
                 }
-                return View();
+                return RedirectToAction("Index","Rides");
             }
             return RedirectToAction("Login", "Account");
 

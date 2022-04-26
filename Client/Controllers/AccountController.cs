@@ -33,6 +33,14 @@ namespace Client.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("UserId");
+            HttpContext.Session.Remove("UserName");
+            return RedirectToAction("Index","Home");
+        }
+
         [HttpPost]
         public IActionResult Register(ClientUsers clientUsers)
         {

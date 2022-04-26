@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home Two || Entox || Entox HTML Template For Car Business</title>
+    <title>Home </title>
     <!-- favicons Icons -->
     <link rel="apple-touch-icon" sizes="180x180" href="~/ClientAssets/images/favicons/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="~/ClientAssets/images/favicons/favicon-32x32.png" />
@@ -58,54 +58,34 @@
     <div class="page-wrapper">
         <header class="main-header-two clearfix">
 
-            <div class="main-header-two__top">
-                <div class="container">
-                    <div class="main-header-two__top-inner clearfix">
-                        <div class="main-header-two__top-left">
-                            <ul class="list-unstyled main-header-two__top-contact">
-                                <li><a href="mailto:needhelp@company.com">needhelp@company.com</a></li>
-                                <li><a href="tel:00-666-888-0000">00 666 888 0000</a></li>
-                            </ul>
-                        </div>
-                        <div class="main-header-two__top-right">
-                            <div class="main-header-two__top-right-social-box">
-                                <div class="main-header-two__top-right-social">
-                                    <a href="#"><i class="fab fa-twitter"></i></a>
-                                    <a href="#" class="clr-fb"><i class="fab fa-facebook"></i></a>
-                                    <a href="#" class="clr-dri"><i class="fab fa-dribbble"></i></a>
-                                    <a href="#" class="clr-ins"><i class="fab fa-instagram"></i></a>
-                                </div>
-                            </div>
-                            <div class="main-header-two__top-btn-box">
-                                <a href="#" class="thm-btn main-header-two__top-btn">Submit Ad</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
             <nav class="main-menu main-menu-two clearfix">
                 <div class="main-menu-two-wrapper clearfix">
                     <div class="container clearfix">
                         <div class="main-menu-two-wrapper__inner">
                             <div class="main-menu-two-wrapper__logo">
-                                <a href="index.html"><img src="~/ClientAssets/images/resources/logo-2.png" alt=""></a>
+                                @*<a href="index.html"><img src="~/ClientAssets/images/resources/logo-2.png" alt=""></a>*@
+                                <h2>Let's Pool</h2>
+                                @*<img src="~/img/valet-parking.jpg" width="123px" height="33px" />*@
                             </div>
                             <div class="main-menu-two-wrapper__main-menu">
                                 <a href="#" class="mobile-nav__toggler"><i class="fa fa-bars"></i></a>
                                 <ul class="main-menu__list">
                                     <li><a asp-controller="Home" asp-action="Index">Home</a></li>
 
-                                    <li class="dropdown">
-                                        <a href="#">Ride</a>
-                                        <ul>
-                                            <li><a asp-controller="PublishRide" asp-action="List">My Publishion</a></li>
-                                            <li><a asp-controller="PublishRide" asp-action="Index">Publish New Ride</a></li>
-                                        </ul>
-                                    </li>
+                                    @if (Context.Session.GetInt32("UserId") != null)
+                                    {
 
-                                    <li><a href="contact.html">Contact</a></li>
-                                    <li><a asp-controller="Rides" asp-action="Index">My Rides</a></li>
-                                    <li><a asp-controller="Chat" asp-action="Rooms">Inboxes</a></li>
+                                        <li class="dropdown">
+                                            <a href="#">Ride</a>
+                                            <ul>
+                                                <li><a asp-controller="PublishRide" asp-action="List">My Publishion</a></li>
+                                                <li><a asp-controller="PublishRide" asp-action="Index">Publish New Ride</a></li>
+                                            </ul>
+                                        </li>
+
+                                        <li><a asp-controller="Rides" asp-action="Index">My Rides</a></li>
+                                    }
                                     <li class="dropdown">
                                         <a href="#">
                                             <svg height="26" width="26" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">

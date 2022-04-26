@@ -132,6 +132,11 @@ namespace Apis.Controllers.Bookings
 
             return Ok();
         }
+        [HttpGet("CancelReason")]
+        public async Task<IActionResult> CancelReason()
+        {
+            return Ok(await _cancellationRepo.GetCancellationReason());
+        }
 
         private bool BookExists(int id)
         {

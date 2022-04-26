@@ -1,6 +1,7 @@
 ﻿using Apis.Data;
 using Apis.Infrastructure.Bookings;
 using DataAcessLayer.Models.Booking;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,10 @@ namespace Apis.Repos.Bookings
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<CancellationReason>> GetCancellationReason()
+        {
+            return await _context.CancellationReasons.ToListAsync();
+        }
     }
 }
 

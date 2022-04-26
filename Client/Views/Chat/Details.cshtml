@@ -47,7 +47,13 @@
                         else
                         {
                             <input type="hidden" name="RideId" value=@ViewBag.RideId />
+
                             <input type="hidden" name="PublisherId" value=@ViewBag.PublisherId />
+                            if (ViewBag.Partner != null)
+                            {
+                                <input type="hidden" name="PartnerId" value=@ViewBag.Partner />
+
+                            }
                         }
                     </form>
 

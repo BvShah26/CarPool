@@ -142,6 +142,36 @@ namespace Client.Controllers
 
         }
 
+
+        [HttpGet]
+        public IActionResult CancelReason(int BookingId)
+        {
+            HttpResponseMessage responseMessage = httpClient.GetAsync("Books/CancelReason").Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string res = responseMessage.Content.ReadAsStringAsync().Result;
+                List<CancellationReason> reasons = JsonConvert.DeserializeObject<List<CancellationReason>>(res);
+                ViewBag.BookingId = BookingId;
+                return View(reasons);
+            }
+            return View();
+        }
+
+
+        [HttpGet]
+        public IActionResult CancelBooking(int ReasonId, int BookingId)
+        {
+            HttpResponseMessage responseMessage = httpClient.GetAsync($"books/Cancel/{ReasonId}/{BookingId}").Result;
+            if(responseMessage.IsSuccessStatusCode)
+            {
+                //can be redirect to that specific ride Details
+            }
+
+
+            return RedirectToAction("Index","Rides");
+        }
+
+
         public Boolean IsLogin()
         {
             if (HttpContext.Session.GetString("UserName") == null)
