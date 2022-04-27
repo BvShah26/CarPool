@@ -43,6 +43,7 @@ namespace Client.Controllers
                 List<RideDetailsView> rec = rides.OrderBy(x => TimeSpan.Parse(x.PickUp_Time.ToShortTimeString())).ToList();
                 return PartialView("_RidePartial", rec);
             }
+
             System.Reflection.PropertyInfo prop = typeof(RideDetailsView).GetProperty(field);
             List<RideDetailsView> records = rides.OrderBy(x => prop.GetValue(x, null)).ToList();
 

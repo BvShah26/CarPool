@@ -300,12 +300,12 @@
                                                         <ul>
                                                             @foreach (var item in Model.Partners)
                                                             {
-                                                                @if (item.Id != ViewBag.UserId) { 
+                                                                @*@if (item.Id != ViewBag.UserId) {*@
                                                                 <li>
-                                                                    <a class="kirk-item kirk-item--clickable sc-Galmp sc-cLpAjG kNDdlo dTtSfA" style="position: relative; display: flex; padding-top: 16px; padding-bottom: 16px; -webkit-box-align: center; align-items: center; flex: 1 1 0%; border: 0px; " href="/User/Profile/5">
+                                                                    <a class="kirk-item kirk-item--clickable sc-Galmp sc-cLpAjG kNDdlo dTtSfA" style="position: relative; display: flex; padding-top: 16px; padding-bottom: 16px; -webkit-box-align: center; align-items: center; flex: 1 1 0%; border: 0px; " href="/User/Profile/@item.Id">
                                                                         <span class="kirk-item-leftWrapper">
                                                                             <span class="kirk-item-leftText">
-                                                                                <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx">@item.RiderName</span>
+                                                                                <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx">@(item.Id == ViewBag.UserId ? "You" : item.RiderName ) </span>
                                                                             </span>
                                                                         </span><span class="kirk-item-rightAddon">
                                                                             <div class="sc-fWCJzd ctNlLp kirk-avatar--image kirk-avatar">
@@ -325,8 +325,8 @@
                                                                         </span>
                                                                     </a>
                                                                 </li>
-                                                                    }
-                                                                }
+                                                            }
+                                                            @* } *@
 
                                                         </ul>
                                                     </div>
@@ -365,7 +365,7 @@
                                             {
                                                 <div role="presentation" class="sc-fctJkW ftnfJP">
                                                     <div class="section-content">
-                                                        <a asp-action="CancelReason" asp-route-BookingId="@Model.BookingId"  asp-controller="Book">
+                                                        <a asp-action="CancelReason" asp-route-BookingId="@Model.BookingId" asp-controller="Book">
                                                             <button type="button"
                                                                     class="kirk-item kirk-item--highlighted kirk-item--clickable sc-GVOUr CcFKY">
                                                                 <span class="kirk-item-leftWrapper">

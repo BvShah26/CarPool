@@ -38,13 +38,14 @@
                                         <hr />
                                     </div>
                                     <a class="kirk-item kirk-item--clickable sc-GVOUr sc-afnQL
-                      CcFKY gpzYld" href=" ><span class="kirk-item-leftWrapper">
-                                        <span class="kirk-item-leftText">
-                                            <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU">@Model.User.Name</span><span class="kirk-text kirk-text-body sc-fbPSWO ldKURU kirk-item-body">
-                                                <div class="sc-cwpsFg eUnQiy"></div>
+                      CcFKY gpzYld" asp-action="Profile" asp-controller="User" asp-route-id="@Model.UserId">
+                                        <span class="kirk-item-leftWrapper">
+                                            <span class="kirk-item-leftText">
+                                                <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU">@Model.User.Name</span><span class="kirk-text kirk-text-body sc-fbPSWO ldKURU kirk-item-body">
+                                                    <div class="sc-cwpsFg eUnQiy"></div>
+                                                </span>
                                             </span>
-                                        </span></span
-                                        ><span class="kirk-item-rightAddon">
+                                        </span><span class="kirk-item-rightAddon">
                                             <div class="sc-fXynhf FdgvG kirk-avatar--image kirk-avatar">
                                                 @if (Model.User.ProfileImage == null)
                                                 {
@@ -57,7 +58,8 @@
                                                     <img src="@Model.User.ProfileImage" />
                                                 }
                                             </div>
-                                        </span><span class="kirk-item-rightAddon">
+                                        </span>
+                                        <span class="kirk-item-rightAddon">
                                             <svg viewBox="0 0 24 24"
                                                  xmlns="http://www.w3.org/2000/svg"
                                                  class="kirk-icon sc-ksZaOG jucjqW"
@@ -72,35 +74,37 @@
                                                           stroke-miterlimit="10"
                                                           points="9 18 15 12 9 6"></polyline>
                                             </svg>
-                                        </span><a class="kirk-item kirk-item--highlighted kirk-item--clickable sc-GVOUr CcFKY"
-                                                  asp-route-RideId="@Model.RideId" asp-route-publisherId="@Model.Ride.PublisherId" asp-route-PartnerId="@Model.UserId" asp-action="Index" asp-controller="Chat">
+                                        </span>
+                                    </a>
+                                    <a class="kirk-item kirk-item--highlighted kirk-item--clickable sc-GVOUr CcFKY"
+                                              asp-route-RideId="@Model.RideId" asp-route-publisherId="@Model.Ride.PublisherId" asp-route-PartnerId="@Model.UserId" asp-action="Index" asp-controller="Chat">
 
-                                            <span class="kirk-item-leftWrapper">
-                                                <span class="kirk-item-leftText">
-                                                    <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU">Ask @Model.User.Name a question</span>
-                                                </span>
+                                        <span class="kirk-item-leftWrapper">
+                                            <span class="kirk-item-leftText">
+                                                <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU">Ask @Model.User.Name a question</span>
                                             </span>
-                                        </a>
+                                        </span>
+                                    </a>
+                                    <div aria-hidden="true"
+                                         class="sc-ehmTmK sc-lbOyJj gANVXG hrAVid">
+                                        <hr />
+                                    </div>
+                                    <div class="kirk-item sc-GVOUr CcFKY">
+                                        <span class="kirk-item-leftWrapper">
+                                            <span class="kirk-item-leftText">
+                                                <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU"
+                                                      style="color: rgb(112, 140, 145)">@Model.RequestedSeats seat</span>
+                                                </span>
+                                            </span><span class="kirk-item-rightText">
+                                                <div class="kirk-text kirk-text-subheaderStrong sc-fbPSWO ldKURU kirk-item-title">
+                                                    Rs.@(Model.RequestedSeats*Model.Ride.Price_Seat)
+                                                </div>
+                                            </span>
+                                        </div>
                                         <div aria-hidden="true"
                                              class="sc-ehmTmK sc-lbOyJj gANVXG hrAVid">
                                             <hr />
                                         </div>
-                                        <div class="kirk-item sc-GVOUr CcFKY">
-                                            <span class="kirk-item-leftWrapper">
-                                                <span class="kirk-item-leftText">
-                                                    <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU"
-                                                          style="color: rgb(112, 140, 145)">@Model.RequestedSeats seat</span>
-                                                    </span>
-                                                </span><span class="kirk-item-rightText">
-                                                    <div class="kirk-text kirk-text-subheaderStrong sc-fbPSWO ldKURU kirk-item-title">
-                                                        Rs.@(Model.RequestedSeats*Model.Ride.Price_Seat)
-                                                    </div>
-                                                </span>
-                                            </div>
-                                            <div aria-hidden="true"
-                                                 class="sc-ehmTmK sc-lbOyJj gANVXG hrAVid">
-                                                <hr />
-                                            </div>
                                     </div>
                                 </div>
                             </div>
@@ -109,7 +113,7 @@
                                     <div class="section-content">
                                         <ul class="sc-grVGCS frNuuV">
                                             <li>
-                                                <a asp-controller="RideRequest" asp-route-UserId="@Model.UserId" asp-route-Seat=@Model.RequestedSeats asp-route-RideId=@Model.RideId asp-route-RequestId=@Model.Id asp-action="Index" asp-route-status=true >
+                                                <a asp-controller="RideRequest" asp-route-UserId="@Model.UserId" asp-route-Seat=@Model.RequestedSeats asp-route-RideId=@Model.RideId asp-route-RequestId=@Model.Id asp-action="Index" asp-route-status=true>
 
                                                     <button class="kirk-button kirk-button-primary sc-iTONeN jDVucc"
                                                             type="button"

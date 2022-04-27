@@ -64,21 +64,7 @@ namespace Client.Controllers
                 {
                     return RedirectToAction("Bookings",new { RideId });
                 }
-                //HttpResponseMessage responseRide = httpClient.GetAsync($"PublishRides/GetRideDetailsUser/{RideId}").Result;
-                //if (responseRide.IsSuccessStatusCode)
-                //{
-                //    string res = responseRide.Content.ReadAsStringAsync().Result;
-                //    PublishRide record = JsonConvert.DeserializeObject<PublishRide>(res);
-                //    // booking of current user
-
-                //    //var bookingId = record.Booking.Where()
-
-                //    //var bookingId = 
-
-
-                //    return View(record);
-                //}
-                //return StatusCode(StatusCodes.Status500InternalServerError);
+                
             }
             return RedirectToAction("Login", "Account", new { url = returnUrl });
 

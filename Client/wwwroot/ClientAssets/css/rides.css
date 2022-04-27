@@ -5464,3 +5464,15 @@ data-styled.g155[id="sc-global-iBwqPH2"] {
     right: 0px;
     transform: translateY(-50%);
 }
+@media (min-width: 800px) {
+    .frNuuV li {
+        -webkit-box-flex: 1;
+        flex-grow: 1;
+    }
+}
+
+.frNuuV .kirk-button {
+    width: 100%;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
