@@ -41,8 +41,6 @@ namespace Client
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CarPoolCN")));
             services.AddDefaultIdentity<ApplicationUser>().AddEntityFrameworkStores<ApplicationDBContext>();
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

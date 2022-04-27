@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataAcessLayer.Models;
 using DataAcessLayer.Models.Booking;
 using DataAcessLayer.Models.Chat;
 using DataAcessLayer.Models.Preferences;
@@ -63,6 +64,9 @@ namespace Apis.Data
         //Ratings
         public DbSet<PublisherRatings> PublisherRatings { get; set; }
         public DbSet<RidePartnerRating> PartnerRatings { get; set; }
+
+        //Admin
+        public DbSet<AdminModel> Admin { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

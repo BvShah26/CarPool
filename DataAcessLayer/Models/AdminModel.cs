@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace DataAcessLayer.Models
+{
+    public class AdminModel
+    {
+        public int Id { get; set; }
+        public string EmailAddress { get; set; }
+        public string Password { get; set; }
+    }
+}
