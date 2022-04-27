@@ -64,9 +64,10 @@ namespace Apis.Controllers.Client
         {
             ClientPublicProfile userProfile  = await _Repo.PublicProfile(UserId);
             return Ok(userProfile);
-
-
         }
+
+
+        
 
         // PUT api/<ClientUserController>/5
         [HttpPut("{id}")]

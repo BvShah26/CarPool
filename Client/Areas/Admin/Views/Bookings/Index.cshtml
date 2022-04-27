@@ -47,7 +47,8 @@
                     @Html.DisplayFor(modelItem => item.TotalPrice)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IsCancelled)
+                    @(item.IsCancelled == true ? "Cancelled" : "")
+                    
                 </td>
 
             </tr>

@@ -61,6 +61,7 @@ namespace Apis.Controllers
                    true : ((x.PublisherId == UserId ? _ratingRepo.HasRated_AllPartner(x.Id, UserId) : _ratingRepo.HasRatedPublisher(x.Id, UserId))))
 
                 })
+                .OrderByDescending(x => x.Date)
                 .ToListAsync();
             return Ok(rides);
         }

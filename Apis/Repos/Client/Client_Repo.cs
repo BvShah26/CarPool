@@ -29,6 +29,23 @@ namespace Apis.Repos.Client
             _rartingRepo = rartingRepo;
         }
 
+        //public async Task<ClientUsers> ChangePassword(UserChangePassword user)
+        //{
+        //    ClientUsers userRecord = await _context.ClientUsers.Where(user => user.Id == user.Id).FirstOrDefaultAsync();
+        //    if(userRecord != null)
+        //    {
+        //        if( userRecord.Password == user.OldPassword )
+        //        {
+
+        //        userRecord.Password
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
+
         public async Task<object> GetUserPreferences(int TypeId, int UserId)
         {
             //Get Selected Id and AllOther Pref by it's TypeId

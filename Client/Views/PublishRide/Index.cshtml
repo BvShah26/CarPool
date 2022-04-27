@@ -16,7 +16,7 @@
             <form asp-action="Publish">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <input type="hidden" asp-for="PublisherId" value=@ViewBag.Id />
+                    <input type="hidden" required asp-for="PublisherId" value=@ViewBag.Id />
                     @*<input type="hidden" asp-for="VehicleId" value=1 />*@
                     @*<label asp-for="PublisherId" class="control-label"></label>
                         <select asp-for="PublisherId" class ="form-control" asp-items="ViewBag.PublisherId"></select>*@
@@ -32,7 +32,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="MaxPassengers" class="control-label"></label>
-                    <input asp-for="MaxPassengers" class="form-control" />
+                    <input asp-for="MaxPassengers" max="4" class="form-control" />
                     <span asp-validation-for="MaxPassengers" class="text-danger"></span>
                 </div>
                 @*<div class="form-group">
@@ -47,22 +47,22 @@
                     </div>*@
                 <div class="form-group">
                     <label asp-for="PickUp_Location" class="control-label"></label>
-                    <input asp-for="PickUp_Location" class="form-control" />
+                    <input asp-for="PickUp_Location" required class="form-control" />
                     <span asp-validation-for="PickUp_Location" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="DropOff_Location" class="control-label"></label>
-                    <input asp-for="DropOff_Location" class="form-control" />
+                    <input asp-for="DropOff_Location" required class="form-control" />
                     <span asp-validation-for="DropOff_Location" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="PickUp_Time" class="control-label"></label>
-                    <input type="time" asp-for="PickUp_Time" class="form-control" />
+                    <label asp-for="PickUp_Time"  class="control-label"></label>
+                    <input type="time" asp-for="PickUp_Time"required class="form-control" />
                     <span asp-validation-for="PickUp_Time" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="DropOff_Time" class="control-label"></label>
-                    <input type="time" asp-for="DropOff_Time" class="form-control" />
+                    <input type="time" asp-for="DropOff_Time" required class="form-control" />
                     <span asp-validation-for="DropOff_Time" class="text-danger"></span>
                 </div>
                 <div class="form-group form-check">
@@ -72,12 +72,12 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Price_Seat" class="control-label"></label>
-                    <input asp-for="Price_Seat" class="form-control" />
+                    <input asp-for="Price_Seat" required class="form-control" />
                     <span asp-validation-for="Price_Seat" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Ride_Note" class="control-label"></label>
-                    <input asp-for="Ride_Note" class="form-control" />
+                    <input asp-for="Ride_Note" required class="form-control" />
                     <span asp-validation-for="Ride_Note" class="text-danger"></span>
                 </div>
                 @*<div class="form-group">
@@ -204,7 +204,7 @@
 
                     success: function (r) {
                         console.log(r);
-                        window.location.href = "/Rides/Offer/?RideId" + r.id;
+                        window.location.href = "/Rides/Offer/?RideId=" + r.id;
                     },
                     error: function (req) {
                         alert("Ride Not Published");

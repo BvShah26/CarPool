@@ -67,13 +67,7 @@ namespace Client.Controllers
                     string resultRide = responseRide.Content.ReadAsStringAsync().Result;
                     var dataRide = JsonConvert.DeserializeAnonymousType(resultRide, anonymsDefinition);
 
-                    //No Need to check
-                    //if (dataRide.AutoApprove == false)
-                    //{
-
-
-                    //    return Ok();
-                    //}
+                  
 
                     PublishRide publishRide = new PublishRide()
                     {

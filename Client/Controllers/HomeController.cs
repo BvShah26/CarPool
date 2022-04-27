@@ -96,8 +96,7 @@ namespace Client.Controllers
                     rides.Add(rideDetails);
 
                 }
-                //return RedirectToAction("Rides",rides);
-
+                
                 ViewBag.Seat = searchRide.SeatCount;
                 ViewBag.Pickup = searchRide.PickUp_LatLong;
                 ViewBag.Destination= searchRide.DropOff_LatLong;

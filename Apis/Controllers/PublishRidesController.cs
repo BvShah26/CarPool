@@ -26,10 +26,10 @@ namespace Apis.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PublishRide>>> GetPublish_Rides()
         {
-            //return await _context.Publish_Rides.Include(x => x.Publisher).ToListAsync();
+            return await _context.Publish_Rides.Include(x => x.Publisher).OrderByDescending(x => x.JourneyDate).ToListAsync();
 
             //Just to make work easy [ Checking Details ]
-            return await _context.Publish_Rides.Include(x => x.Publisher).Where(x => x.JourneyDate >= DateTime.Now).ToListAsync();
+            //return await _context.Publish_Rides.Include(x => x.Publisher).Where(x => x.JourneyDate >= DateTime.Now).ToListAsync();
         }
 
         [HttpGet("GetRideDetailsUser/{RideId}")]

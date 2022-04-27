@@ -38,7 +38,7 @@ namespace Client.Controllers
                 {
                     string res = responseMessage.Content.ReadAsStringAsync().Result;
                     List<UserRideViewModal> rides = JsonConvert.DeserializeObject<List<UserRideViewModal>>(res);
-
+                    
                     ViewBag.UserId = UserId;
 
                     return View(rides);
