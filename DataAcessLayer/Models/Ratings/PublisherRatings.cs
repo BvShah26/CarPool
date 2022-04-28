@@ -13,6 +13,12 @@ namespace DataAcessLayer.Models.Ratings
         public int UserId { get; set; }
         public ClientUsers User { get; set; }
 
-        public int Rating { get; set; }
+        public RatingTitle Rating { get; set; }
+    }
+    public enum RatingTitle
+    {
+        Excellent = 3,
+        Average = 2,
+        Poor = 1
     }
 }

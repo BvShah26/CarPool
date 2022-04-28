@@ -14,7 +14,15 @@ namespace DataAcessLayer.Models.Ratings
         public int UserId { get; set; }
         public ClientUsers User { get; set; }
 
-        public int Rate { get; set; }
+        public PartnerRatingTitle Rate { get; set; }
 
+    }
+    public enum PartnerRatingTitle
+    {
+        Worst = 1,
+        Disappointing = 2,
+        Okay = 3,
+        Good = 4,
+        Excellent = 5,
     }
 }

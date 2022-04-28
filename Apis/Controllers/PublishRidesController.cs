@@ -49,14 +49,14 @@ namespace Apis.Controllers
             //validate timing as 12-04-2022:00-00>= 12-04-2022:09-44 = False
             //Should include time in jounery date ..  and calculate timing based on Distance Matrix
             //Don't Ask Destination Time from user [ Choice ]
-                    
+
             List<PublishRide> result = await _context.Publish_Rides.Where(item => item.PublisherId == UserId)
                 .Where(x => x.JourneyDate >= DateTime.Now).Include(x => x.Ride_Approval)
                 .Include(item => item.Vehicle).ThenInclude(item => item.Vehicle).ToListAsync();
 
-           //Improvement To Do
-           //Include Table Only If IsInstantApproval ==  False
-            
+            //Improvement To Do
+            //Include Table Only If IsInstantApproval ==  False
+
             return Ok(result);
         }
 
@@ -74,7 +74,7 @@ namespace Apis.Controllers
             var publishRide = await _context.Publish_Rides
                 .Where(x => x.Id == id)
                 .Include(x => x.Ride_Approval).ThenInclude(rideApproval => rideApproval.User)
-                .Include(x => x.Booking).ThenInclude(bookings=> bookings.Rider)
+                .Include(x => x.Booking).ThenInclude(bookings => bookings.Rider)
                 .FirstOrDefaultAsync();
             if (publishRide == null)
             {
@@ -156,10 +156,10 @@ namespace Apis.Controllers
         }
 
 
-        [HttpGet("GetOffer/{RideId}")]
-        public IActionResult GetOffer(int RideId)
+        [HttpGet("GetOffer/{RideId}/{UserId}")]
+        public IActionResult GetOffer(int RideId,int UserId)
         {
-            var rec = _context.Publish_Rides.Where(x => x.Id == RideId)
+            var rec = _context.Publish_Rides.Where(x => x.Id == RideId).Include(user => user.Publisher).ThenInclude(rating => rating.PartnerRatings)
                 .Include(x => x.Ride_Approval).ThenInclude(rideReq => rideReq.User)
                 .Include(x => x.Booking).ThenInclude(booking => booking.Rider)
                 .Select(
@@ -173,21 +173,26 @@ namespace Apis.Controllers
                     PickUp_Time = x.PickUp_Time,
                     DropOff_Time = x.DropOff_Time,
                     JourneyDate = x.JourneyDate,
-                    NewRequests = x.Ride_Approval.Where(request => request.RideId == RideId && request.IsRejected == false && request.IsApproved == false)
+
+
+                    NewRequests = (x.JourneyDate.Date >= DateTime.Now.Date) ? x.Ride_Approval.Where(request => request.RideId == RideId && request.IsRejected == false && request.IsApproved == false)
                     .Select(item => new RideReqests_ViewModel()
                     {
                         RequestId = item.Id,
                         RiderName = item.User.Name
-                    }).ToList(),
+                    }).ToList() : null,
                     Partners = x.Booking.Where(booking => booking.Publish_RideId == RideId && booking.IsCancelled == false)
-                    .Select(item => new RidePartners()
+                    .Select(partner => new RidePartners()
                     {
-                        Id = item.RiderId,
-                        RiderName = item.Rider.Name,
-                        RiderProfile = item.Rider.ProfileImage,
-                        SeatQty = item.SeatQty
+                        Id = partner.RiderId,
+                        RiderName = partner.Rider.Name,
+                        RiderProfile = partner.Rider.ProfileImage,
+                        SeatQty = partner.SeatQty,
+                        IsRated = x.Publisher.PartnerRatings.Where(partnerRating => partnerRating.PartnerId == partner.RiderId && partnerRating.UserId == UserId).FirstOrDefault() == null ? false : true
+                        //IsRated = partner.Rider.PartnerRatings.Where(partnerRating => partnerRating.PartnerId == partner.RiderId && partnerRating.UserId == UserId ).FirstOrDefault()==null ? false : true
                     })
                     .ToList()
+
                 }).FirstOrDefault();
 
             return Ok(rec);

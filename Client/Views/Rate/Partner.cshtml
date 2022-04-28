@@ -1,0 +1,89 @@
+﻿@model DataAcessLayer.ViewModels.Ratings.PartnerRating_ViewModel
+@using DataAcessLayer.Models.Ratings
+
+@{
+    ViewData["Title"] = "Rides";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+
+@section Headers{
+    <link href="~/ClientAssets/css/rides.css" rel="stylesheet" />
+}
+
+
+<div class="kirk-modal-dialog">
+    <div class="kirk-modal-body">
+        <div role="presentation" class="sc-fbyfCU ghIEhT">
+            <div class="section-content">
+                <h1 class="sc-gsDKAQ sc-hUpaCq sc-jgrJph erBbkF daGzFx JGsMk">
+                    Rate Your Partner
+                </h1>
+
+
+                <ul style="margin-top:10px">
+
+                    
+                    @foreach (var item in Enum.GetValues(typeof(PartnerRatingTitle)))
+                    {
+                        <li class="clickable-rate">
+                            <div class="kirk-item kirk-item--clickable sc-Galmp kNDdlo">
+                                <span class="kirk-item-leftWrapper">
+                                    <span class="kirk-item-leftWrapper">
+                                        <span class="kirk-item-leftText">
+                                            <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU">@item</span>
+                                        </span>
+                                    </span>
+                                </span>
+                                <span class="kirk-item-rightAddon">
+                                    <svg viewBox="0 0 24 24"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         class="kirk-icon sc-ksZaOG jucjqW"
+                                         width="24"
+                                         height="24"
+                                         aria-hidden="true">
+                                        <polyline fill="none"
+                                                  stroke="#708C91"
+                                                  stroke-width="2"
+                                                  stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  stroke-miterlimit="10"
+                                                  points="9 18 15 12 9 6"></polyline>
+                                    </svg>
+                                </span>
+                                <div aria-hidden="true"
+                                     class="sc-ehmTmK sc-lbOyJj gANVXG hrAVid">
+                                    <hr />
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(document).on("click", ".clickable-rate", function () {
+        var rating = $(this).find(".kirk-text.kirk-text-title")[0].innerHTML;
+        var PartnerId = @ViewBag.PartnerId;
+            var RideId = @ViewBag.RideId
+
+            $.ajax({
+                type: "POST",
+                url: "/Rate/Partner",
+                data: { PartnerId, rating,RideId },
+
+                success: function (res) {
+                    console.log(res)
+                    window.location.href ="/Rides/offer?RideId="+res
+                },
+                error: function (req) {
+                        alert("Api Calling Fail");
+                    }
+                });
+
+    });
+</script>

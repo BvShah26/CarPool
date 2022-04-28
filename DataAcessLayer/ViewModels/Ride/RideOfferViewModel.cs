@@ -20,5 +20,7 @@ namespace DataAcessLayer.ViewModels.Ride
 
         public ICollection<RidePartners> Partners { get; set; }
         public ICollection<RideReqests_ViewModel> NewRequests { get; set; }
+
+        
     }
 }

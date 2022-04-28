@@ -10,5 +10,7 @@ namespace DataAcessLayer.ViewModels.Ride
         public string RiderName { get; set; }
         public string RiderProfile { get; set; }
         public int SeatQty { get; set; }
+
+        public bool IsRated { get; set; }
     }
 }

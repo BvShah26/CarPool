@@ -32,7 +32,7 @@ namespace Apis.Repos.Ratings
         public double GetPatrtnerRatings(int UserId)
         {
 
-            var rec = _context.PartnerRatings.Where(x => x.PartnerId == UserId).Select(x => x.Rate).ToList();
+            var rec = _context.PartnerRatings.Where(x => x.PartnerId == UserId).Select(x => (int) x.Rate).ToList();
             if (rec.Count > 0)
             {
                 double averageRating = rec.Average();
@@ -44,9 +44,10 @@ namespace Apis.Repos.Ratings
         public double GetPublisherRating(int PublisherId)
         {
 
-            var rec = _context.PublisherRatings.Where(x => x.PublisherId == PublisherId).Select(x => x.Rating).ToList();
+            var rec = _context.PublisherRatings.Where(x => x.PublisherId == PublisherId).Select(x => (int) x.Rating).ToList();
             if (rec.Count > 0)
             {
+                
                 double averageRating = rec.Average();
                 return averageRating;
             }
@@ -59,6 +60,7 @@ namespace Apis.Repos.Ratings
             if (result == null)
             {
                 return false;
+                
             }
             return true;
         }

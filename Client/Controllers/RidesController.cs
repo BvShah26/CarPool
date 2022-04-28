@@ -88,7 +88,9 @@ namespace Client.Controllers
                     string res = responseMessage.Content.ReadAsStringAsync().Result;
                     UserRideDetailsViewModel rideDetail = JsonConvert.DeserializeObject<UserRideDetailsViewModel>(res);
                     rideDetail.Price_Seat = rideDetail.Price_Seat * rideDetail.Seat;
+                    
                     ViewBag.UserId = UserId;
+                    ViewBag.RideId = RideId; //For Rating Redirect
                     return View(rideDetail);
                 }
                 return View();
@@ -108,12 +110,14 @@ namespace Client.Controllers
 
                 int UserId = (int)HttpContext.Session.GetInt32("UserId");
 
-                HttpResponseMessage responseMessage = httpClient.GetAsync($"PublishRides/GetOffer/{RideId}").Result;
+                HttpResponseMessage responseMessage = httpClient.GetAsync($"PublishRides/GetOffer/{RideId}/{UserId}").Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string res = responseMessage.Content.ReadAsStringAsync().Result;
                     RideOfferViewModel rideDetail = JsonConvert.DeserializeObject<RideOfferViewModel>(res);
+
                     ViewBag.UserId = UserId;
+                    ViewBag.RideId = RideId; //For Redirection
                     return View(rideDetail);
                 }
                 return View();
