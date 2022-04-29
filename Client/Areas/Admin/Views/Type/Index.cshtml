@@ -139,7 +139,7 @@
         </div>
         <div class="card-body">
             <div class="dataTables_wrapper dt-bootstrap5 no-footer">
-                <form asp-action="Index" method="post">
+                @*<form asp-action="Index" method="post">
                     <div class="row mb-3">
                         <div class="col-sm-12 col-md-6">
                             <div class="dataTables_length" id="table1_length">
@@ -163,7 +163,7 @@
                             </div>
                         </div>
                     </div>
-                </form>
+                </form>*@
                 <div class="row mb-3">
                     <table class="table" id="table1">
                         <thead>
@@ -193,7 +193,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="row mb-3">
+                @*<div class="row mb-3">
 
                     <div class="col-sm-12 col-md-5">
                         <div class="dataTables_info" id="table1_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div>
@@ -219,11 +219,19 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div>*@
             </div>
         </div>
     </div>
 </section>
+<script src="~/assets/vendors/jquery/jquery.min.js"></script>
+<script src="~/assets/vendors/jquery-datatables/jquery.dataTables.min.js"></script>
+<script src="~/assets/vendors/jquery-datatables/custom.jquery.dataTables.bootstrap5.min.js"></script>
+<script src="~/assets/vendors/fontawesome/all.min.js"></script>
+<script>
+    // Jquery Datatable
+    let jquery_datatable = $("#table1").DataTable();
+</script>
 
 <script>
     $(document).on("click", ".open-DeleteDialog", function () {

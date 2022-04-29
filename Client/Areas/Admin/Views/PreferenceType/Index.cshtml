@@ -42,7 +42,7 @@
             <form asp-action="Create" method="post">
                 <div class="modal-body">
                     <input type="hidden" id="AddTypeId" name="Id" value="" />
-                    
+
                     <div class="form-group">
                         <input type="text" name="Title" id="AddTitle" placeholder="Title"
                                class="form-control">
@@ -142,31 +142,31 @@
         </div>
         <div class="card-body">
             <div class="dataTables_wrapper dt-bootstrap5 no-footer">
-                <form asp-action="Index" method="post">
-                    <div class="row mb-3">
-                        <div class="col-sm-12 col-md-6">
-                            <div class="dataTables_length" id="table1_length">
-                                <label>
-                                    Show
-                                    <select id="pageSize" name="table1_length" aria-controls="table1" class="form-select form-select-sm rounded-pill px-4 py-2">
-                                        <option value="5">5</option>
-                                        <option value="10">10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                    </select> entries
-                                </label>
+                @*<form asp-action="Index" method="post">
+                        <div class="row mb-3">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="dataTables_length" id="table1_length">
+                                    <label>
+                                        Show
+                                        <select id="pageSize" name="table1_length" aria-controls="table1" class="form-select form-select-sm rounded-pill px-4 py-2">
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select> entries
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div id="table1_filter" class="dataTables_filter">
+                                    <label>
+                                        Search:<input id="searchData" type="search" class="form-control form-control-sm rounded-pill px-3 py-2" placeholder="" aria-controls="table1">
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-6">
-                            <div id="table1_filter" class="dataTables_filter">
-                                <label>
-                                    Search:<input id="searchData" type="search" class="form-control form-control-sm rounded-pill px-3 py-2" placeholder="" aria-controls="table1">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                    </form>*@
                 <div class="row mb-3">
                     <table class="table" id="table1">
                         <thead>
@@ -196,37 +196,48 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="row mb-3">
+                @*<div class="row mb-3">
 
-                    <div class="col-sm-12 col-md-5">
-                        <div class="dataTables_info" id="table1_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div>
-                    </div>
-                    <div class="col-sm-12 col-md-7">
-                        <div class="dataTables_paginate paging_simple_numbers" id="table1_paginate">
-                            <ul class="pagination">
-                                <li class="paginate_button page-item previous disabled" id="table1_previous">
-                                    <a href="#" aria-controls="table1" data-dt-idx="0" tabindex="0" class="page-link rounded-circle d-inline-block ms-1">
-                                        <i class="fas fa-angle-left"></i>
-                                    </a>
-                                </li>
-                                <li class="paginate_button page-item active">
-                                    <a href="#" aria-controls="table1" data-dt-idx="1" tabindex="0" class="page-link rounded-circle d-inline-block ms-1">
-                                        1
-                                    </a>
-                                </li>
-                                <li class="paginate_button page-item next disabled" id="table1_next">
-                                    <a href="#" aria-controls="table1" data-dt-idx="2" tabindex="0" class="page-link rounded-circle d-inline-block ms-1 disabled">
-                                        <i class="fas fa-angle-right"></i>
-                                    </a>
-                                </li>
-                            </ul>
+                        <div class="col-sm-12 col-md-5">
+                            <div class="dataTables_info" id="table1_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div>
                         </div>
-                    </div>
-                </div>
+                        <div class="col-sm-12 col-md-7">
+                            <div class="dataTables_paginate paging_simple_numbers" id="table1_paginate">
+                                <ul class="pagination">
+                                    <li class="paginate_button page-item previous disabled" id="table1_previous">
+                                        <a href="#" aria-controls="table1" data-dt-idx="0" tabindex="0" class="page-link rounded-circle d-inline-block ms-1">
+                                            <i class="fas fa-angle-left"></i>
+                                        </a>
+                                    </li>
+                                    <li class="paginate_button page-item active">
+                                        <a href="#" aria-controls="table1" data-dt-idx="1" tabindex="0" class="page-link rounded-circle d-inline-block ms-1">
+                                            1
+                                        </a>
+                                    </li>
+                                    <li class="paginate_button page-item next disabled" id="table1_next">
+                                        <a href="#" aria-controls="table1" data-dt-idx="2" tabindex="0" class="page-link rounded-circle d-inline-block ms-1 disabled">
+                                            <i class="fas fa-angle-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>*@
             </div>
         </div>
     </div>
 </section>
+
+<script src="~/assets/vendors/jquery/jquery.min.js"></script>
+<script src="~/assets/vendors/jquery-datatables/jquery.dataTables.min.js"></script>
+<script src="~/assets/vendors/jquery-datatables/custom.jquery.dataTables.bootstrap5.min.js"></script>
+<script src="~/assets/vendors/fontawesome/all.min.js"></script>
+<script>
+    // Jquery Datatable
+    let jquery_datatable = $("#table1").DataTable();
+</script>
+
+
 
 <script>
     $(document).on("click", ".open-DeleteDialog", function () {
