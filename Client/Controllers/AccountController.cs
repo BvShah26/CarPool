@@ -30,6 +30,7 @@ namespace Client.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+
             return View();
         }
 

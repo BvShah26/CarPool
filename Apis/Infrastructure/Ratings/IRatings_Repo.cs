@@ -12,7 +12,7 @@ namespace Apis.Infrastructure.Ratings
         Task AddPartnerRating(RidePartnerRating ratings);
 
         bool HasRatedPublisher(int PublisherId, int UserId);
-        Task<bool> HasRatedPartner(int PartnerId, int UserId);
+        bool HasRatedPartner(int PartnerId, int UserId);
 
 
         bool HasRated_AllPartner(int RideId, int SessionUserId);

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Apis.Data;
 using DataAcessLayer.Models.Rides;
 using DataAcessLayer.ViewModels.Ride;
+using Apis.Infrastructure.Ratings;
 
 namespace Apis.Controllers
 {
@@ -16,10 +17,11 @@ namespace Apis.Controllers
     public class PublishRidesController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
-
-        public PublishRidesController(ApplicationDBContext context)
+        private readonly IRatings_Repo _RatingRepo;
+        public PublishRidesController(ApplicationDBContext context, IRatings_Repo RatingRepo)
         {
             _context = context;
+            _RatingRepo = RatingRepo;
         }
 
         // GET: api/PublishRides
@@ -188,12 +190,12 @@ namespace Apis.Controllers
                         RiderName = partner.Rider.Name,
                         RiderProfile = partner.Rider.ProfileImage,
                         SeatQty = partner.SeatQty,
-                        IsRated = x.Publisher.PartnerRatings.Where(partnerRating => partnerRating.PartnerId == partner.RiderId && partnerRating.UserId == UserId).FirstOrDefault() == null ? false : true
-                        //IsRated = partner.Rider.PartnerRatings.Where(partnerRating => partnerRating.PartnerId == partner.RiderId && partnerRating.UserId == UserId ).FirstOrDefault()==null ? false : true
+                        IsRated =  _RatingRepo.HasRatedPartner(partner.RiderId,UserId)
                     })
                     .ToList()
 
                 }).FirstOrDefault();
+
 
             return Ok(rec);
         }

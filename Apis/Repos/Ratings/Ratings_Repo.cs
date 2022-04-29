@@ -54,13 +54,12 @@ namespace Apis.Repos.Ratings
             return 0;
         }
 
-        public async Task<bool> HasRatedPartner(int PartnerId, int UserId)
+        public bool HasRatedPartner(int PartnerId, int UserId)
         {
-            var result = await _context.PartnerRatings.Where(x => x.PartnerId == PartnerId && x.UserId == UserId).FirstOrDefaultAsync();
+            var result = _context.PartnerRatings.Where(x => x.PartnerId == PartnerId && x.UserId == UserId).FirstOrDefault();
             if (result == null)
             {
                 return false;
-                
             }
             return true;
         }
