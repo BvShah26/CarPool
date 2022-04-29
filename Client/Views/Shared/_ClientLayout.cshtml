@@ -63,9 +63,12 @@
                 <div class="main-menu-two-wrapper clearfix">
                     <div class="container clearfix">
                         <div class="main-menu-two-wrapper__inner">
-                            <div class="main-menu-two-wrapper__logo">
-                                @*<a href="index.html"><img src="~/ClientAssets/images/resources/logo-2.png" alt=""></a>*@
-                                <h2>Let's Pool</h2>
+                            <div class="main-menu-two-wrapper__logo" style="padding: 0px " >
+                                <a href="index.html">
+
+                                    <img src="~/img/logo.png" style=" height: 91px; width: 113px" />
+                                </a>
+                                @*<h2>Let's Pool</h2>*@
                                 @*<img src="~/img/valet-parking.jpg" width="123px" height="33px" />*@
                             </div>
                             <div class="main-menu-two-wrapper__main-menu">
@@ -112,7 +115,11 @@
             <div class="sticky-header__content"></div><!-- /.sticky-header__content -->
         </div><!-- /.stricky-header -->
 
+
+    <div style="min-height: 555px;" >
+
         @RenderBody()
+    </div>
 
 
         <!--Site Footer One Start-->
@@ -120,7 +127,7 @@
             <div class="site-footer-bg" style="background-image: url(../ClientAssets/images/backgrounds/site-footer-bg.jpg)">
             </div>
             <div class="container">
-                <div class="site-footer__top">
+                @*<div class="site-footer__top">
                     <div class="row">
                         <div class="col-xl-3 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="100ms">
                             <div class="footer-widget__column footer-widget__about">
@@ -208,18 +215,18 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>*@
                 <div class="site-footer-bottom">
                     <div class="row">
                         <div class="col-xl-12">
-                            <div class="site-footer-bottom__inner">
+                            <div class="site-footer-bottom__inner" style="padding-top: 18px;" >
                                 <div class="site-footer__social">
                                     <a href="#"><i class="fab fa-twitter"></i></a>
                                     <a href="#" class="clr-fb"><i class="fab fa-facebook"></i></a>
                                     <a href="#" class="clr-ins"><i class="fab fa-instagram"></i></a>
                                 </div>
                                 <p class="site-footer-bottom__copy-right">
-                                    © Copyright 2021 by <a href="#">Layerdrops.com</a>
+                                    © Copyright 2022 by <a href="#">bvshah.com</a>
                                 </p>
                             </div>
                         </div>

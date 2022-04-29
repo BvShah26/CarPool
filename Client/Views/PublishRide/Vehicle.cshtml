@@ -56,10 +56,11 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
-            $("#timeTag").text($("#VehicleId").text())
+            $("#timeTag").text($("#VehicleId option:selected").text())
         });
         $("#VehicleId").change(function () {
-            $("#timeTag").text($("#VehicleId").text())
+            console.log($("#vehicleId").text())
+            $("#timeTag").text($("#VehicleId option:selected").text())
         })
 
     </script>

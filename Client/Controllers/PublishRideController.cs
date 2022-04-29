@@ -34,7 +34,17 @@ namespace Client.Controllers
         [HttpGet]
         public IActionResult Departure()
         {
-            httpClient.GetAsync().Result;
+            int UserId = (int)HttpContext.Session.GetInt32("UserId");
+             HttpResponseMessage responseRide = httpClient.GetAsync($"Uservehicles/HasVehicle/{UserId}").Result;
+            if(responseRide.IsSuccessStatusCode)
+            {
+                string res = responseRide.Content.ReadAsStringAsync().Result;
+                bool hasVehicle = JsonConvert.DeserializeObject<bool>(res);
+                if(hasVehicle == false)
+                {
+                    return RedirectToAction("Add","Vehicle");
+                }
+            }
             //check for vehicle here
             return View();
         }

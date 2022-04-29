@@ -44,17 +44,11 @@ namespace Apis.Controllers.Client
         }
 
 
-        [HttpGet("{HasVehicle/{id}")]
-        public async Task<ActionResult<List<Uservehicle>>> HasVehicle(int id)
+        [HttpGet("HasVehicle/{id}")]
+        public async Task<IActionResult> HasVehicle(int id)
         {
-            var uservehicle = await _Repo.GetUservehicleByUser(id);
-
-            if (uservehicle == null)
-            {
-                return NotFound();
-            }
-
-            return uservehicle;
+            bool uservehicle = await _Repo.HasAnyVehicle(id);
+            return Ok(uservehicle);
         }
 
 
