@@ -52,9 +52,4 @@ namespace DataAcessLayer.Models.Users
         public ICollection<RidePartnerRating> PartnerRatings { get; set; }
     }
 
-    public enum Gender
-    {
-        Female,
-        Male
-    }
 }
