@@ -14,5 +14,7 @@ namespace Apis.Infrastructure.Client
         Task<Uservehicle> AddVehicle(Uservehicle vehicle);
         public Task<bool> DeleteUserVehicle(int UserVehicleId);
 
+        Task<bool> HasAnyVehicle(int UserId);
+
     }
 }

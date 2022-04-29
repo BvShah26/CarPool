@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Seat";
+    Layout = "~/Views/Shared/_PublishLayout.cshtml";
+}
+
+<main class="mainContent relative"
+      id="MainContent"
+      tabindex="-1"
+      style="min-height: 685px; height: auto">
+    <div class="transition-wrapper relative fade"
+         style="min-height: 685px; height: auto">
+        <div class="sc-bZkfAO dfCmkc page-wrapper"
+             style="min-height: 685px; height: auto">
+            <div class="transition-wrapper relative fade"
+                 style="min-height: 685px; height: auto">
+                <div class="sc-bZkfAO dfCmkc page-wrapper fade fade-forward-enter-done"
+                     style="min-height: 685px; height: auto">
+                    <div class="transition-wrapper relative fade"
+                         style="min-height: 685px; height: auto">
+                        <div class="sc-bZkfAO dfCmkc page-wrapper"
+                             style="min-height: 685px; height: auto">
+                            <form method="post"
+                                  novalidate=""
+                                  action=""
+                                  name="OneActionForm"
+                                  class="oneAction">
+                                <div role="presentation" class="sc-fctJkW ftnfJP">
+                                    <div class="section-content">
+                                        <h1 class="sc-gsnTZi sc-hTtwUo sc-jgbSNz GJlVl ipZXlI jlbwlf">
+                                            So how many passengers can you take?
+                                        </h1>
+                                        <div class="sc-bSakgD bSGrjp mt-xl">
+                                            <div aria-disabled="false" class="sc-jvLaUc dVmpUg">
+                                                <time id="timeTag">1</time>
+                                                <select name="seatQty" id="seatQty">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="button-wrapper p-xl justify-center button-wrapper--auto">
+                                    <button class="kirk-button kirk-button-primary sc-iTONeN jDVucc"
+                                            type="submit">
+                                        <span class="button-label"><span>Continue</span></span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts{
+    <script>
+
+        $("#seatQty").change(function () {
+            $("#timeTag").text($("#seatQty").val())
+        })
+
+    </script>
+}

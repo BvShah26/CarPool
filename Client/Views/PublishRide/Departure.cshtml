@@ -1,0 +1,133 @@
+﻿@{
+    ViewData["Title"] = "Departure";
+    Layout = "~/Views/Shared/_PublishLayout.cshtml";
+}
+
+<main class="mainContent relative"
+      id="MainContent"
+      tabindex="-1"
+      style="min-height: 685px; height: auto">
+    <div class="transition-wrapper relative fade"
+         style="min-height: 685px; height: auto">
+        <div class="sc-bZkfAO dfCmkc page-wrapper"
+             style="min-height: 685px; height: auto">
+            <div class="transition-wrapper relative fade"
+                 style="min-height: 685px; height: auto">
+                <div class="sc-bZkfAO dfCmkc page-wrapper fade fade-backward-enter-done"
+                     style="min-height: 685px; height: auto">
+                    <div class="transition-wrapper relative fade"
+                         style="min-height: 685px; height: auto">
+                        <div class="sc-bZkfAO dfCmkc page-wrapper"
+                             style="min-height: 685px; height: auto">
+                            <form method="post"
+                                  novalidate=""
+                                  action=""
+                                  name="OneActionForm">
+                                <div role="presentation" class="sc-fctJkW ftnfJP">
+                                    <div class="section-content">
+                                        <h1 class="sc-gsnTZi sc-hTtwUo sc-jgbSNz GJlVl ipZXlI jlbwlf">
+                                            Pick-up
+                                        </h1>
+                                        <div class="addressField">
+                                            <div class="sc-KfMfS knrzFs kirk-autoComplete addressField-autoComplete">
+                                                <div class="sc-kYWVYA DfnDF kirk-textField addressField-searchBox">
+                                                    <div class="kirk-textField-wrapper">
+                                                        <div class="sc-hAsxaJ bPBFUn">
+                                                            <button type="button"
+                                                                    aria-hidden="true"
+                                                                    tabindex="-1">
+                                                                <svg viewBox="0 0 24 24"
+                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                     class="kirk-icon sc-ksZaOG jucjqW"
+                                                                     width="18"
+                                                                     height="18"
+                                                                     aria-hidden="true">
+                                                                    <g fill="none"
+                                                                       stroke="#708C91"
+                                                                       stroke-width="1"
+                                                                       stroke-linecap="round"
+                                                                       stroke-linejoin="round"
+                                                                       stroke-miterlimit="10">
+                                                                        <line x1="22"
+                                                                              y1="22"
+                                                                              x2="16.4"
+                                                                              y2="16.4"></line>
+                                                                        <circle cx="10" cy="10" r="9"></circle>
+                                                                    </g>
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                        <input type="text" id="Departure" name="Departure" value="" />
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="DepartureCity" name="Departure_City" />
+                                <input type="hidden" id="DepartureLatLong" name="PickUp_LatLong" />
+
+                                <div class="button-wrapper p-xl justify-center button-wrapper--auto"
+                                     style="margin-top: 150px;">
+                                    <button class="kirk-button kirk-button-primary sc-iTONeN jDVucc"
+                                            type="submit">
+                                        <span class="button-label"><span>Continue</span></span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts{
+    <script>
+        $(document).keypress(function (e) {
+            if (e.keyCode === 13) {
+                e.preventDefault();
+                return false;
+            }
+        });
+        const AutoComplePlaces = (searchInput) => {
+            return new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
+                types: ['geocode'],
+                componentRestrictions: {
+                    country: "IN"
+                },
+                fields: ['geometry', 'name', 'address_components']
+            });
+        }
+
+        const PlaceChange = (data, inputControl) => {
+            var near_place = data.getPlace();
+            console.log("Near", near_place)
+
+            var filtered_array = near_place.address_components.filter(function (address_component) {
+                return address_component.types.includes("administrative_area_level_2");
+            });
+            var city = filtered_array.length ? filtered_array[0].long_name : "";
+
+            var place = data.getPlace();
+            console.log("Place : ", place)
+            var lat = place.geometry.location.lat();
+            var lng = place.geometry.location.lng();
+            console.log($("#" + inputControl).val())
+            $("#" + inputControl + "LatLong").val(lat + "," + lng)
+            $("#" + inputControl + "City").val(city)
+
+        }
+
+        $(document).ready(function () {
+
+            var pickupLocation = AutoComplePlaces('Departure');
+            google.maps.event.addListener(pickupLocation, 'place_changed', function () { return PlaceChange(pickupLocation, "Departure") });
+
+        })
+    </script>
+}
+

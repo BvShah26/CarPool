@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/ClientAssets/css/rides.css" />
+    @RenderSection("Headers", required: false)
+
+</head>
+<body>
+    <div id="root" class="" style="min-height: 685px; height: auto">
+        <header class="sc-jfmDQi fEHSOh kirk-topBar">
+            <div class="kirk-topBar-inner">
+                <div class="kirk-topBar-left">
+                    <span class="flex items-center mx-s large:ml-none large:mr-xl">
+                        <img src="~/img/logo.png"
+                             style="height: 91px; width: 113px" />
+                    </span>
+                </div>
+            </div>
+        </header>
+        @RenderBody()
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyDwIVgIMPOY0UMpmXrqO0hOBNSTM7dH2pA"></script>
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+﻿@{
+    ViewData["Title"] = "Departure";
+    Layout = "~/Views/Shared/_PublishLayout.cshtml";
+}
+
+
+@section Headers{
+    <style>
+
+        @@media (min-width: 800px) {
+            .bSGrjp {
+                position: relative;
+                width: 518px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        input[type=date]::-webkit-inner-spin-button,
+        input[type=date]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+}
+
+<main class="mainContent relative"
+      id="MainContent"
+      tabindex="-1"
+      style="min-height: 685px; height: auto">
+    <div class="transition-wrapper relative fade"
+         style="min-height: 685px; height: auto">
+        <div class="sc-bZkfAO dfCmkc page-wrapper"
+             style="min-height: 685px; height: auto">
+            <div class="transition-wrapper relative fade"
+                 style="min-height: 685px; height: auto">
+                <div class="sc-bZkfAO dfCmkc page-wrapper fade fade-forward-enter-done"
+                     style="min-height: 685px; height: auto">
+                    <div class="transition-wrapper relative fade"
+                         style="min-height: 685px; height: auto">
+                        <div class="sc-bZkfAO dfCmkc page-wrapper"
+                             style="min-height: 685px; height: auto">
+                            <form method="post"
+                                  novalidate=""
+                                  action=""
+                                  name="OneActionForm"
+                                  class="oneAction">
+
+                                <div role="presentation" class="sc-fctJkW ftnfJP">
+                                    <div class="section-content">
+                                        <h1 class="sc-gsnTZi sc-hTtwUo sc-jgbSNz GJlVl ipZXlI jlbwlf">
+                                            When are you going?
+                                        </h1>
+                                        <div class="sc-bSakgD bSGrjp mt-xl">
+                                            <div aria-disabled="false" class="sc-jvLaUc dVmpUg">
+                                                <input type="date" name="JounreyDate" id="JounreyDate"
+                                                       style="color: rgb(5, 71, 82); padding: 12px" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="button-wrapper p-xl justify-center button-wrapper--auto">
+                                    <button class="kirk-button kirk-button-primary sc-iTONeN jDVucc"
+                                            type="submit">
+                                        <span class="button-label"><span>Continue</span></span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts{
+    <script>
+        const disablePastDate = () => {
+            var dtToday = new Date();
+
+            var month = dtToday.getMonth() + 1;
+            var day = dtToday.getDate();
+            var year = dtToday.getFullYear();
+            if (month < 10)
+                month = '0' + month.toString();
+            if (day < 10)
+                day = '0' + day.toString();
+
+            var maxDate = year + '-' + month + '-' + day;
+            $('#JounreyDate').attr('min', maxDate);
+        }
+
+        $(document).ready(function () {
+            disablePastDate();
+        });
+
+    </script>
+}
+

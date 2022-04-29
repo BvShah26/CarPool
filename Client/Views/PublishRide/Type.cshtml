@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "Seat";
+    Layout = "~/Views/Shared/_PublishLayout.cshtml";
+}
+
+<main class="mainContent relative"
+      id="MainContent"
+      tabindex="-1"
+      style="min-height: 685px; height: auto">
+    <div class="transition-wrapper relative fade"
+         style="min-height: 685px; height: auto">
+        <div class="sc-bZkfAO dfCmkc page-wrapper"
+             style="min-height: 685px; height: auto">
+            <div class="transition-wrapper relative fade"
+                 style="min-height: 685px; height: auto">
+                <div class="sc-bZkfAO dfCmkc page-wrapper fade fade-forward-enter-done"
+                     style="min-height: 685px; height: auto">
+                    <div class="transition-wrapper relative fade"
+                         style="min-height: 685px; height: auto">
+                        <div class="sc-bZkfAO dfCmkc page-wrapper"
+                             style="min-height: 685px; height: auto">
+                            <form method="post"
+                                  novalidate=""
+                                  action=""
+                                  name="OneActionForm"
+                                  class="oneAction">
+                                <input type="hidden" name="Type" id="Type" />
+                                <div role="presentation" class="sc-fctJkW ftnfJP">
+                                    <div class="section-content">
+                                        <h1 id="9d901240d5ac204e08667f62847245db"
+                                            class="sc-gsnTZi sc-hTtwUo sc-jgbSNz GJlVl ipZXlI jlbwlf">
+                                            Can passengers book instantly?
+                                        </h1>
+                                        <ul class="sc-gFGZVQ bFkfCY kirk-items-list">
+                                            <li class="kirk-items-list-item">
+                                                <button type="button" value="true"
+                                                        class="kirk-item kirk-item--highlighted kirk-item--clickable sc-GVOUr CcFKY kirk-item-choice isInstant ">
+                                                    <span class="kirk-item-leftWrapper">
+                                                        <span class="kirk-item-leftText">
+                                                            <span class="kirk-text kirk-text-subheader sc-fbPSWO ldKURU"
+                                                                  style="color: rgb(0, 175, 245)">Yes, sure!</span>
+                                                        </span>
+                                                    </span><span class="kirk-item-rightAddon">
+                                                        <svg viewBox="0 0 24 24"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             class="kirk-icon sc-ksZaOG jucjqW"
+                                                             width="24"
+                                                             height="24"
+                                                             aria-hidden="true">
+                                                            <polyline fill="none"
+                                                                      stroke="#708C91"
+                                                                      stroke-width="2"
+                                                                      stroke-linecap="round"
+                                                                      stroke-linejoin="round"
+                                                                      stroke-miterlimit="10"
+                                                                      points="9 18 15 12 9 6"></polyline>
+                                                        </svg>
+                                                    </span>
+                                                </button>
+                                                <div aria-hidden="true"
+                                                     class="sc-ehmTmK sc-lbOyJj gANVXG hrAVid">
+                                                    <hr />
+                                                </div>
+                                            </li>
+                                            <li class="kirk-items-list-item">
+                                                <button type="button" value="false"
+                                                        class="kirk-item kirk-item--clickable sc-GVOUr CcFKY kirk-item-choice isInstant">
+                                                    <span class="kirk-item-leftWrapper">
+                                                        <span class="kirk-item-leftText">
+                                                            <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU"
+                                                                  style="color: rgb(5, 71, 82)">No, I’ll reply to each request myself</span>
+                                                        </span>
+                                                    </span><span class="kirk-item-rightAddon">
+                                                        <svg viewBox="0 0 24 24"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             class="kirk-icon sc-ksZaOG jucjqW"
+                                                             width="24"
+                                                             height="24"
+                                                             aria-hidden="true">
+                                                            <polyline fill="none"
+                                                                      stroke="#708C91"
+                                                                      stroke-width="2"
+                                                                      stroke-linecap="round"
+                                                                      stroke-linejoin="round"
+                                                                      stroke-miterlimit="10"
+                                                                      points="9 18 15 12 9 6"></polyline>
+                                                        </svg>
+                                                    </span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts{
+<script>
+    $(document).on('click', '.isInstant', function () {
+        
+        $("#Type").val(this.value)
+        $("form").submit();
+    });
+    
+
+</script>
+}

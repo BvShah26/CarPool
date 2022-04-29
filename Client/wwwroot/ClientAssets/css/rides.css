@@ -5464,6 +5464,7 @@ data-styled.g155[id="sc-global-iBwqPH2"] {
     right: 0px;
     transform: translateY(-50%);
 }
+
 @media (min-width: 800px) {
     .frNuuV li {
         -webkit-box-flex: 1;
@@ -5476,3 +5477,164 @@ data-styled.g155[id="sc-global-iBwqPH2"] {
     -webkit-box-pack: center;
     justify-content: center;
 }
+
+.ewqayQ input {
+    position: absolute;
+    clip: rect(0px, 0px, 0px, 0px);
+}
+
+.dVmpUg > select, .dVmpUg > select:focus {
+    z-index: 1;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    font-size: 16px;
+    appearance: menulist-button;
+    cursor: pointer;
+    outline: none;
+}
+
+.bSGrjp {
+    width: 100%;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.mt-xl {
+    margin-top: 24px !important;
+}
+
+@media (min-width: 800px) {
+    .bSGrjp {
+        position: relative;
+        width: 320px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+.dVmpUg {
+    position: relative;
+    width: 100%;
+    display: inline-flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    font-size: 4em;
+    font-weight: 500;
+    line-height: 1;
+    background-color: rgb(255, 255, 255);
+    color: rgb(5, 71, 82);
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 2em;
+    box-sizing: border-box;
+    cursor: pointer;
+    padding: 3px;
+}
+
+.dfCmkc > :not(.sc-gicCDI, .sc-ezWOiH) {
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+}
+
+.oneAction {
+    display: flex;
+    min-height: calc(100vh - 56px);
+    min-height: -webkit-fill-available;
+    min-height: stretch;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.keeWxy > select, .keeWxy > select:focus {
+    z-index: 1;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    font-size: 16px;
+    appearance: menulist-button;
+    cursor: pointer;
+    outline: none;
+}
+
+.bygZnP .kirk-stepper-content {
+    display: flex;
+    position: relative;
+    flex: 1 1 0%;
+}
+
+.bygZnP {
+    padding-left: 24px;
+    padding-right: 24px;
+    display: flex;
+    position: relative;
+}
+
+    .bygZnP.kirk-stepper-large .kirk-stepper-value {
+        width: calc(100% - 96px);
+        -webkit-box-flex: 0;
+        flex-grow: 0;
+    }
+
+    .bygZnP .kirk-stepper-value {
+        display: inline;
+        padding: 0px 16px;
+        margin: 0px;
+        border: none;
+        color: rgb(93, 209, 103);
+        text-align: center;
+        -webkit-box-flex: 1;
+        flex-grow: 1;
+        align-self: center;
+    }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.cuuFjX textarea {
+    min-height: 150px;
+}
+
+.cuuFjX textarea {
+    outline: none;
+    appearance: none;
+    border: 0px;
+    background-color: rgb(237, 237, 237);
+    color: rgb(5, 71, 82);
+    flex: 1 1 0%;
+    font-size: 16px;
+    line-height: 20px;
+    width: 100%;
+    caret-color: rgb(0, 175, 245);
+    padding: 0px calc(14px);
+    margin: calc(14px) 0px;
+    box-sizing: content-box;
+    height: 20px;
+}
+
+.cuuFjX {
+    padding-left: 24px;
+    padding-right: 24px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+    .cuuFjX .kirk-textarea-wrapper {
+        position: relative;
+        display: flex;
+        box-sizing: border-box;
+        color: rgb(5, 71, 82);
+        background-color: rgb(237, 237, 237);
+        border-radius: 16px;
+        border: 3px solid transparent;
+    }

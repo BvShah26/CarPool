@@ -59,5 +59,15 @@ namespace Apis.Repos.Client
             return await _context.Uservehicles.ToListAsync();
         }
 
+        public async Task<bool> HasAnyVehicle(int UserId)
+        {
+            var rec = await _context.Uservehicles.FirstOrDefaultAsync(x => x.UserOwnerId == UserId);
+            if(rec!=null)
+            {
+                return true;
+
+            }
+            return false;
+        }
     }
 }
