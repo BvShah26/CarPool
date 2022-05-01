@@ -20,6 +20,8 @@ namespace Apis.Infrastructure.Client
 
         //Task<ClientUsers> ChangePassword(UserChangePassword user);
 
+        Task<UserProfileMenu> MenuDetails(int UserId);
+
 
         Task<object> GetUserPreferences(int TypeId,int UserId);
         Task SavePreference(User_TravelPreference userPreferences);
