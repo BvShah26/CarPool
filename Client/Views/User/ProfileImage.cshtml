@@ -1,0 +1,130 @@
+﻿@model DataAcessLayer.ViewModels.Client.UpdateUserImage
+@{
+    ViewData["Title"] = "Profile Menu";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+
+@section Headers{
+    <link href="~/ClientAssets/css/rides.css" rel="stylesheet" />
+}
+
+<main class="mainContent relative"
+      id="MainContent"
+      tabindex="-1"
+      style="min-height: 685px; height: auto">
+    <div class="transition-wrapper relative "
+         style="min-height: 685px; height: auto">
+        <div class="sc-bZkfAO dfCmkc page-wrapper  fade-forward-enter-done"
+             style="min-height: 685px; height: auto">
+            <div class="transition-wrapper relative "
+                 style="min-height: 685px; height: auto">
+                <div class="sc-bZkfAO dfCmkc page-wrapper  fade-forward-enter-done"
+                     style="min-height: 685px; height: auto">
+                    <div class="transition-wrapper relative "
+                         style="min-height: 685px; height: auto">
+                        <div class="sc-bZkfAO dfCmkc page-wrapper"
+                             style="min-height: 685px; height: auto">
+                            <form method="post"
+                                  enctype="multipart/form-data"
+                                  novalidate=""
+                                  action=""
+                                  name="OneActionForm"
+                                  class="oneAction"
+                                  style="min-height: 685px; height: auto">
+
+                                <div class="sc-bZkfAO dfCmkc"
+                                     style="min-height: 685px; height: auto">
+                                    <div role="presentation" class="sc-gicCDI dDCeGO">
+                                        <div class="sc-ekGZSs hkQXKv">
+                                            <div role="presentation" class="sc-fctJkW ftnfJP">
+                                                <article class="section-content section-content--large"
+                                                         style="flex-direction: row;">
+                                                    <div class="kirk-illustratedSection-illustration">
+                                                        <div class="sc-fXynhf FdgvG kirk-avatar--large kirk-avatar--image kirk-avatar">
+                                                            @if (String.IsNullOrEmpty(ViewBag.UserProfileImage))
+                                                            {
+                                                                <img id="oldProfile" src="https://cdn.blablacar.com/comuto3/images/avatar/pixar/passenger-m-02.svg"
+                                                                     alt="" />
+                                                            }
+                                                            else
+                                                            {
+                                                                <img id="oldProfile" src="~/img/@ViewBag.UserProfileImage"
+                                                                     alt="" />
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div class="kirk-illustratedSection-content">
+                                                        <h1 class="sc-gsnTZi sc-hTtwUo sc-jgbSNz GJlVl ipZXlI jlbwlf"
+                                                            style="padding-bottom: 0px;">
+                                                            Please upload clear picture
+                                                            So people can engage with you
+
+                                                        </h1>
+                                                        <div class="text-center">
+                                                            <span class="kirk-button kirk-button-primary sc-iTONeN jDVucc"
+                                                                  type="button">
+
+                                                                <label for="ProfileImage">
+                                                                    <span class="glyphicon glyphicon-folder-open" aria-hidden="true">Choose Image</span>
+                                                                    <input type="file" asp-for="@Model.ProfileImage" style="display:none">
+                                                                </label>
+                                                            </span>
+
+
+                                                            <button class="kirk-button kirk-button-primary sc-iTONeN jDVucc" id="btnSubmit">
+                                                                Submit
+                                                            </button>
+
+                                                        </div>
+                                                    </div>
+                                                </article>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div role="presentation" class="sc-ezWOiH enFVJb">
+                                        <div role="presentation" class="sc-fctJkW ftnfJP">
+                                            <div class="section-content"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script>
+    $(document).ready(function () {
+        console.log("ready");
+        $("#btnSubmit").hide();
+    })
+</script>
+<script>
+
+
+
+    $('#ProfileImage').change(function () {
+        $("#btnSubmit").show();
+
+        var input = this;
+        var url = $(this).val();
+        var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+        if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#oldProfile').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+        else {
+            $('#oldProfile').attr('src', '/assets/no_preview.png');
+        }
+    });
+</script>

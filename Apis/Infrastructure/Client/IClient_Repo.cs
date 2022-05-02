@@ -1,6 +1,7 @@
 ﻿using DataAcessLayer.Models.Preferences;
 using DataAcessLayer.Models.Users;
 using DataAcessLayer.ViewModels.Client;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,11 @@ namespace Apis.Infrastructure.Client
         ClientUsers LoginUser(ClientUsers clientUsers);
 
         Task<ClientPublicProfile> PublicProfile(int UserId);
+
+
+        Task<bool> UpdateImage(int UserId, string ProfileImage);
+
+        Task<string> GetProfileImage(int UserId);
 
         //Task<ClientUsers> ChangePassword(UserChangePassword user);
 

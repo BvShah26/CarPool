@@ -33,7 +33,7 @@
                                                 class="sc-gsnTZi sc-hTtwUo sc-jgbSNz GJlVl ipZXlI jlbwlf">
                                                 Ride plan
                                             </h1>
-                                            @if (Model.HasRatedPubllisher == false)
+                                            @if (Model.HasRatedPubllisher == false && Model.Status=="" )
                                             {
                                                 <ul>
                                                     <li>
@@ -80,8 +80,6 @@
 
                                             @if (Model.Status != "" || Model.IsRequestPending != "")
                                             {
-
-
                                                 <ul>
                                                     <li>
                                                         <a class="kirk-item kirk-item--highlighted kirk-item--clickable sc-GVOUr CcFKY"

@@ -85,6 +85,21 @@ namespace Apis.Controllers.Client
             }
         }
 
+        [HttpGet("GetProfileImage/{UserId}")]
+        public async Task<IActionResult> GetProfileImage(int UserId)
+        {
+            string UserProfileImage = await _Repo.GetProfileImage(UserId);
+            return Ok(UserProfileImage);
+
+        }
+
+        [HttpPut("UpdatePicture/{UserId}")]
+        public async Task<IActionResult> UpdatePicture(int UserId, [FromBody]  string ProfileImage)
+        {
+            bool IsUpdated = await _Repo.UpdateImage(UserId,ProfileImage);
+            return Ok(IsUpdated);
+        }
+
 
 
         // PUT api/<ClientUserController>/5

@@ -48,7 +48,7 @@
                                                            asp-action="Details" asp-route-RideId="@item.RideId" asp-route-PublisherId="@item.PublisherId">
                                                             <div class="kirk-tripCard-mainContainer">
                                                                 @if (item.Status != "" || (item.HasNewRequest != "" && ViewBag.UserId == item.PublisherId)
-                                                             || (item.IsRequestPending != "") || item.HasRated == false)
+                                                           || (item.IsRequestPending != "") || item.HasRated == false)
                                                                 {
                                                                     <div class="kirk-item kirk-item--highlighted sc-GVOUr CcFKY kirk-tripCard-top-item">
                                                                         <span class="kirk-item-leftWrapper">
@@ -80,25 +80,40 @@
                                                                                 @*}*@
 
                                                                             </span><span class="kirk-item-leftText" style="display:flex">
-                                                                                @if (item.HasRated == true)
+
+                                                                                @if (item.Status != "" || (item.HasNewRequest != "" && ViewBag.UserId == item.PublisherId)
+                                                                              || (item.IsRequestPending != "") || item.HasRated == false)
                                                                                 {
                                                                                     @if (item.Status != "")
                                                                                     {
                                                                                         <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">@item.Status</span>
                                                                                     }
-                                                                                    else if (item.IsRequestPending == "")
+                                                                                    else if (item.HasRated == false)
                                                                                     {
-                                                                                        <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU">@item.HasNewRequest</span>
+                                                                                        <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">Exchange Ratings</span>
                                                                                     }
                                                                                     else
                                                                                     {
                                                                                         <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">@item.IsRequestPending</span>
+
                                                                                     }
                                                                                 }
-                                                                                else
-                                                                                {
-                                                                                    <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">Exchange Ratings</span>
-                                                                                }
+                                                                                @*@if (item.HasRated == true)
+                                                                                    {
+
+                                                                                        else if (item.IsRequestPending == "")
+                                                                                        {
+                                                                                            <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU">@item.HasNewRequest</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">@item.IsRequestPending</span>
+                                                                                        }
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">Exchange Ratings</span>
+                                                                                    }*@
                                                                             </span>
                                                                         </span>
                                                                     </div>

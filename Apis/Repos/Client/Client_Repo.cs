@@ -33,6 +33,12 @@ namespace Apis.Repos.Client
             _vehicleRepo = vehicleRepo;
         }
 
+        public async Task<string> GetProfileImage(int UserId)
+        {
+            string UserImage = await _context.ClientUsers.Where(x => x.Id == UserId).Select(user => user.ProfileImage).FirstOrDefaultAsync();
+            return UserImage;
+        }
+
         //public async Task<ClientUsers> ChangePassword(UserChangePassword user)
         //{
         //    ClientUsers userRecord = await _context.ClientUsers.Where(user => user.Id == user.Id).FirstOrDefaultAsync();
@@ -50,7 +56,7 @@ namespace Apis.Repos.Client
         //    }
         //}
 
-        
+
 
         public async Task<object> GetUserPreferences(int TypeId, int UserId)
         {
@@ -182,6 +188,21 @@ namespace Apis.Repos.Client
                 }
                 await _context.SaveChangesAsync();
             }
+        }
+
+        
+        public async Task<bool> UpdateImage(int UserId, string ProfileImage)
+        {
+            var UserData = await _context.ClientUsers.Where(x => x.Id == UserId).FirstOrDefaultAsync();
+            if(UserData != null)
+            {
+                UserData.ProfileImage = ProfileImage;
+                _context.ClientUsers.Update(UserData);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+
         }
     }
 }
