@@ -1,4 +1,5 @@
-﻿@model DataAcessLayer.Models.Users.ClientUsers
+﻿@*@model DataAcessLayer.Models.Users.ClientUsers*@
+@model DataAcessLayer.ViewModels.Client.UserRegistration_ViewModel
 @using DataAcessLayer.Models.Users
 
 @{
@@ -29,7 +30,7 @@
             <div class="col-xl-12 col-lg-12">
                 <div class="contact-page__right">
                     <h2 class="section-title__title" style="display: flex; justify-content: center; margin-bottom: 74px !important;">Register</h2>
-                    <form asp-action="Register" asp-controller="Account" >
+                    <form asp-action="Register" asp-controller="Account" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-xl-6">
                                 <div class="comment-form__input-box">
@@ -38,7 +39,7 @@
                             </div>
                             <div class="col-xl-6">
                                 <div class="comment-form__input-box">
-                                    <input type="number"  class="boxinput" placeholder="Enter Mobile Number" inlength="10" required asp-for="MobileNumber">
+                                    <input type="number" class="boxinput" placeholder="Enter Mobile Number" inlength="10" required asp-for="MobileNumber">
                                 </div>
                             </div>
                         </div>
@@ -50,7 +51,7 @@
                             </div>
                             <div class="col-xl-6">
                                 <div class="comment-form__input-box">
-                                    <input type="date" required class="boxinput" asp-for="BirthDate" >
+                                    <input type="date" required class="boxinput" asp-for="BirthDate">
                                 </div>
                             </div>
                         </div>
@@ -58,7 +59,7 @@
                         <div class="row">
                             <div class="col-xl-6">
                                 <div class="comment-form__input-box">
-                                    <input type="email" required placeholder="Enter name" asp-for="Email">
+                                    <input type="email" required placeholder="Enter Email" asp-for="Email">
                                 </div>
                             </div>
                             <div class="col-xl-6">
@@ -71,14 +72,24 @@
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="comment-form__input-box">
-                                    <textarea asp-for="Address" required placeholder="Write message"></textarea>
+                                    <textarea asp-for="Address" required placeholder="Write Address"></textarea>
                                 </div>
-                                <button type="submit" class="thm-btn comment-form__btn">
-                                    Submit
-                                </button>
+                                
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="comment-form__input-box">
+                                    <input type="file" class="boxinput" style="padding: 17px; margin: auto; " asp-for="ProfileImage" required placeholder="Select Image" />
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <button type="submit" class="thm-btn comment-form__btn">
+                                    Register Now
+                                </button>
+                            </div>
+                        </div>
 
                     </form>
                 </div>

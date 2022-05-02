@@ -33,5 +33,19 @@ namespace Client.Controllers.ClientController
             }
             return View();
         }
+
+
+        [HttpGet]
+        public IActionResult Menu(int id)
+        {
+            HttpResponseMessage responseProfile = httpClient.GetAsync($"ClientUser/PublicProfile/{id}").Result;
+            if (responseProfile.IsSuccessStatusCode)
+            {
+                string res = responseProfile.Content.ReadAsStringAsync().Result;
+                ClientPublicProfile userProfile = JsonConvert.DeserializeObject<ClientPublicProfile>(res);
+                return View(userProfile);
+            }
+            return View();
+        }
     }
 }

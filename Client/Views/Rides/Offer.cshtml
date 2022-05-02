@@ -37,7 +37,7 @@
                                                 <ul>
                                                     @foreach (var item in Model.Partners)
                                                     {
-                                                        if (!item.IsRated)
+                                                        if (item.IsRated == false)
                                                         {
 
                                                             <li>
