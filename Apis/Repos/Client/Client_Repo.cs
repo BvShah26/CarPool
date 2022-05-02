@@ -22,11 +22,15 @@ namespace Apis.Repos.Client
         /// Repo inside repo 
         /// </summary>
         private readonly IRatings_Repo _rartingRepo;
-        public Client_Repo(ApplicationDBContext context, UserManager<ApplicationUser> userManager, IRatings_Repo rartingRepo)
+        private readonly IClientVehicle_Repo _vehicleRepo;
+
+
+        public Client_Repo(ApplicationDBContext context, UserManager<ApplicationUser> userManager, IRatings_Repo rartingRepo, IClientVehicle_Repo vehicleRepo)
         {
             _context = context;
             _userManager = userManager;
             _rartingRepo = rartingRepo;
+            _vehicleRepo = vehicleRepo;
         }
 
         //public async Task<ClientUsers> ChangePassword(UserChangePassword user)
@@ -45,6 +49,8 @@ namespace Apis.Repos.Client
         //        return null;
         //    }
         //}
+
+        
 
         public async Task<object> GetUserPreferences(int TypeId, int UserId)
         {
@@ -70,6 +76,31 @@ namespace Apis.Repos.Client
         {
             ClientUsers record = _context.ClientUsers.FirstOrDefault(item => item.Email == clientUsers.Email && item.Password == clientUsers.Password);
             return record;
+        }
+
+        public async Task<UserProfileMenu> MenuDetails(int UserId)
+        {
+            UserProfileMenu userData = await _context.ClientUsers.Where(x => x.Id == UserId).Include(x => x.UserPreference).ThenInclude(preference => preference.Travel_Preference).Select(x => new UserProfileMenu()
+            {
+                Id = x.Id,
+                bio = x.Bio,
+                UserName = x.Name,
+                UserProfile = x.ProfileImage,
+                Preference = x.UserPreference.Select(userPreference => userPreference.Travel_Preference.Title).ToList(),
+
+            }).FirstOrDefaultAsync();
+            userData.Vehicles = (await _vehicleRepo.GetUservehicleByUser(UserId)).Select(vehicle => new UserVehicles_ViewModel()
+            {
+                VehicleId = vehicle.VehicleId   ,
+                VehicleColor = vehicle.Color.Color,
+                VehicleImage = vehicle.VehicleImage,
+                VehicleName = vehicle.Vehicle.Name,
+                VeicleBrand = vehicle.Vehicle.VehicleBrand.Name
+                
+            }).ToList();
+            
+
+            return userData;
         }
 
         public async Task<ClientPublicProfile> PublicProfile(int UserId)

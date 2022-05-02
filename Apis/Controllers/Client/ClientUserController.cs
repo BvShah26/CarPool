@@ -62,12 +62,30 @@ namespace Apis.Controllers.Client
         [HttpGet("PublicProfile/{UserId}")]
         public async Task<IActionResult> PublicProfile(int UserId)
         {
-            ClientPublicProfile userProfile  = await _Repo.PublicProfile(UserId);
+            ClientPublicProfile userProfile = await _Repo.PublicProfile(UserId);
             return Ok(userProfile);
         }
 
 
-        
+        [HttpGet("GetMenuDetails/{UserId}")]
+        public async Task<IActionResult> GetMenuDetails(int UserId)
+        {
+
+            try
+            {
+                UserProfileMenu profileMenu = await _Repo.MenuDetails(UserId);
+
+
+                return Ok(profileMenu);
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(500);
+            }
+        }
+
+
 
         // PUT api/<ClientUserController>/5
         [HttpPut("{id}")]

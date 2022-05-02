@@ -47,8 +47,9 @@ namespace Apis.Repos.Client
         {
             var rec = await _context.Uservehicles.Where(x => x.UserOwnerId == UserId)
                 .Where(x => x.IsDeleted == false)
-                .Include(item => item.Vehicle)
+                .Include(item => item.Vehicle).ThenInclude(vehicle => vehicle.VehicleBrand)
                 .Include(item => item.Color)
+                
 
                 .ToListAsync();
             return rec;
