@@ -1,61 +1,197 @@
-﻿@model IEnumerable<DataAcessLayer.Models.Users.Uservehicle>
-
-@{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+﻿@{
+    ViewData["Title"] = "Vehicle Brand";
+    Layout = "~/Views/Shared/_PublishLayout.cshtml";
 }
 
-<h1>Index</h1>
+<main class="mainContent relative"
+      id="MainContent"
+      tabindex="-1"
+      style="min-height: 660px; height: auto">
+    <div class="transition-wrapper relative "
+         style="min-height: 660px; height: auto">
+        <div class="sc-bZkfAO dfCmkc page-wrapper"
+             style="min-height: 660px; height: auto">
+            <div class="transition-wrapper relative "
+                 style="min-height: 660px; height: auto">
+                <div class="sc-bZkfAO dfCmkc page-wrapper"
+                     style="min-height: 660px; height: auto">
+                    <div class="transition-wrapper relative "
+                         style="min-height: 660px; height: auto">
+                        <div class="sc-bZkfAO dfCmkc page-wrapper"
+                             style="min-height: 660px; height: auto">
+                            <div class="transition-wrapper relative "
+                                 style="min-height: 660px; height: auto">
+                                <div class="sc-bZkfAO dfCmkc page-wrapper  fade-backward-enter-done"
+                                     style="min-height: 660px; height: auto">
+                                    <form method="post"
+                                          novalidate=""
+                                          action=""
+                                          name="OneActionForm"
+                                          class="oneAction">
+                                        <div role="presentation" class="sc-fctJkW ftnfJP">
+                                            <div class="section-content">
+                                                <h1 class="sc-gsnTZi sc-hTtwUo sc-jgbSNz GJlVl ipZXlI jlbwlf">
+                                                    What's your vehicle's Model?
+                                                </h1>
+                                                <div class="sc-cHPgQl ioeOCk kirk-autoComplete">
+                                                    <div class="sc-kYWVYA DfnDF kirk-textField">
+                                                        <div class="kirk-textField-wrapper">
+                                                            <input type="text"
+                                                                   placeholder="Seltos"
+                                                                   name="searchBox"
+                                                                   aria-haspopup="listbox"
+                                                                   aria-controls="listbox-model"
+                                                                   aria-expanded="true"
+                                                                   role="combobox"
+                                                                   autocomplete="off"
+                                                                   autocorrect="off"
+                                                                   @*onchange="myHandler(this)"*@
+                                                                   @*onkeyup = "this.onchange();"*@
+                                                                   onkeyup="getVehicle(this)"
+                                                                   value="" />
+                                                        </div>
+                                                    </div>
+                                                    <ul class="sc-gFGZVQ bFkfCY kirk-items-list kirk-autoComplete-list sc-KfMfS bXnCmw"
+                                                        id="listbox-model"
+                                                        role="listbox">
+                                                        @*<li class="kirk-items-list-item">
+                                                                <div class="kirk-item kirk-item--clickable sc-GVOUr CcFKY kirk-item-choice"
+                                                                     role="option"
+                                                                     tabindex="-1">
+                                                                    <span class="kirk-item-leftWrapper">
+                                                                        <span class="kirk-item-leftText">
+                                                                            <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU"
+                                                                                  style="color: rgb(5, 71, 82)">SWIFT</span>
+                                                                        </span>
+                                                                    </span><span class="kirk-item-rightAddon">
+                                                                        <svg viewBox="0 0 24 24"
+                                                                             xmlns="http://www.w3.org/2000/svg"
+                                                                             class="kirk-icon sc-ksZaOG jucjqW"
+                                                                             width="24"
+                                                                             height="24"
+                                                                             aria-hidden="true">
+                                                                            <polyline fill="none"
+                                                                                      stroke="#708C91"
+                                                                                      stroke-width="2"
+                                                                                      stroke-linecap="round"
+                                                                                      stroke-linejoin="round"
+                                                                                      stroke-miterlimit="10"
+                                                                                      points="9 18 15 12 9 6"></polyline>
+                                                                        </svg>
+                                                                    </span>
+                                                                </div>
+                                                                <div aria-hidden="true"
+                                                                     class="sc-ehmTmK sc-lbOyJj gANVXG hrAVid">
+                                                                    <hr />
+                                                                </div>
+                                                            </li>*@
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.VehicleImage)
-            </th>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script>
+        var rides = null;
+
+    </script>
+
+    <script>
+
+
+
+        $(document).ready(function () {
+             rides = @Json.Serialize(Model);
+            var carList = "";
+            $("#listbox-model").empty();
+
+            for (var i = 0; i < rides.length;i++) {
+                updateModel(rides[i]);
+                if (i == 4) {
+                    break;
+                }
+            }
+            //$("#listbox-model").html(carList);
+        })
+
+
+    </script>
+    <script>
+        const getVehicle = (e) => {
+            if (e.value != "") {
+                $("#listbox-model").empty();
+
+                $.each(rides, (i, val) => {
+                    if (val.name.toLowerCase().includes(e.value.toLowerCase())) {
+                        updateModel(val);
+                    }
+                })
+            }
+            else {
+                $("#listbox-model").empty();
+
+                for (var i = 0; i < rides.length; i++) {
+                    updateModel(rides[i]);
+                    if (i == 4) {
+                        break;
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        const updateModel = (rec) => {
+            $("#listbox-model").append(`<li class="kirk-items-list-item">
+                                                                    <div class="kirk-item kirk-item--clickable sc-GVOUr CcFKY kirk-item-choice"
+                                                                         role="option" onclick="clickItem(this)"
+                                                                         tabindex="-1">
+                                                                        <span class="kirk-item-leftWrapper">
+                                                                            <span class="kirk-item-leftText">
+<input type="hidden" name="vehicleId" value=${rec.id} />
+                                                                                <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU "
+                                                                                      style="color: rgb(5, 71, 82)">${rec.name}</span>
+                                                                            </span>
+                                                                        </span><span class="kirk-item-rightAddon">
+                                                                            <svg viewBox="0 0 24 24"
+                                                                                 xmlns="http://www.w3.org/2000/svg"
+                                                                                 class="kirk-icon sc-ksZaOG jucjqW"
+                                                                                 width="24"
+                                                                                 height="24"
+                                                                                 aria-hidden="true">
+                                                                                <polyline fill="none"
+                                                                                          stroke="#708C91"
+                                                                                          stroke-width="2"
+                                                                                          stroke-linecap="round"
+                                                                                          stroke-linejoin="round"
+                                                                                          stroke-miterlimit="10"
+                                                                                          points="9 18 15 12 9 6"></polyline>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </div>
+                                                                    <div aria-hidden="true"
+                                                                         class="sc-ehmTmK sc-lbOyJj gANVXG hrAVid">
+                                                                        <hr />
+                                                                    </div>
+                                                                </li>`);
+        }
+    </script>
+    <script>
+        const clickItem = (e) => {
+            console.log(e)
+            var a = e.children()
             
-          
-            <th>
-                @Html.DisplayNameFor(model => model.Vehicle)
-            </th>
-            <th>
-                Color
-            </th>
-            
-            <th>
-                @Html.DisplayNameFor(model => model.Manufacture_Year)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.VehicleImage)
-            </td>
-           
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.Vehicle.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Color.Color)
-            </td>
-          
-            <td>
-                @*@Html.DisplayFor(modelItem => item.Manufacture_Year)*@
-                @item.Manufacture_Year.ToString("yyyy")
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+        }
+    </script>
 }
-    </tbody>
-</table>

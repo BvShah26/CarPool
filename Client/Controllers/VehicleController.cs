@@ -28,20 +28,21 @@ namespace Client.Controllers
         }
 
         //All Vehicles
+        [HttpGet]
         public IActionResult Index()
         {
             string returnUrl = HttpContext.Request.Path;
             if (IsLogin() == true)
             {
                 var UserId = HttpContext.Session.GetInt32("UserId");
-                HttpResponseMessage responseMessage = httpClient.GetAsync($"UserVehicles/{UserId}").Result;
+                HttpResponseMessage responseMessage = httpClient.GetAsync("Vehicles").Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string res = responseMessage.Content.ReadAsStringAsync().Result;
-                    List<Uservehicle> vehicles = JsonConvert.DeserializeObject<List<Uservehicle>>(res);
+                    List<Vehicle> vehicles = JsonConvert.DeserializeObject<List<Vehicle>>(res);
                     return View(vehicles);
                 }
-                return RedirectToAction("Add");
+                return View();
             }
             return RedirectToAction("Login", "Account", new { url = returnUrl });
         }
