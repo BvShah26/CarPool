@@ -32,7 +32,7 @@
     <script src="~/lib/jquery/dist/jquery.js"></script>
     @if (@Context.Session.GetInt32("AdminId") == null)
     {
-        Context.Response.Redirect("Admin/Account/Login");
+        Context.Response.Redirect("/Admin/Account/Login");
     }
 
         <div id="app">

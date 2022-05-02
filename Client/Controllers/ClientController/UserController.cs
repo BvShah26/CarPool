@@ -36,6 +36,19 @@ namespace Client.Controllers.ClientController
         }
 
 
+<<<<<<< HEAD
+        [HttpGet]
+        public IActionResult Menu(int id)
+        {
+            HttpResponseMessage responseProfile = httpClient.GetAsync($"ClientUser/PublicProfile/{id}").Result;
+            if (responseProfile.IsSuccessStatusCode)
+            {
+                string res = responseProfile.Content.ReadAsStringAsync().Result;
+                ClientPublicProfile userProfile = JsonConvert.DeserializeObject<ClientPublicProfile>(res);
+                return View(userProfile);
+            }
+            return View();
+=======
 
         [HttpGet]
         public IActionResult Menu()
@@ -68,6 +81,7 @@ namespace Client.Controllers.ClientController
                 return false;
             }
             return true;
+>>>>>>> c1ed10f9cfc2ba5830923ba0a28e8c5e4636aa4c
         }
     }
 }

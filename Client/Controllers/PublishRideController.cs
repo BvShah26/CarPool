@@ -34,28 +34,43 @@ namespace Client.Controllers
         [HttpGet]
         public IActionResult Departure()
         {
-            int UserId = (int)HttpContext.Session.GetInt32("UserId");
-             HttpResponseMessage responseRide = httpClient.GetAsync($"Uservehicles/HasVehicle/{UserId}").Result;
-            if(responseRide.IsSuccessStatusCode)
+
+
+            string returnUrl = HttpContext.Request.Path;
+            if (IsLogin() == true)
             {
-                string res = responseRide.Content.ReadAsStringAsync().Result;
-                bool hasVehicle = JsonConvert.DeserializeObject<bool>(res);
-                if(hasVehicle == false)
+
+                int UserId = (int)HttpContext.Session.GetInt32("UserId");
+                HttpResponseMessage responseRide = httpClient.GetAsync($"Uservehicles/HasVehicle/{UserId}").Result;
+                if (responseRide.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("Add","Vehicle");
+                    string res = responseRide.Content.ReadAsStringAsync().Result;
+                    bool hasVehicle = JsonConvert.DeserializeObject<bool>(res);
+                    if (hasVehicle == false)
+                    {
+                        return RedirectToAction("Add", "Vehicle");
+                    }
                 }
+                //check for vehicle here
+                return View();
             }
-            //check for vehicle here
-            return View();
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
+
         }
 
         [HttpPost]
         public IActionResult Departure(string Departure, string PickUp_LatLong, string Departure_City)
         {
-            HttpContext.Response.Cookies.Append("Departure", Departure);
-            HttpContext.Response.Cookies.Append("DepartureLatLong", PickUp_LatLong);
-            HttpContext.Response.Cookies.Append("DepartureCity", Departure_City);
-            return RedirectToAction("Destination");
+            string returnUrl = HttpContext.Request.Path;
+            if (IsLogin() == true)
+            {
+                HttpContext.Response.Cookies.Append("Departure", Departure);
+                HttpContext.Response.Cookies.Append("DepartureLatLong", PickUp_LatLong);
+                HttpContext.Response.Cookies.Append("DepartureCity", Departure_City);
+                return RedirectToAction("Destination");
+            }
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
+
         }
 
 
@@ -219,7 +234,7 @@ namespace Client.Controllers
 
                 PublishRide ride = new PublishRide()
                 {
-                    
+
                     Departure_City = Request.Cookies["DepartureCity"],
                     PickUp_LatLong = Request.Cookies["DepartureLatLong"],
                     PickUp_Location = Request.Cookies["Departure"],

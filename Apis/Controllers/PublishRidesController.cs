@@ -181,7 +181,7 @@ namespace Apis.Controllers
                     .Select(item => new RideReqests_ViewModel()
                     {
                         RequestId = item.Id,
-                        RiderName = item.User.Name
+                        RiderName = item.User.Name 
                     }).ToList() : null,
                     Partners = x.Booking.Where(booking => booking.Publish_RideId == RideId && booking.IsCancelled == false)
                     .Select(partner => new RidePartners()
@@ -190,7 +190,7 @@ namespace Apis.Controllers
                         RiderName = partner.Rider.Name,
                         RiderProfile = partner.Rider.ProfileImage,
                         SeatQty = partner.SeatQty,
-                        IsRated =  _RatingRepo.HasRatedPartner(partner.RiderId,UserId)
+                        IsRated = ( DateTime.Now.Date > x.JourneyDate.Date) ? _RatingRepo.HasRatedPartner(partner.RiderId,UserId) : true
                     })
                     .ToList()
 
