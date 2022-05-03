@@ -25,7 +25,7 @@ namespace DataAcessLayer.Models.Users
         public ClientUsers UserOwner { get; set; }
         public int UserOwnerId { get; set; }
 
-        public DateTime Manufacture_Year { get; set; }
+        public string Manufacture_Year { get; set; }
 
         public bool IsDeleted { get; set; }
 

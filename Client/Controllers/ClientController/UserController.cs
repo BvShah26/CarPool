@@ -108,15 +108,23 @@ namespace Client.Controllers.ClientController
 
 
         [HttpPost]
-        public IActionResult ProfileImage(UpdateUserImage userProfile)
+        public IActionResult ProfileImage(UpdateUserImage userProfile, string? OldImage)
         {
-
+            
             string returnUrl = HttpContext.Request.Path;
-
             if (IsLogin() == true)
             {
+                if (!string.IsNullOrEmpty(OldImage))
+                {
+                    string uploadDir = Path.Combine(WebHostEnviroment.WebRootPath, "Images");
+                    FileInfo file = new FileInfo(Path.Combine(uploadDir, OldImage));
+                    if (file.Exists)
+                    {
+                        file.Delete();
+                    }
+                }
                 string ImageName =  UploadFile(userProfile.ProfileImage);
-                //Get User Old Profile Picture
+                
                 int UserId = (int)HttpContext.Session.GetInt32("UserId");
                 HttpResponseMessage responseMessage = httpClient.PutAsJsonAsync($"Clientuser/UpdatePicture/{UserId}", ImageName).Result;
                 if (responseMessage.IsSuccessStatusCode)
@@ -126,8 +134,8 @@ namespace Client.Controllers.ClientController
                 return RedirectToAction("Menu","User");
             }
             return RedirectToAction("Login", "Account", new { url = returnUrl });
-
         }
+
 
         public Boolean IsLogin()
         {

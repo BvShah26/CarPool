@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Vehicle Brand";
+    ViewData["Title"] = "Vehicle Color";
     Layout = "~/Views/Shared/_PublishLayout.cshtml";
 }
 
@@ -31,9 +31,9 @@
                                         <div role="presentation" class="sc-fctJkW ftnfJP">
                                             <div class="section-content">
                                                 <h1 class="sc-gsnTZi sc-hTtwUo sc-jgbSNz GJlVl ipZXlI jlbwlf">
-                                                    What's your vehicle's Model?
+                                                    What's your vehicle's Color?
                                                 </h1>
-                                                <input type="hidden" name="VehicleId" id="VehicleId" />
+                                                <input type="hidden" name="colorId" id="colorId" />
                                                 <div class="sc-cHPgQl ioeOCk kirk-autoComplete">
                                                     <div class="sc-kYWVYA DfnDF kirk-textField">
                                                         <div class="kirk-textField-wrapper">
@@ -48,45 +48,13 @@
                                                                    autocorrect="off"
                                                                    @*onchange="myHandler(this)"*@
                                                                    @*onkeyup = "this.onchange();"*@
-                                                                   onkeyup="getVehicle(this)"
+                                                                   onkeyup="getColors(this)"
                                                                    value="" />
                                                         </div>
                                                     </div>
                                                     <ul class="sc-gFGZVQ bFkfCY kirk-items-list kirk-autoComplete-list sc-KfMfS bXnCmw"
                                                         id="listbox-model"
                                                         role="listbox">
-                                                        @*<li class="kirk-items-list-item">
-                                                                <div class="kirk-item kirk-item--clickable sc-GVOUr CcFKY kirk-item-choice"
-                                                                     role="option"
-                                                                     tabindex="-1">
-                                                                    <span class="kirk-item-leftWrapper">
-                                                                        <span class="kirk-item-leftText">
-                                                                            <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU"
-                                                                                  style="color: rgb(5, 71, 82)">SWIFT</span>
-                                                                        </span>
-                                                                    </span><span class="kirk-item-rightAddon">
-                                                                        <svg viewBox="0 0 24 24"
-                                                                             xmlns="http://www.w3.org/2000/svg"
-                                                                             class="kirk-icon sc-ksZaOG jucjqW"
-                                                                             width="24"
-                                                                             height="24"
-                                                                             aria-hidden="true">
-                                                                            <polyline fill="none"
-                                                                                      stroke="#708C91"
-                                                                                      stroke-width="2"
-                                                                                      stroke-linecap="round"
-                                                                                      stroke-linejoin="round"
-                                                                                      stroke-miterlimit="10"
-                                                                                      points="9 18 15 12 9 6"></polyline>
-                                                                        </svg>
-                                                                    </span>
-                                                                </div>
-                                                                <div aria-hidden="true"
-                                                                     class="sc-ehmTmK sc-lbOyJj gANVXG hrAVid">
-                                                                    <hr />
-                                                                </div>
-                                                            </li>*@
-
                                                     </ul>
                                                 </div>
                                             </div>
@@ -114,7 +82,8 @@
 
 
         $(document).ready(function () {
-             colors = @Json.Serialize(Model);
+            colors = @Json.Serialize(Model);
+            console.log(colors);
             var carList = "";
             $("#listbox-model").empty();
 
@@ -130,12 +99,12 @@
 
     </script>
     <script>
-        const getVehicle = (e) => {
+        const getColors = (e) => {
             if (e.value != "") {
                 $("#listbox-model").empty();
 
                 $.each(colors, (i, val) => {
-                    if (val.name.toLowerCase().includes(e.value.toLowerCase())) {
+                    if (val.color.toLowerCase().includes(e.value.toLowerCase())) {
                         updateModel(val);
                     }
                 })
@@ -155,51 +124,35 @@
     <script>
         const updateModel = (rec) => {
             $("#listbox-model").append(`<li class="kirk-items-list-item">
-                                                                    <div class="kirk-item kirk-item--clickable sc-GVOUr CcFKY kirk-item-choice"
-                                                                         role="option" onclick="clickItem(this)"
-                                                                         tabindex="-1">
-<input type="hidden"  class="vehicleId" value=${rec.id} />
+                                                                    <button type="button" onclick="clickItem(this)" class="kirk-item kirk-item--clickable sc-GVOUr CcFKY kirk-item-choice">
+                                                                        <input type="hidden" class="colorId"  value=${rec.id} />
+
                                                                         <span class="kirk-item-leftWrapper">
-                                                                            <span class="kirk-item-leftText">
-                                                                                <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU "
-                                                                                      style="color: rgb(5, 71, 82)">${rec.name}</span>
+                                                                            <span class="kirk-item-leftAddon">
+                                                                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="kirk-icon sc-ksZaOG iaNosS" width="24" height="24" aria-hidden="true">
+                                                                                    <circle cx="12" cy="12" r="9.5" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" fill="${rec.colorCode}"></circle>
+                                                                                </svg>
                                                                             </span>
-                                                                        </span><span class="kirk-item-rightAddon">
-                                                                            <svg viewBox="0 0 24 24"
-                                                                                 xmlns="http://www.w3.org/2000/svg"
-                                                                                 class="kirk-icon sc-ksZaOG jucjqW"
-                                                                                 width="24"
-                                                                                 height="24"
-                                                                                 aria-hidden="true">
-                                                                                <polyline fill="none"
-                                                                                          stroke="#708C91"
-                                                                                          stroke-width="2"
-                                                                                          stroke-linecap="round"
-                                                                                          stroke-linejoin="round"
-                                                                                          stroke-miterlimit="10"
-                                                                                          points="9 18 15 12 9 6"></polyline>
+                                                                            <span class="kirk-item-leftText"><span class="kirk-text kirk-text-title sc-fbPSWO ldKURU" style="color: rgb(5, 71, 82);">${rec.color}</span></span>
+                                                                        </span>
+                                                                        <span class="kirk-item-rightAddon">
+                                                                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="kirk-icon sc-ksZaOG jucjqW" width="24" height="24" aria-hidden="true">
+                                                                                <polyline fill="none" stroke="#708C91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="9 18 15 12 9 6"></polyline>
                                                                             </svg>
                                                                         </span>
-                                                                    </div>
-                                                                    <div aria-hidden="true"
-                                                                         class="sc-ehmTmK sc-lbOyJj gANVXG hrAVid">
-                                                                        <hr />
-                                                                    </div>
-                                                                </li>`);
+                                                                    </button>
+                                            </li>`);
         }
     </script>
     <script>
         const clickItem = (e) => {
-            console.log(e)
+            
 
-            var a = $(e).find(".vehicleId")[0].value;
+            var a = $(e).find(".colorId")[0].value;
             console.log(a);
 
-            $("#VehicleId").val(a);
+            $("#colorId").val(a);
             $("form").submit();
-
-
-
         }
     </script>
 }

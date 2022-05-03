@@ -53,8 +53,16 @@ namespace Client.Controllers
 
         public IActionResult Index(string VehicleId)
         {
-            HttpContext.Response.Cookies.Append("VehicleId", VehicleId);
-            return RedirectToAction("Color");
+            string returnUrl = HttpContext.Request.Path;
+            if (IsLogin() == true)
+            {
+
+                HttpContext.Response.Cookies.Append("VehicleId", VehicleId);
+                return RedirectToAction("Color");
+            }
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
+
+
         }
 
 
@@ -79,6 +87,69 @@ namespace Client.Controllers
             return RedirectToAction("Login", "Account", new { url = returnUrl });
 
         }
+
+        [HttpPost]
+
+        public IActionResult Color(string colorId)
+        {
+            string returnUrl = HttpContext.Request.Path;
+            if (IsLogin() == true)
+            {
+
+                HttpContext.Response.Cookies.Append("colorId", colorId);
+                return RedirectToAction("Year");
+            }
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
+
+        }
+
+
+        [HttpGet]
+        public IActionResult Year()
+        {
+            string returnUrl = HttpContext.Request.Path;
+            if (IsLogin() == true)
+            {
+                return View();
+            }
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
+
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public IActionResult Year(string Year)
+        {
+            string returnUrl = HttpContext.Request.Path;
+            if (IsLogin() == true)
+            {
+                int UserId = (int)HttpContext.Session.GetInt32("UserId");
+                Uservehicle uservehicle = new Uservehicle()
+                {
+                    UserOwnerId = UserId,
+                    ColorId = Int32.Parse(Request.Cookies["colorId"]),
+                    Manufacture_Year = Year,
+                    VehicleId = Int32.Parse(Request.Cookies["VehicleId"])
+                };
+
+                HttpResponseMessage responseMessage = httpClient.PostAsJsonAsync("Uservehicles", uservehicle).Result;
+                if(responseMessage.IsSuccessStatusCode)
+                {
+                    Response.Cookies.Delete("colorId");
+                    Response.Cookies.Delete("VehicleId");
+                    return RedirectToAction("menu","user");
+                }
+            }
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
+
+        }
+
+
+        
+
+
         //Add Vehicles
         [HttpGet]
         public IActionResult Add()

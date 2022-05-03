@@ -1,6 +1,7 @@
 ﻿using Apis.Infrastructure.Client;
 using DataAcessLayer.Models.Users;
 using DataAcessLayer.ViewModels.Client;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -94,25 +95,58 @@ namespace Apis.Controllers.Client
         }
 
         [HttpPut("UpdatePicture/{UserId}")]
-        public async Task<IActionResult> UpdatePicture(int UserId, [FromBody]  string ProfileImage)
+        public async Task<IActionResult> UpdatePicture(int UserId, [FromBody] string ProfileImage)
         {
-            bool IsUpdated = await _Repo.UpdateImage(UserId,ProfileImage);
+            bool IsUpdated = await _Repo.UpdateImage(UserId, ProfileImage);
             return Ok(IsUpdated);
         }
 
-
-
-        // PUT api/<ClientUserController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("ResetPassword/{UserId}")]
+        public async Task<IActionResult> ResetPassword(int UserId, [FromBody] string Email)
         {
+            try
+            {
+                bool isUpdated = _Repo.ResetPassword(UserId, Email);
+                if (isUpdated == false)
+                {
+                    return NotFound();
+                }
+                return Ok();
 
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
-        // DELETE api/<ClientUserController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+
+        [HttpPut("ChangePassword/{UserId}")]
+        public async Task<IActionResult> ChangePassword(int UserId, [FromBody] UserChangePassword changePassword)
         {
+            if (UserId != changePassword.UserId)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                int isUpdated = await _Repo.ChangePassword(changePassword);
+                if (isUpdated == -1)
+                {
+                    return NotFound();
+                }
+                if (isUpdated == 0)
+                {
+                    return Unauthorized();
+                }
+                return Ok();
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
         }
     }
 }

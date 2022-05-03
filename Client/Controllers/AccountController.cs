@@ -32,6 +32,10 @@ namespace Client.Controllers
         }
 
 
+        /// <summary>
+        /// User Registration
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Register()
         {
@@ -39,30 +43,6 @@ namespace Client.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult Logout()
-        {
-            HttpContext.Session.Remove("UserId");
-            HttpContext.Session.Remove("UserName");
-            return RedirectToAction("Index", "Home");
-        }
-        public string UploadFile(IFormFile Image)
-        {
-            string fileName = null;
-
-            if (Image != null)
-            {
-                string uploadDir = Path.Combine(WebHostEnviroment.WebRootPath, "Img");
-                fileName = Guid.NewGuid().ToString() + "-" + Image.FileName;
-                string filePath = Path.Combine(uploadDir, fileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    Image.CopyTo(fileStream);
-                }
-            }
-            return fileName;
-        }
-        [HttpPost]
         public IActionResult Register(UserRegistration_ViewModel userRegister)
         {
             if (ModelState.IsValid)
@@ -78,7 +58,7 @@ namespace Client.Controllers
                             Name = userRegister.Name,
                             Gender = userRegister.Gender,
                             BirthDate = userRegister.BirthDate,
-                            
+
                             Address = userRegister.Address,
                             Email = userRegister.Email,
                         };
@@ -107,6 +87,31 @@ namespace Client.Controllers
 
         }
 
+
+        //[HttpPost]
+        public string UploadFile(IFormFile Image)
+        {
+            string fileName = null;
+
+            if (Image != null)
+            {
+                string uploadDir = Path.Combine(WebHostEnviroment.WebRootPath, "Img");
+                fileName = Guid.NewGuid().ToString() + "-" + Image.FileName;
+                string filePath = Path.Combine(uploadDir, fileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    Image.CopyTo(fileStream);
+                }
+            }
+            return fileName;
+        }
+
+
+        /// <summary>
+        /// user Login 
+        /// </summary>
+
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Login(string? url)
         {
@@ -144,7 +149,75 @@ namespace Client.Controllers
             return View();
         }
 
-        //Login Identity
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("UserId");
+            HttpContext.Session.Remove("UserName");
+            return RedirectToAction("Index", "Home");
+        }
 
+
+        //Manging Password
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            string returnUrl = HttpContext.Request.Path;
+
+            if (IsLogin() == true)
+            {
+                return View();
+            }
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
+        }
+
+        [HttpPost]
+        public IActionResult ChangePassword(UserChangePassword changePassword)
+        {
+            string returnUrl = HttpContext.Request.Path;
+
+            if (IsLogin() == true)
+            {
+                if (ModelState.IsValid)
+                {
+                    int UserId = (int)HttpContext.Session.GetInt32("UserId");
+                    changePassword.UserId = UserId;
+                    HttpResponseMessage responseMessage = httpClient.PutAsJsonAsync($"ClientUser/ChangePassword/{UserId}", changePassword).Result;
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Menu", "User");
+                    }
+                    else if (responseMessage.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        ViewBag.Error = "The password your entered is not your current password";
+                    }
+                    else if (responseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        throw new Exception("User Not Found");
+                    }
+                }
+                else
+                {
+                    ViewBag.CompareError = "Passwords don't match";
+                }
+                return View(changePassword);
+            }
+            return RedirectToAction("Login", "Account", new
+            {
+                url = returnUrl
+            });
+        }
+
+
+
+
+        public Boolean IsLogin()
+        {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

@@ -29,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Apis\Apis.csproj" />
     <ProjectReference Include="..\DataAcessLayer\DataAcessLayer.csproj" />
+    <ProjectReference Include="..\EmailServices\EmailServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

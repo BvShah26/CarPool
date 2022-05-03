@@ -3993,6 +3993,7 @@ data-styled.g65[id="sc-hiMGwR"] {
         background-color: #ededed;
         height: 1px;
         margin: 0;
+        opacity: 1;
     }
 /*!sc*/
 data-styled.g66[id="sc-ehmTmK"] {
@@ -5677,4 +5678,28 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .text-center {
     text-align: center !important;
+}
+
+.gIkXxY {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 24px;
+    word-break: break-word;
+}
+
+.DfnDF.kirk-error input {
+    background-color: rgb(253, 216, 222);
+}
+
+.lhTCmS.lhTCmS {
+    padding-top: 8px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.fRldBu {
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: 28px;
+    color: rgb(245, 63, 91);
 }

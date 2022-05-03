@@ -20,16 +20,20 @@ namespace Apis.Infrastructure.Client
         Task<ClientPublicProfile> PublicProfile(int UserId);
 
 
-        Task<bool> UpdateImage(int UserId, string ProfileImage);
 
         Task<string> GetProfileImage(int UserId);
+        Task<bool> UpdateImage(int UserId, string ProfileImage);
 
-        //Task<ClientUsers> ChangePassword(UserChangePassword user);
+
 
         Task<UserProfileMenu> MenuDetails(int UserId);
 
 
         Task<object> GetUserPreferences(int TypeId,int UserId);
         Task SavePreference(User_TravelPreference userPreferences);
+
+
+        bool ResetPassword(int UserId, string Email);
+        Task<int> ChangePassword(UserChangePassword user);
     }
 }

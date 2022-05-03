@@ -37,6 +37,8 @@
     <Compile Remove="Migrations\20220428115700_Ratingenum.Designer.cs" />
     <Compile Remove="Migrations\20220429041158_hey.cs" />
     <Compile Remove="Migrations\20220429041158_hey.Designer.cs" />
+    <Compile Remove="Migrations\20220503070104_UserVehicleYear.cs" />
+    <Compile Remove="Migrations\20220503070104_UserVehicleYear.Designer.cs" />
   </ItemGroup>
 
 	<ItemGroup>
@@ -70,6 +72,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\DataAcessLayer\DataAcessLayer.csproj" />
+	  <ProjectReference Include="..\EmailServices\EmailServices.csproj" />
 	</ItemGroup>
 
 
