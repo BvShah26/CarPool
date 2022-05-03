@@ -105,7 +105,7 @@
 @section Scripts{
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script>
-        var rides = null;
+        var colors = null;
 
     </script>
 
@@ -114,12 +114,12 @@
 
 
         $(document).ready(function () {
-             rides = @Json.Serialize(Model);
+             colors = @Json.Serialize(Model);
             var carList = "";
             $("#listbox-model").empty();
 
-            for (var i = 0; i < rides.length;i++) {
-                updateModel(rides[i]);
+            for (var i = 0; i < colors.length;i++) {
+                updateModel(colors[i]);
                 if (i == 4) {
                     break;
                 }
@@ -134,7 +134,7 @@
             if (e.value != "") {
                 $("#listbox-model").empty();
 
-                $.each(rides, (i, val) => {
+                $.each(colors, (i, val) => {
                     if (val.name.toLowerCase().includes(e.value.toLowerCase())) {
                         updateModel(val);
                     }
@@ -143,8 +143,8 @@
             else {
                 $("#listbox-model").empty();
 
-                for (var i = 0; i < rides.length; i++) {
-                    updateModel(rides[i]);
+                for (var i = 0; i < colors.length; i++) {
+                    updateModel(colors[i]);
                     if (i == 4) {
                         break;
                     }
@@ -191,7 +191,7 @@
     <script>
         const clickItem = (e) => {
             console.log(e)
-            
+
             var a = $(e).find(".vehicleId")[0].value;
             console.log(a);
 
@@ -199,7 +199,7 @@
             $("form").submit();
 
 
-            
+
         }
     </script>
 }

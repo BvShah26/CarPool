@@ -47,6 +47,38 @@ namespace Client.Controllers
             return RedirectToAction("Login", "Account", new { url = returnUrl });
         }
 
+        //Post Event Index and then colors
+
+        [HttpPost]
+
+        public IActionResult Index(string VehicleId)
+        {
+            HttpContext.Response.Cookies.Append("VehicleId", VehicleId);
+            return RedirectToAction("Color");
+        }
+
+
+        [HttpGet]
+
+        public IActionResult Color()
+        {
+            string returnUrl = HttpContext.Request.Path;
+            if (IsLogin() == true)
+            {
+                HttpResponseMessage responseMessage = httpClient.GetAsync("VehicleColors").Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    List<VehicleColor> colors = JsonConvert.DeserializeObject<List<VehicleColor>>(res);
+
+                    return View(colors);
+
+                }
+                return View();
+            }
+            return RedirectToAction("Login", "Account", new { url = returnUrl });
+
+        }
         //Add Vehicles
         [HttpGet]
         public IActionResult Add()
