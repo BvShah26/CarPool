@@ -1,0 +1,81 @@
+﻿@*@model DataAcessLayer.Models.Users.ClientUsers*@
+@model DataAcessLayer.ViewModels.Client.UserEditProfile
+@using DataAcessLayer.Models.Users
+
+@{
+    ViewData["Title"] = "Edit Profile";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+<style>
+    .boxinput {
+        height: 75px;
+        width: 100%;
+        border: none;
+        background: #e9edf2;
+        padding: 0 30px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        outline: none;
+        font-size: 16px;
+        color: var(--thm-gray);
+        font-weight: 400;
+    }
+</style>
+
+<section class="contact-page">
+    <div class="container" style=" width: 50% !important; margin: 0 auto ;">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12">
+                <div class="contact-page__right">
+                    <h2 class="section-title__title" style="display: flex; justify-content: center; margin-bottom: 74px !important;">Edit Profile</h2>
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="comment-form__input-box">
+                                    <input type="text" required class="boxinput" placeholder="Your name" asp-for="Name">
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="comment-form__input-box">
+                                    <input type="number" class="boxinput" placeholder="Enter Mobile Number" inlength="10" required asp-for="MobileNumber">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="comment-form__input-box" >
+                                    <input asp-for="Gender" disabled step="background: #d7d7d7;" />
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="comment-form__input-box">
+                                    <input type="date" required class="boxinput" asp-for="BirthDate">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="comment-form__input-box">
+                                    <textarea asp-for="Address" required placeholder="Write Address"></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <button type="submit" class="thm-btn comment-form__btn">
+                                    Save Changes
+                                </button>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

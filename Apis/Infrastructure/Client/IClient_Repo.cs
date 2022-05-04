@@ -35,5 +35,12 @@ namespace Apis.Infrastructure.Client
 
         bool ResetPassword(int UserId, string Email);
         Task<int> ChangePassword(UserChangePassword user);
+
+
+        Task<UserEditProfile> GetUserEdit(int UserId);
+        Task<ClientUsers> EditProfile(UserEditProfile updatedProfile);
+
+
+        
     }
 }

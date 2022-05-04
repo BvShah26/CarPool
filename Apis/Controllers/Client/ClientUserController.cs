@@ -148,5 +148,52 @@ namespace Apis.Controllers.Client
             }
 
         }
+
+
+        [HttpGet("GetUserEdit/{UserId}")]
+        public async Task<IActionResult> GetUserEdit(int UserId)
+        {
+            try
+            {
+                var userRecord = await _Repo.GetUserEdit(UserId);
+                if (userRecord == null)
+                {
+                    return NotFound();
+                }
+                return Ok(userRecord);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+                throw;
+            }
+        }
+
+        [HttpPut("EditProfile/{UserId}")]
+
+        public async Task<IActionResult> EditProfile(int UserId, [FromBody] UserEditProfile editProfile)
+        {
+            if (editProfile.UserId != UserId)
+            {
+                return BadRequest();
+            }
+
+
+            try
+            {
+                var rec = await _Repo.EditProfile(editProfile);
+                if (rec == null)
+                {
+                    return NotFound();
+                }
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+                throw;
+            }
+
+        }
     }
 }

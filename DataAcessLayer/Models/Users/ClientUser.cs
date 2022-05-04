@@ -23,7 +23,7 @@ namespace DataAcessLayer.Models.Users
         //public int CityId { get; set; } //To Be Remove
 
         public string Address { get; set; }
-        public Gender? Gender { get; set; }
+        public Gender Gender { get; set; }
 
         public long MobileNumber { get; set; }
 

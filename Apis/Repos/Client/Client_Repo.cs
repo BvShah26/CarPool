@@ -50,9 +50,10 @@ namespace Apis.Repos.Client
             ClientUsers userRecord = await _context.ClientUsers.FindAsync(updatedPassword.UserId);
             if (userRecord != null)
             {
-                if (userRecord.Password == updatedPassword.OldPassword)
+
+                if ( bc.Verify(updatedPassword.OldPassword,userRecord.Password))
                 {
-                    userRecord.Password = updatedPassword.NewPassword;
+                    userRecord.Password = bc.HashPassword(updatedPassword.NewPassword);
                     _context.ClientUsers.Update(userRecord);
                     await _context.SaveChangesAsync();
                     return 1;
@@ -106,8 +107,15 @@ namespace Apis.Repos.Client
 
         public ClientUsers LoginUser(ClientUsers clientUsers)
         {
-            ClientUsers record = _context.ClientUsers.FirstOrDefault(item => item.Email == clientUsers.Email && bc.Verify(clientUsers.Password,item.Password)  );
-            return record;
+            //ClientUsers record = _context.ClientUsers.FirstOrDefault(item => item.Email == clientUsers.Email && item.Password == clientUsers.Password);
+            ClientUsers record = _context.ClientUsers.FirstOrDefault(item => item.Email == clientUsers.Email);
+
+
+            if (record != null && bc.Verify(clientUsers.Password, record.Password))
+            {
+                return record;
+            }
+            return null;
         }
 
         public async Task<UserProfileMenu> MenuDetails(int UserId)
@@ -188,7 +196,7 @@ namespace Apis.Repos.Client
             ClientUsers user = _context.ClientUsers.Find(UserId);
             if (user != null)
             {
-                user.Password = randomPassword;
+                user.Password = bc.HashPassword(randomPassword); ;
                 _context.ClientUsers.Update(user);
                 _context.SaveChanges();
             }
@@ -253,6 +261,41 @@ namespace Apis.Repos.Client
             }
             return false;
 
+        }
+
+        public async Task<UserEditProfile> GetUserEdit(int UserId)
+        {
+            UserEditProfile userRecord = await _context.ClientUsers.Where(user => user.Id == UserId)
+                .Select(user => new UserEditProfile()
+                {
+                    UserId = user.Id,
+                    Name = user.Name,
+                    BirthDate = user.BirthDate,
+                    Gender = user.Gender,
+                    MobileNumber = user.MobileNumber,
+                    Address = user.Address,
+                    Bio = user.Bio
+                    
+                })
+                .FirstOrDefaultAsync();
+            return userRecord;
+        }
+
+        public async Task<ClientUsers> EditProfile(UserEditProfile updatedProfile)
+        {
+            ClientUsers userRecord = await _context.ClientUsers.Where(user => user.Id == updatedProfile.UserId).FirstOrDefaultAsync();
+            if(userRecord==null)
+            {
+                return null;
+            }
+            userRecord.Name = updatedProfile.Name;
+            userRecord.MobileNumber = updatedProfile.MobileNumber;
+            userRecord.BirthDate = updatedProfile.BirthDate;
+            userRecord.Address = updatedProfile.Address;
+
+            _context.ClientUsers.Update(userRecord);
+            await _context.SaveChangesAsync();
+            return userRecord;
         }
     }
 }

@@ -209,8 +209,54 @@ namespace Client.Controllers
         }
 
 
+        //Edit User Profile
+        [HttpGet]
+        public IActionResult EditProfile()
+        {
+            string returnUrl = HttpContext.Request.Path;
+
+            if (IsLogin() == true)
+            {
+                int UserId = (int)HttpContext.Session.GetInt32("UserId");
+                HttpResponseMessage responseMessage = httpClient.GetAsync($"ClientUser/GetUserEdit/{UserId}").Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string res = responseMessage.Content.ReadAsStringAsync().Result;
+                    UserEditProfile userProfile = JsonConvert.DeserializeObject<UserEditProfile>(res);
+                    return View(userProfile);
+                }
+                return View();
+            }
+            return RedirectToAction("Login", "Account", new
+            {
+                url = returnUrl
+            });
+        }
 
 
+        [HttpPost]
+        public IActionResult EditProfile(UserEditProfile updatedProfile)
+        {
+            string returnUrl = HttpContext.Request.Path;
+            
+
+            if (IsLogin() == true)
+            {
+                int UserId = (int)HttpContext.Session.GetInt32("UserId");
+                updatedProfile.UserId = UserId;
+                HttpResponseMessage responseMessage =  httpClient.PutAsJsonAsync($"ClientUser/EditProfile/{UserId}",updatedProfile).Result;
+                if(responseMessage.IsSuccessStatusCode)
+                {
+                    HttpContext.Session.SetString("UserName", updatedProfile.Name);
+                    return RedirectToAction("Menu","User");
+                }
+                return View(updatedProfile);
+            }
+            return RedirectToAction("Login", "Account", new
+            {
+                url = returnUrl
+            });
+        }
         public Boolean IsLogin()
         {
             if (HttpContext.Session.GetInt32("UserId") == null)
@@ -219,5 +265,7 @@ namespace Client.Controllers
             }
             return true;
         }
+
+
     }
 }
