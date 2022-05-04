@@ -22,20 +22,20 @@ namespace Client.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int RequestId, RequestStaus status, int? RideId, int? Seat,int? UserId)
+        public IActionResult Index(int RequestId, RequestStaus status, int? RideId, int? Seat, int? UserId)
         {
             if (IsLogin() == true)
             {
-                
-                HttpResponseMessage responseRideStatus = httpClient.PutAsJsonAsync($"RideApprovals/UpdateStatus/{RequestId}", status ).Result;
+
+                HttpResponseMessage responseRideStatus = httpClient.PutAsJsonAsync($"RideApprovals/UpdateStatus/{RequestId}", status).Result;
                 if (responseRideStatus.IsSuccessStatusCode)
                 {
-                    //if (status == true)
-                    //{
-                    //    return RedirectToAction("Confirmed", "Book", new { Id = RideId, SeatQty = Seat, UserId = UserId });
-                    //}
+                    if (status == RequestStaus.Approved)
+                    {
+                        return RedirectToAction("Confirmed", "Book", new { Id = RideId, SeatQty = Seat, UserId = UserId });
+                    }
                 }
-                return RedirectToAction("Index","Rides");
+                return RedirectToAction("Index", "Rides");
             }
             return RedirectToAction("Login", "Account");
 

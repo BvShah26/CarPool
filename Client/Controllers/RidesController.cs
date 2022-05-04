@@ -116,7 +116,7 @@ namespace Client.Controllers
                     string res = responseMessage.Content.ReadAsStringAsync().Result;
                     RideOfferViewModel rideDetail = JsonConvert.DeserializeObject<RideOfferViewModel>(res);
 
-                    ViewBag.UserId = UserId;
+                        ViewBag.UserId = UserId;
                     ViewBag.RideId = RideId; //For Redirection
                     return View(rideDetail);
                 }

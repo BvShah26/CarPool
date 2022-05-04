@@ -32,7 +32,7 @@ namespace Apis.Repos.Bookings
         {
             try
             {
-
+                rideApproval.Status = RequestStaus.Pending;
                 var rideRequest = _context.RideApprovals.Add(rideApproval);
 
                 await _context.SaveChangesAsync();
