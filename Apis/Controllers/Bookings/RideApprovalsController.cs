@@ -24,7 +24,7 @@ namespace Apis.Controllers.Bookings
 
 
         // GET: api/RideApprovals/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}")] //No Use
         public async Task<ActionResult<RideApproval>> GetRideApproval(int id)
         {
 
@@ -39,44 +39,16 @@ namespace Apis.Controllers.Bookings
         }
 
 
-        // PUT: api/RideApprovals/5
-        [HttpPut("{id}")]
-        //public async Task<IActionResult> PutRideApproval(int id, RideApproval rideApproval)
-        //{
-        //    if (id != rideApproval.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(rideApproval).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!RideApprovalExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
+        
 
         [HttpPut("UpdateStatus/{id}")]
-        public async Task<IActionResult> UpdateStatus(int id, RideApproval rideApproval)
+        public async Task<IActionResult> UpdateStatus(int id,[FromBody]RequestStaus RequestStatus)
         {
+            
             try
             {
-                await _RideRequest.UpdateStatus(id, rideApproval);
+                await _RideRequest.UpdateStatus(id, RequestStatus);
                 return Ok();
-
             }
             catch (Exception)
             {
@@ -103,8 +75,17 @@ namespace Apis.Controllers.Bookings
         [HttpPost("Request")]
         public async Task<ActionResult<RideApproval>> PostRideApproval(RideApproval rideApproval)
         {
-            var record = await _RideRequest.NewRequest(rideApproval);
-            return Ok(record);
+            try
+            {
+                var record = await _RideRequest.NewRequest(rideApproval);
+                return Ok(record);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
             //_context.RideApprovals.Add(rideApproval);
             //await _context.SaveChangesAsync();
 

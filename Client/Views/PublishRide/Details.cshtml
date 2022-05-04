@@ -13,7 +13,7 @@
     @if (Model.IsInstant_Approval == false)
     {
 
-        var rec = Model.Ride_Approval.Where(x => x.IsApproved == false && x.IsRejected == false).ToList();
+        var rec = Model.Ride_Approval.Where(x => x.Status== DataAcessLayer.Models.Rides.RequestStaus.Pending).ToList();
         if (rec.Count > 0)
         {
             <h4>New booking Request..!</h4>

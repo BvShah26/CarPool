@@ -8,7 +8,7 @@ namespace Apis.Infrastructure.Bookings
 {
     public interface IRideApproval_Repo
     {
-        Task UpdateStatus(int id, RideApproval rideApproval);
+        Task UpdateStatus(int id, RequestStaus RequestStatus);
 
         Task<RideApproval> GetRequest(int id);
 

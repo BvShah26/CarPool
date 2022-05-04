@@ -19,33 +19,42 @@ namespace Apis.Repos.Bookings
         public async Task<RideApproval> GetRequest(int id)
         {
             //Make ViewModel
-            return await _context.RideApprovals.Include(x => x.User).Include(x => x.Ride).Where(x=> x.Id == id).FirstOrDefaultAsync();
+
+            return await _context.RideApprovals.Include(x => x.User).Include(x => x.Ride).Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<RideApproval> GetUserRideRequest(int RideId,int UserId)
+        public async Task<RideApproval> GetUserRideRequest(int RideId, int UserId)
         {
-            return await _context.RideApprovals.Where(x => x.RideId == RideId && x.UserId == UserId ).FirstOrDefaultAsync();
+            return await _context.RideApprovals.Where(x => x.RideId == RideId && x.UserId == UserId).FirstOrDefaultAsync();
         }
 
         public async Task<RideApproval> NewRequest(RideApproval rideApproval)
         {
-            var rideRequest = _context.RideApprovals.Add(rideApproval);
-            await _context.SaveChangesAsync();
+            try
+            {
 
-            return rideRequest.Entity;
+                var rideRequest = _context.RideApprovals.Add(rideApproval);
+
+                await _context.SaveChangesAsync();
+                return rideRequest.Entity;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
         }
 
-        public async Task UpdateStatus(int id, RideApproval rideApproval)
+        public async Task UpdateStatus(int id, RequestStaus RequestStatus)
         {
             RideApproval request = await GetRequest(id);
 
-            if(request == null)
+            if (request == null)
             {
                 throw new Exception("Record Not Found");
             }
-            request.IsApproved = rideApproval.IsApproved;
-            request.IsRejected = (rideApproval.IsApproved == false) ? true : false;
-
+            request.Status = RequestStatus;
             _context.RideApprovals.Update(request);
             await _context.SaveChangesAsync();
         }

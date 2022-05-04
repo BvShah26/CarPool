@@ -7,6 +7,10 @@ namespace DataAcessLayer.Models.Rides
 {
     public class RideApproval
     {
+        public RideApproval()
+        {
+
+        }
         public int Id { get; set; }
         
         
@@ -18,8 +22,17 @@ namespace DataAcessLayer.Models.Rides
 
         public int RequestedSeats { get; set; }
 
-        public Boolean IsApproved { get; set; }
+        //public Boolean IsApproved { get; set; }
 
-        public Boolean IsRejected { get; set; }
+        //public Boolean IsRejected { get; set; }
+        public DateTime? RequestTime { get; set; }
+        public RequestStaus? Status { get; set; }
+    }
+
+    public enum RequestStaus
+    {
+        Pending = -1,
+        Approved = 1,
+        Rejected = 0
     }
 }

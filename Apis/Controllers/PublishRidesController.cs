@@ -177,7 +177,8 @@ namespace Apis.Controllers
                     JourneyDate = x.JourneyDate,
 
 
-                    NewRequests = (x.JourneyDate.Date >= DateTime.Now.Date) ? x.Ride_Approval.Where(request => request.RideId == RideId && request.IsRejected == false && request.IsApproved == false)
+                    //NewRequests = (x.JourneyDate.Date >= DateTime.Now.Date) ? x.Ride_Approval.Where(request => request.RideId == RideId && request.IsRejected == false && request.IsApproved == false)
+                    NewRequests = (x.JourneyDate.Date >= DateTime.Now.Date) ? x.Ride_Approval.Where(request => request.RideId == RideId && request.Status == RequestStaus.Pending)
                     .Select(item => new RideReqests_ViewModel()
                     {
                         RequestId = item.Id,

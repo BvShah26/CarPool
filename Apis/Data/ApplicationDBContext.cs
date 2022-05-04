@@ -73,6 +73,7 @@ namespace Apis.Data
             base.OnModelCreating(modelBuilder);
             //modelBuilder.Entity<PublishRide>().HasOne(item => item.Vehicle).WithMany().OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Vehicle>().ToTable("Vehicles");
+            modelBuilder.Entity<RideApproval>().Property(x => x.RequestTime).HasDefaultValueSql("getdate()");
 
             modelBuilder.Entity<ChatRoom>()
                 .HasOne(r => r.Rider)

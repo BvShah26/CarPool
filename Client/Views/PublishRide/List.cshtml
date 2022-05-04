@@ -55,7 +55,7 @@
                     @Html.DisplayFor(modelItem => item.PickUp_Time)
                 </td>
 
-                @if (item.IsInstant_Approval == false && item.Ride_Approval.Any(x => x.IsRejected == false && x.IsApproved ==false ))
+                @if (item.IsInstant_Approval == false && item.Ride_Approval.Any(x => x.Status == DataAcessLayer.Models.Rides.RequestStaus.Pending))
                 {
                     <td class="text-primary"> New Request</td>
                 }

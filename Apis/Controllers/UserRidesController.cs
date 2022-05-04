@@ -3,6 +3,7 @@ using Apis.Infrastructure.Bookings;
 using Apis.Infrastructure.Ratings;
 using DataAcessLayer.ViewModels.Client;
 using DataAcessLayer.ViewModels.Ride;
+using DataAcessLayer.Models.Rides;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -50,15 +51,21 @@ namespace Apis.Controllers
                     PublisherProfile = x.Publisher.ProfileImage,
                     PublisherId = x.PublisherId,
 
-                    Status = (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId && rideRequest.IsRejected == true).First() != null)
+                    //Status = (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId && rideRequest.IsRejected == true).First() != null)
+                    Status = (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId && rideRequest.Status == RequestStaus.Rejected ).First() != null)
                    ? "You're Rejected" :
                    (x.Booking.Where(booking => booking.Publish_RideId == x.Id && booking.RiderId == UserId && booking.bookingCancellation.BookingId == booking.Id).First() != null ? "Cancelled" : ""),
                     //check booking cancellation
 
 
                     //only for publisher
-                    HasNewRequest = (x.JourneyDate.Date >= DateTime.Now.Date ? (x.IsInstant_Approval == false && x.Ride_Approval.Any(rideRequest => rideRequest.IsRejected == false && rideRequest.IsApproved == false) == true ? "New booking request" : "") : ""),
-                    IsRequestPending = (x.JourneyDate.Date >= DateTime.Now.Date ? (x.IsInstant_Approval == false && x.Ride_Approval.Any(rideRequest => rideRequest.IsRejected == false && rideRequest.IsApproved == false && rideRequest.UserId == UserId) == true ? "Awaiting approval" : "") : "" ),
+                    //HasNewRequest = (x.JourneyDate.Date >= DateTime.Now.Date ? (x.IsInstant_Approval == false && x.Ride_Approval.Any(rideRequest => rideRequest.IsRejected == false && rideRequest.IsApproved == false) == true ? "New booking request" : "") : ""),
+
+                    HasNewRequest = (x.JourneyDate.Date >= DateTime.Now.Date ? (x.IsInstant_Approval == false && x.Ride_Approval.Any(rideRequest =>  rideRequest.Status== RequestStaus.Pending) == true ? "New booking request" : "") : ""),
+
+                    //IsRequestPending = (x.JourneyDate.Date >= DateTime.Now.Date ? (x.IsInstant_Approval == false && x.Ride_Approval.Any(rideRequest => rideRequest.IsRejected == false && rideRequest.IsApproved == false && rideRequest.UserId == UserId) == true ? "Awaiting approval" : "") : ""),
+
+                    IsRequestPending = (x.JourneyDate.Date >= DateTime.Now.Date ? (x.IsInstant_Approval == false && x.Ride_Approval.Any(rideRequest => rideRequest.Status==RequestStaus.Pending && rideRequest.UserId == UserId) == true ? "Awaiting approval" : "") : "" ),
                     HasRated = (x.JourneyDate.Date >= DateTime.Now.Date ?
                    true : ((x.PublisherId == UserId ? _ratingRepo.HasRated_AllPartner(x.Id, UserId) : _ratingRepo.HasRatedPublisher(x.Id, UserId))))
 
@@ -91,7 +98,8 @@ namespace Apis.Controllers
                     Publisher = x.Publisher.Name, // Check for session at client
                     PublisherProfile = x.Publisher.ProfileImage,
                     PublisherId = x.PublisherId,
-                    Status = (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId && rideRequest.IsRejected == true).First() != null)
+                    //Status = (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId && rideRequest.IsRejected == true).First() != null)
+                    Status = (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId &&  rideRequest.Status== RequestStaus.Rejected).First() != null)
                     ? "You're Rejected" :
                     (x.Booking.Where(booking => booking.Publish_RideId == x.Id && booking.RiderId == UserId && booking.bookingCancellation.BookingId == booking.Id).First() != null ? "Cancelled" : ""),
                 })
@@ -147,8 +155,11 @@ namespace Apis.Controllers
                     (x.Booking.Where(booking => booking.Publish_RideId == x.Id && booking.RiderId == UserId && booking.IsCancelled == false).FirstOrDefault() != null ? true : false)
                      : false ,
 
-                    IsRequestPending = (x.JourneyDate.Date >= DateTime.Now.Date ? (x.IsInstant_Approval == false && x.Ride_Approval.Any(rideRequest => rideRequest.IsRejected == false && rideRequest.IsApproved == false && rideRequest.UserId == UserId) == true ? "Awaiting approval" : "") : ""),
-                    Status = (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId && rideRequest.IsRejected == true).First() != null)
+                    //IsRequestPending = (x.JourneyDate.Date >= DateTime.Now.Date ? (x.IsInstant_Approval == false && x.Ride_Approval.Any(rideRequest => rideRequest.IsRejected == false && rideRequest.IsApproved == false && rideRequest.UserId == UserId) == true ? "Awaiting approval" : "") : ""),
+                    IsRequestPending = (x.JourneyDate.Date >= DateTime.Now.Date ? (x.IsInstant_Approval == false && x.Ride_Approval.Any(rideRequest => rideRequest.Status == RequestStaus.Pending && rideRequest.UserId == UserId) == true ? "Awaiting approval" : "") : ""),
+
+                    //Status = (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId && rideRequest.IsRejected == true).First() != null)
+                    Status = (x.Ride_Approval.Where(rideRequest => rideRequest.UserId == UserId && rideRequest.Status == RequestStaus.Rejected).First() != null)
                    ? "You're Rejected" :
                    (x.Booking.Where(booking => booking.Publish_RideId == x.Id && booking.RiderId == UserId && booking.bookingCancellation.BookingId == booking.Id).First() != null ? "Cancelled" : ""),
 

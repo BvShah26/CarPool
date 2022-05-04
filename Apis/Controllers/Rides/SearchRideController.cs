@@ -84,16 +84,15 @@ namespace Apis.Controllers.Rides
 
                 .Include(x => x.Ride_Approval)
                 .Where(x =>  x.Ride_Approval.Count == 0 ||
-                    (x.Ride_Approval.Where(rideApproval => rideApproval.IsRejected == false)
+
+                    //(x.Ride_Approval.Where(rideApproval => rideApproval.IsRejected == false)
+                    (x.Ride_Approval.Where(rideApproval => rideApproval.Status != RequestStaus.Rejected)
                         .Sum(y =>  y.RequestedSeats) - x.MaxPassengers <= (- search.SeatCount))
                 )
                 .ToListAsync();
 
 
-            //var data = rec.Where(x => (x.Booking.Count == 0 ||
-            //        ((x.Booking.Sum(y => y.SeatQty) < x.MaxPassengers) && (x.MaxPassengers - x.Booking.Sum(y => y.SeatQty)) >= search.SeatCount))).ToList();
-
-            // 3 < 4 && 4-3 > 1
+           
 
             return Ok(rec);
         }

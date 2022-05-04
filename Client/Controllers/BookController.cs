@@ -114,7 +114,8 @@ namespace Client.Controllers
                 {
                     RideId = Id,
                     UserId = (int)HttpContext.Session.GetInt32("UserId"),
-                    RequestedSeats = SeatQty
+                    RequestedSeats = SeatQty,
+                    
                 };
 
                 try
@@ -126,7 +127,7 @@ namespace Client.Controllers
                         ViewBag.RideId = Id;
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     throw new Exception("Ride Request Failed");
                 }
