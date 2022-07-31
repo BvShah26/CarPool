@@ -75,8 +75,10 @@ namespace Apis.Controllers.Bookings
         [HttpPost("Request")]
         public async Task<ActionResult<RideApproval>> PostRideApproval(RideApproval rideApproval)
         {
+            
             try
             {
+                
                 var record = await _RideRequest.NewRequest(rideApproval);
                 return Ok(record);
             }

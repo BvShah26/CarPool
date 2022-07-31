@@ -19,9 +19,6 @@ namespace DataAcessLayer.Models.Users
         public string Name { get; set; }
 
 
-        //public City City { get; set; } // To Be Remove
-        //public int CityId { get; set; } //To Be Remove
-
         public string Address { get; set; }
         public Gender Gender { get; set; }
 

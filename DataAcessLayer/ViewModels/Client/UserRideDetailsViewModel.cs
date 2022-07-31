@@ -38,6 +38,8 @@ namespace DataAcessLayer.ViewModels.Client
 
         public ICollection<RidePartners> Partners { get; set; }
 
+        public double RatingAsPublisher { get; set; }
+
         //For Booking
         public bool HasRatedPubllisher { get; set; }
         public int Seat { get; set; }

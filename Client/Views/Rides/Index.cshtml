@@ -81,40 +81,41 @@
 
                                                                             </span><span class="kirk-item-leftText" style="display:flex">
 
-                                                                                @if (item.Status != "" || (item.HasNewRequest != "" && ViewBag.UserId == item.PublisherId)
-                                                                              || (item.IsRequestPending != "") || item.HasRated == false)
-                                                                                {
-                                                                                    @if (item.Status != "")
-                                                                                    {
-                                                                                        <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">@item.Status</span>
-                                                                                    }
-                                                                                    else if (item.HasRated == false)
-                                                                                    {
-                                                                                        <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">Exchange Ratings</span>
-                                                                                    }
-                                                                                    else
-                                                                                    {
-                                                                                        <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">@item.IsRequestPending</span>
+    @if (item.Status != "" || (item.HasNewRequest != "" && ViewBag.UserId == item.PublisherId)
+ || (item.IsRequestPending != "") || item.HasRated == false)
+    {
+        @if (item.Status != "")
+        {
+            <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">@item.Status</span>
+        }
+        else if (item.HasRated == false)
+        {
+            <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">Exchange Ratings</span>
+        }
+        else
+        {
+            @*<span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">@item.IsRequestPending</span>*@
+            <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">New Pending Request </span>
 
-                                                                                    }
-                                                                                }
-                                                                                @*@if (item.HasRated == true)
-                                                                                    {
+        }
+    }
+    @*@if (item.HasRated == true)
+        {
 
-                                                                                        else if (item.IsRequestPending == "")
-                                                                                        {
-                                                                                            <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU">@item.HasNewRequest</span>
-                                                                                        }
-                                                                                        else
-                                                                                        {
-                                                                                            <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">@item.IsRequestPending</span>
-                                                                                        }
-                                                                                    }
-                                                                                    else
-                                                                                    {
-                                                                                        <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">Exchange Ratings</span>
-                                                                                    }*@
-                                                                            </span>
+            else if (item.IsRequestPending == "")
+            {
+                <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU">@item.HasNewRequest</span>
+            }
+            else
+            {
+                <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">@item.IsRequestPending</span>
+            }
+        }
+        else
+        {
+            <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">Exchange Ratings</span>
+        }*@
+</span>
                                                                         </span>
                                                                     </div>
                                                                 }
@@ -176,7 +177,7 @@
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    <img src=@item.PublisherProfile />
+                                                                                    <img  src="~/img/@item.PublisherProfile" />
                                                                                 }
                                                                             </div>
                                                                         </span>

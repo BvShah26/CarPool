@@ -200,7 +200,7 @@
                                                                         @if (item.Id != ViewBag.UserId)
                                                                         {
                                                                             <li>
-                                                                                <a class="kirk-item kirk-item--clickable sc-Galmp sc-cLpAjG kNDdlo dTtSfA" style="position: relative; display: flex; padding-top: 16px; padding-bottom: 16px; -webkit-box-align: center; align-items: center; flex: 1 1 0%; border: 0px; " href="/User/Profile/5">
+                                                                                <a class="kirk-item kirk-item--clickable sc-Galmp sc-cLpAjG kNDdlo dTtSfA" style="position: relative; display: flex; padding-top: 16px; padding-bottom: 16px; -webkit-box-align: center; align-items: center; flex: 1 1 0%; border: 0px; " asp-action="Profile" asp-controller="User" asp-route-id="@item.Id">
                                                                                     <span class="kirk-item-leftWrapper">
                                                                                         <span class="kirk-item-leftText">
                                                                                             <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx">@item.RiderName</span>

@@ -1,5 +1,6 @@
 ﻿using Apis.Data;
 using Apis.Infrastructure.Bookings;
+using Apis.Infrastructure.Ratings;
 using DataAcessLayer.Models.Rides;
 using DataAcessLayer.Models.Users;
 using DataAcessLayer.ViewModels;
@@ -23,11 +24,13 @@ namespace Apis.Controllers.Rides
     {
         private readonly ApplicationDBContext _context;
         private readonly IBooking_Repo _bookingRepo;
-        
-        public SearchRideController(ApplicationDBContext context, IBooking_Repo bookingRepo)
+        private readonly IRatings_Repo _ratingRepo;
+
+        public SearchRideController(ApplicationDBContext context, IBooking_Repo bookingRepo, IRatings_Repo ratingRepo)
         {
             _context = context;
             _bookingRepo = bookingRepo;
+            _ratingRepo = ratingRepo;
         }
         [HttpPost]
         public async Task<IActionResult> GetRides(SearchRide search)
@@ -107,7 +110,7 @@ namespace Apis.Controllers.Rides
                 
                 .Select(x => new UserRideDetailsViewModel()
                 {
-                    IsInstant_Approval = x.IsInstant_Approval,
+                    IsInstant_Approval = x.IsInstant_Approval, 
                     Departure_City = x.Departure_City,
                     Destination_City = x.Destination_City,
 
@@ -133,6 +136,7 @@ namespace Apis.Controllers.Rides
                     VehicleName = x.Vehicle.Vehicle.VehicleBrand.Name + " " + x.Vehicle.Vehicle.Name,
                     VehicleColor = x.Vehicle.Color.Color,
                     JourneyDate = x.JourneyDate,
+                    RatingAsPublisher = _ratingRepo.GetPublisherRating(x.PublisherId)
 
                 }).FirstOrDefaultAsync();
 

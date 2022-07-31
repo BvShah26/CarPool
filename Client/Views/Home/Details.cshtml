@@ -238,36 +238,42 @@
                                                                             <span class="kirk-item-leftWrapper">
                                                                                 <span class="kirk-item-leftText">
                                                                                     <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx">@Model.PublisherName</span><span class="kirk-text kirk-text-body sc-faUpoM gHhpVx kirk-item-body">
-                                                                                        <div class="sc-gslxeA cwrRNq">
-                                                                                            <span class="sc-gsDKAQ sc-gKclnd erBbkF bEOvQm" style="display:flex">
-                                                                                                <svg viewBox="-2 -4 84 82"
-                                                                                                     xmlns="http://www.w3.org/2000/svg"
-                                                                                                     class="kirk-icon sc-ksdxgE eqtwsd"
-                                                                                                     width="12"
-                                                                                                     height="12"
-                                                                                                     aria-hidden="true">
-                                                                                                    <g>
-                                                                                                        <linearGradient y2="0%"
-                                                                                                                        x2="100%"
-                                                                                                                        y1="0%"
-                                                                                                                        x1="0%"
-                                                                                                                        id="gradient-1">
-                                                                                                            <stop stop-color="#708C91"
-                                                                                                                  offset="100%"></stop>
-                                                                                                            <stop stop-color="#FFF"
-                                                                                                                  offset="0%"></stop>
-                                                                                                        </linearGradient>
-                                                                                                        <path stroke="#708C91"
-                                                                                                              stroke-width="4"
-                                                                                                              fill="url(#gradient-1)"
-                                                                                                              d="M 40.000 60.000 L 63.511 72.361 L 59.021 46.180 L 78.042 27.639 L 51.756 23.820 L 40.000 0.000 L 28.244 23.820 L 1.958 27.639 L 20.979 46.180 L 16.489 72.361 L 40.000 60.000"></path>
-                                                                                                    </g>
-                                                                                                </svg>
-                                                                                                @* Rating Baki *@
+                                                                                        @if (Model.RatingAsPublisher > 0)
+                                                                                        {
 
-                                                                                                @*4.2/5 - 5 ratings*@
-                                                                                            </span>
-                                                                                        </div>
+                                                                                            <div class="sc-gslxeA cwrRNq">
+                                                                                                <span class="sc-gsDKAQ sc-gKclnd erBbkF bEOvQm" style="display:flex">
+                                                                                                    <svg viewBox="-2 -4 84 82"
+                                                                                                         xmlns="http://www.w3.org/2000/svg"
+                                                                                                         class="kirk-icon sc-ksdxgE eqtwsd"
+                                                                                                         width="12"
+                                                                                                         height="12"
+                                                                                                         aria-hidden="true">
+                                                                                                        <g>
+                                                                                                            <linearGradient y2="0%"
+                                                                                                                            x2="100%"
+                                                                                                                            y1="0%"
+                                                                                                                            x1="0%"
+                                                                                                                            id="gradient-1">
+                                                                                                                <stop stop-color="#708C91"
+                                                                                                                      offset="100%"></stop>
+                                                                                                                <stop stop-color="#FFF"
+                                                                                                                      offset="0%"></stop>
+                                                                                                            </linearGradient>
+                                                                                                            <path stroke="#708C91"
+                                                                                                                  stroke-width="4"
+                                                                                                                  fill="url(#gradient-1)"
+                                                                                                                  d="M 40.000 60.000 L 63.511 72.361 L 59.021 46.180 L 78.042 27.639 L 51.756 23.820 L 40.000 0.000 L 28.244 23.820 L 1.958 27.639 L 20.979 46.180 L 16.489 72.361 L 40.000 60.000"></path>
+                                                                                                        </g>
+                                                                                                    </svg>
+                                                                                                    @* Rating Baki *@
+
+                                                                                                    @*4.2/5 - 5 ratings*@
+                                                                                                </span>
+                                                                                                &nbsp;
+                                                                                                @Model.RatingAsPublisher / 3
+                                                                                            </div>
+                                                                                        }
                                                                                     </span>
                                                                                 </span>
                                                                             </span><span class="kirk-item-rightAddon">
@@ -432,7 +438,7 @@
                                                                                                     }
                                                                                                     else
                                                                                                     {
-                                                                                                        <img src=@item.RiderProfile
+                                                                                                        <img src="~/img/@item.RiderProfile"
                                                                                                              alt="" />
                                                                                                     }
                                                                                                 </div>
@@ -469,13 +475,13 @@
                                                                     </div>
                                                                 }
                                                                 @*else
-                                                                {
-                                                                    <div class="sc-avest hhmynR">
-                                                                        <div class="sc-kmQMED Uwbpz">
-                                                                            <span class="button-label">Manage Ride</span>
+                                                                    {
+                                                                        <div class="sc-avest hhmynR">
+                                                                            <div class="sc-kmQMED Uwbpz">
+                                                                                <span class="button-label">Manage Ride</span>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                }*@
+                                                                    }*@
                                                             </div>
                                                         </div>
                                                     </div>

@@ -1,0 +1,656 @@
+Index: Client/Controllers/HomeController.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/Controllers/HomeController.cs b/Client/Controllers/HomeController.cs
+--- a/Client/Controllers/HomeController.cs	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/Client/Controllers/HomeController.cs	(date 1651898433562)
+@@ -91,6 +91,7 @@
+ 
+                         DepartureCity = item.Departure_City,
+                         DestinationCity = item.Destination_City,
++                        
+ 
+                        
+                     };
+Index: Apis/Controllers/Rides/SearchRideController.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Apis/Controllers/Rides/SearchRideController.cs b/Apis/Controllers/Rides/SearchRideController.cs
+--- a/Apis/Controllers/Rides/SearchRideController.cs	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/Apis/Controllers/Rides/SearchRideController.cs	(date 1651898599116)
+@@ -1,5 +1,6 @@
+ using Apis.Data;
+ using Apis.Infrastructure.Bookings;
++using Apis.Infrastructure.Ratings;
+ using DataAcessLayer.Models.Rides;
+ using DataAcessLayer.Models.Users;
+ using DataAcessLayer.ViewModels;
+@@ -23,11 +24,13 @@
+     {
+         private readonly ApplicationDBContext _context;
+         private readonly IBooking_Repo _bookingRepo;
+-        
+-        public SearchRideController(ApplicationDBContext context, IBooking_Repo bookingRepo)
++        private readonly IRatings_Repo _ratingRepo;
++
++        public SearchRideController(ApplicationDBContext context, IBooking_Repo bookingRepo, IRatings_Repo ratingRepo)
+         {
+             _context = context;
+             _bookingRepo = bookingRepo;
++            _ratingRepo = ratingRepo;
+         }
+         [HttpPost]
+         public async Task<IActionResult> GetRides(SearchRide search)
+@@ -107,7 +110,7 @@
+                 
+                 .Select(x => new UserRideDetailsViewModel()
+                 {
+-                    IsInstant_Approval = x.IsInstant_Approval,
++                    IsInstant_Approval = x.IsInstant_Approval, 
+                     Departure_City = x.Departure_City,
+                     Destination_City = x.Destination_City,
+ 
+@@ -133,6 +136,7 @@
+                     VehicleName = x.Vehicle.Vehicle.VehicleBrand.Name + " " + x.Vehicle.Vehicle.Name,
+                     VehicleColor = x.Vehicle.Color.Color,
+                     JourneyDate = x.JourneyDate,
++                    RatingAsPublisher = _ratingRepo.GetPublisherRating(x.PublisherId)
+ 
+                 }).FirstOrDefaultAsync();
+ 
+Index: Client/Views/Vehicle/Year.cshtml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/Views/Vehicle/Year.cshtml b/Client/Views/Vehicle/Year.cshtml
+--- a/Client/Views/Vehicle/Year.cshtml	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/Client/Views/Vehicle/Year.cshtml	(date 1651896391788)
+@@ -42,7 +42,7 @@
+                                         </h1>
+                                         <div class="sc-bSakgD bSGrjp mt-xl">
+                                             <div aria-disabled="false" class="sc-jvLaUc dVmpUg">
+-                                                <input type="number" name="Year" step="25" required min="2008" style="color: rgb(5, 71, 82);
++                                                <input type="number" name="Year"  required min="2008" style="color: rgb(5, 71, 82);
+                               width: 80%;
+                               border: none;
+                               text-align: center;
+Index: Client/Views/Vehicle/Index.cshtml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/Views/Vehicle/Index.cshtml b/Client/Views/Vehicle/Index.cshtml
+--- a/Client/Views/Vehicle/Index.cshtml	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/Client/Views/Vehicle/Index.cshtml	(date 1651896355226)
+@@ -39,6 +39,7 @@
+                                                         <div class="kirk-textField-wrapper">
+                                                             <input type="text"
+                                                                    placeholder="Seltos"
++                                                                   required
+                                                                    name="searchBox"
+                                                                    aria-haspopup="listbox"
+                                                                    aria-controls="listbox-model"
+Index: Client/Controllers/PublishRideController.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/Controllers/PublishRideController.cs b/Client/Controllers/PublishRideController.cs
+--- a/Client/Controllers/PublishRideController.cs	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/Client/Controllers/PublishRideController.cs	(date 1651898122172)
+@@ -48,7 +48,7 @@
+                     bool hasVehicle = JsonConvert.DeserializeObject<bool>(res);
+                     if (hasVehicle == false)
+                     {
+-                        return RedirectToAction("Add", "Vehicle");
++                        return RedirectToAction("Index", "Vehicle");
+                     }
+                 }
+                 //check for vehicle here
+@@ -61,15 +61,20 @@
+         [HttpPost]
+         public IActionResult Departure(string Departure, string PickUp_LatLong, string Departure_City)
+         {
+-            string returnUrl = HttpContext.Request.Path;
+-            if (IsLogin() == true)
+-            {
+-                HttpContext.Response.Cookies.Append("Departure", Departure);
+-                HttpContext.Response.Cookies.Append("DepartureLatLong", PickUp_LatLong);
+-                HttpContext.Response.Cookies.Append("DepartureCity", Departure_City);
+-                return RedirectToAction("Destination");
+-            }
+-            return RedirectToAction("Login", "Account", new { url = returnUrl });
++            if (!String.IsNullOrEmpty(Departure))
++            {
++
++                string returnUrl = HttpContext.Request.Path;
++                if (IsLogin() == true)
++                {
++                    HttpContext.Response.Cookies.Append("Departure", Departure);
++                    HttpContext.Response.Cookies.Append("DepartureLatLong", PickUp_LatLong);
++                    HttpContext.Response.Cookies.Append("DepartureCity", Departure_City);
++                    return RedirectToAction("Destination");
++                }
++                return RedirectToAction("Login", "Account", new { url = returnUrl });
++            }
++            return View();
+ 
+         }
+ 
+Index: Client/Views/Rides/Bookings.cshtml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/Views/Rides/Bookings.cshtml b/Client/Views/Rides/Bookings.cshtml
+--- a/Client/Views/Rides/Bookings.cshtml	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/Client/Views/Rides/Bookings.cshtml	(date 1651897965268)
+@@ -33,14 +33,13 @@
+                                                 class="sc-gsnTZi sc-hTtwUo sc-jgbSNz GJlVl ipZXlI jlbwlf">
+                                                 Ride plan
+                                             </h1>
+-                                            @if (Model.HasRatedPubllisher == false && Model.Status=="" )
++                                            @if (Model.HasRatedPubllisher == false && Model.Status == "")
+                                             {
+                                                 <ul>
+                                                     <li>
+                                                         <a class="kirk-item kirk-item--highlighted kirk-item--clickable sc-GVOUr CcFKY"
+                                                            asp-action="Publisher" asp-controller="Rate" asp-route-PublisherId="@Model.PublisherId"
+-                                                           asp-route-RideId="@ViewBag.RideId"
+-                                                           >
++                                                           asp-route-RideId="@ViewBag.RideId">
+                                                             <span class="kirk-item-leftWrapper">
+                                                                 <span class="kirk-item-leftAddon">
+                                                                     <svg viewBox="-2 -4 84 82"
+@@ -231,8 +230,16 @@
+                                                             </span>
+                                                         </span><span class="kirk-item-rightAddon">
+                                                             <div class="sc-fXynhf FdgvG kirk-avatar--image kirk-avatar">
+-                                                                <img src="https://cdn.blablacar.com/comuto3/images/avatar/pixar/passenger-m-02.svg"
+-                                                                     alt="" />
++                                                                @if (Model.PublisherProfile != null)
++                                                                {
++                                                                    <img src="~/img/@Model.PublisherProfile" />
++                                                                }
++                                                                else
++                                                                {
++
++                                                                    <img src="https://cdn.blablacar.com/comuto3/images/avatar/pixar/passenger-m-02.svg"
++                                                                         alt="" />
++                                                                }
+                                                             </div>
+                                                         </span><span class="kirk-item-rightAddon">
+                                                             <svg viewBox="0 0 24 24"
+@@ -315,7 +322,7 @@
+                                                                                 }
+                                                                                 else
+                                                                                 {
+-                                                                                    <img src="@item.RiderProfile" />
++                                                                                    <img src="~/img/@item.RiderProfile" />
+                                                                                 }
+                                                                             </div>
+                                                                         </span><span class="kirk-item-rightAddon">
+Index: Client/Views/Book/Index.cshtml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/Views/Book/Index.cshtml b/Client/Views/Book/Index.cshtml
+--- a/Client/Views/Book/Index.cshtml	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/Client/Views/Book/Index.cshtml	(date 1651899986404)
+@@ -91,7 +91,7 @@
+                                                             }
+                                                             else
+                                                             {
+-                                                                <img src=@Model.PublisherProfile alt="@Model.Publisher" />
++                                                                <img src="~/img/@Model.PublisherProfile" alt="@Model.Publisher" />
+                                                             }
+ 
+                                                         </div>
+Index: Apis/Controllers/Bookings/RideApprovalsController.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Apis/Controllers/Bookings/RideApprovalsController.cs b/Apis/Controllers/Bookings/RideApprovalsController.cs
+--- a/Apis/Controllers/Bookings/RideApprovalsController.cs	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/Apis/Controllers/Bookings/RideApprovalsController.cs	(date 1651750401102)
+@@ -75,8 +75,10 @@
+         [HttpPost("Request")]
+         public async Task<ActionResult<RideApproval>> PostRideApproval(RideApproval rideApproval)
+         {
++            
+             try
+             {
++                
+                 var record = await _RideRequest.NewRequest(rideApproval);
+                 return Ok(record);
+             }
+Index: Client/Views/Shared/_ClientLayout.cshtml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/Views/Shared/_ClientLayout.cshtml b/Client/Views/Shared/_ClientLayout.cshtml
+--- a/Client/Views/Shared/_ClientLayout.cshtml	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/Client/Views/Shared/_ClientLayout.cshtml	(date 1651898098377)
+@@ -87,7 +87,7 @@
+                                             </ul>
+                                         </li>*@
+ 
+-                                        <li><a asp-controller="Rides" asp-action="Index">My Rides</a></li>
++                                        @*<li><a asp-controller="Rides" asp-action="Index">My Rides</a></li>*@
+                                     }
+                                     <li class="dropdown">
+                                         <a href="#">
+Index: Client/Views/Rides/Offer.cshtml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/Views/Rides/Offer.cshtml b/Client/Views/Rides/Offer.cshtml
+--- a/Client/Views/Rides/Offer.cshtml	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/Client/Views/Rides/Offer.cshtml	(date 1651896817397)
+@@ -200,7 +200,7 @@
+                                                                         @if (item.Id != ViewBag.UserId)
+                                                                         {
+                                                                             <li>
+-                                                                                <a class="kirk-item kirk-item--clickable sc-Galmp sc-cLpAjG kNDdlo dTtSfA" style="position: relative; display: flex; padding-top: 16px; padding-bottom: 16px; -webkit-box-align: center; align-items: center; flex: 1 1 0%; border: 0px; " href="/User/Profile/5">
++                                                                                <a class="kirk-item kirk-item--clickable sc-Galmp sc-cLpAjG kNDdlo dTtSfA" style="position: relative; display: flex; padding-top: 16px; padding-bottom: 16px; -webkit-box-align: center; align-items: center; flex: 1 1 0%; border: 0px; " asp-action="Profile" asp-controller="User" asp-route-id="@item.Id">
+                                                                                     <span class="kirk-item-leftWrapper">
+                                                                                         <span class="kirk-item-leftText">
+                                                                                             <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx">@item.RiderName</span>
+Index: Client/Views/Home/Details.cshtml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/Views/Home/Details.cshtml b/Client/Views/Home/Details.cshtml
+--- a/Client/Views/Home/Details.cshtml	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/Client/Views/Home/Details.cshtml	(date 1651899507860)
+@@ -238,36 +238,42 @@
+                                                                             <span class="kirk-item-leftWrapper">
+                                                                                 <span class="kirk-item-leftText">
+                                                                                     <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx">@Model.PublisherName</span><span class="kirk-text kirk-text-body sc-faUpoM gHhpVx kirk-item-body">
+-                                                                                        <div class="sc-gslxeA cwrRNq">
+-                                                                                            <span class="sc-gsDKAQ sc-gKclnd erBbkF bEOvQm" style="display:flex">
+-                                                                                                <svg viewBox="-2 -4 84 82"
+-                                                                                                     xmlns="http://www.w3.org/2000/svg"
+-                                                                                                     class="kirk-icon sc-ksdxgE eqtwsd"
+-                                                                                                     width="12"
+-                                                                                                     height="12"
+-                                                                                                     aria-hidden="true">
+-                                                                                                    <g>
+-                                                                                                        <linearGradient y2="0%"
+-                                                                                                                        x2="100%"
+-                                                                                                                        y1="0%"
+-                                                                                                                        x1="0%"
+-                                                                                                                        id="gradient-1">
+-                                                                                                            <stop stop-color="#708C91"
+-                                                                                                                  offset="100%"></stop>
+-                                                                                                            <stop stop-color="#FFF"
+-                                                                                                                  offset="0%"></stop>
+-                                                                                                        </linearGradient>
+-                                                                                                        <path stroke="#708C91"
+-                                                                                                              stroke-width="4"
+-                                                                                                              fill="url(#gradient-1)"
+-                                                                                                              d="M 40.000 60.000 L 63.511 72.361 L 59.021 46.180 L 78.042 27.639 L 51.756 23.820 L 40.000 0.000 L 28.244 23.820 L 1.958 27.639 L 20.979 46.180 L 16.489 72.361 L 40.000 60.000"></path>
+-                                                                                                    </g>
+-                                                                                                </svg>
+-                                                                                                @* Rating Baki *@
++                                                                                        @if (Model.RatingAsPublisher > 0)
++                                                                                        {
++
++                                                                                            <div class="sc-gslxeA cwrRNq">
++                                                                                                <span class="sc-gsDKAQ sc-gKclnd erBbkF bEOvQm" style="display:flex">
++                                                                                                    <svg viewBox="-2 -4 84 82"
++                                                                                                         xmlns="http://www.w3.org/2000/svg"
++                                                                                                         class="kirk-icon sc-ksdxgE eqtwsd"
++                                                                                                         width="12"
++                                                                                                         height="12"
++                                                                                                         aria-hidden="true">
++                                                                                                        <g>
++                                                                                                            <linearGradient y2="0%"
++                                                                                                                            x2="100%"
++                                                                                                                            y1="0%"
++                                                                                                                            x1="0%"
++                                                                                                                            id="gradient-1">
++                                                                                                                <stop stop-color="#708C91"
++                                                                                                                      offset="100%"></stop>
++                                                                                                                <stop stop-color="#FFF"
++                                                                                                                      offset="0%"></stop>
++                                                                                                            </linearGradient>
++                                                                                                            <path stroke="#708C91"
++                                                                                                                  stroke-width="4"
++                                                                                                                  fill="url(#gradient-1)"
++                                                                                                                  d="M 40.000 60.000 L 63.511 72.361 L 59.021 46.180 L 78.042 27.639 L 51.756 23.820 L 40.000 0.000 L 28.244 23.820 L 1.958 27.639 L 20.979 46.180 L 16.489 72.361 L 40.000 60.000"></path>
++                                                                                                        </g>
++                                                                                                    </svg>
++                                                                                                    @* Rating Baki *@
+ 
+-                                                                                                @*4.2/5 - 5 ratings*@
+-                                                                                            </span>
+-                                                                                        </div>
++                                                                                                    @*4.2/5 - 5 ratings*@
++                                                                                                </span>
++                                                                                                &nbsp;
++                                                                                                @Model.RatingAsPublisher / 3
++                                                                                            </div>
++                                                                                        }
+                                                                                     </span>
+                                                                                 </span>
+                                                                             </span><span class="kirk-item-rightAddon">
+@@ -432,7 +438,7 @@
+                                                                                                     }
+                                                                                                     else
+                                                                                                     {
+-                                                                                                        <img src=@item.RiderProfile
++                                                                                                        <img src="~/img/@item.RiderProfile"
+                                                                                                              alt="" />
+                                                                                                     }
+                                                                                                 </div>
+@@ -469,13 +475,13 @@
+                                                                     </div>
+                                                                 }
+                                                                 @*else
+-                                                                {
+-                                                                    <div class="sc-avest hhmynR">
+-                                                                        <div class="sc-kmQMED Uwbpz">
+-                                                                            <span class="button-label">Manage Ride</span>
+-                                                                        </div>
+-                                                                    </div>
+-                                                                }*@
++                                                                    {
++                                                                        <div class="sc-avest hhmynR">
++                                                                            <div class="sc-kmQMED Uwbpz">
++                                                                                <span class="button-label">Manage Ride</span>
++                                                                            </div>
++                                                                        </div>
++                                                                    }*@
+                                                             </div>
+                                                         </div>
+                                                     </div>
+Index: DataAcessLayer/Models/Users/ClientUser.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/DataAcessLayer/Models/Users/ClientUser.cs b/DataAcessLayer/Models/Users/ClientUser.cs
+--- a/DataAcessLayer/Models/Users/ClientUser.cs	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/DataAcessLayer/Models/Users/ClientUser.cs	(date 1652502534655)
+@@ -19,9 +19,6 @@
+         public string Name { get; set; }
+ 
+ 
+-        //public City City { get; set; } // To Be Remove
+-        //public int CityId { get; set; } //To Be Remove
+-
+         public string Address { get; set; }
+         public Gender Gender { get; set; }
+ 
+Index: Client/Views/Rides/Index.cshtml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/Views/Rides/Index.cshtml b/Client/Views/Rides/Index.cshtml
+--- a/Client/Views/Rides/Index.cshtml	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/Client/Views/Rides/Index.cshtml	(date 1651901277948)
+@@ -81,40 +81,41 @@
+ 
+                                                                             </span><span class="kirk-item-leftText" style="display:flex">
+ 
+-                                                                                @if (item.Status != "" || (item.HasNewRequest != "" && ViewBag.UserId == item.PublisherId)
+-                                                                              || (item.IsRequestPending != "") || item.HasRated == false)
+-                                                                                {
+-                                                                                    @if (item.Status != "")
+-                                                                                    {
+-                                                                                        <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">@item.Status</span>
+-                                                                                    }
+-                                                                                    else if (item.HasRated == false)
+-                                                                                    {
+-                                                                                        <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">Exchange Ratings</span>
+-                                                                                    }
+-                                                                                    else
+-                                                                                    {
+-                                                                                        <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">@item.IsRequestPending</span>
++    @if (item.Status != "" || (item.HasNewRequest != "" && ViewBag.UserId == item.PublisherId)
++ || (item.IsRequestPending != "") || item.HasRated == false)
++    {
++        @if (item.Status != "")
++        {
++            <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">@item.Status</span>
++        }
++        else if (item.HasRated == false)
++        {
++            <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">Exchange Ratings</span>
++        }
++        else
++        {
++            @*<span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">@item.IsRequestPending</span>*@
++            <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">New Pending Request </span>
+ 
+-                                                                                    }
+-                                                                                }
+-                                                                                @*@if (item.HasRated == true)
+-                                                                                    {
++        }
++    }
++    @*@if (item.HasRated == true)
++        {
+ 
+-                                                                                        else if (item.IsRequestPending == "")
+-                                                                                        {
+-                                                                                            <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU">@item.HasNewRequest</span>
+-                                                                                        }
+-                                                                                        else
+-                                                                                        {
+-                                                                                            <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">@item.IsRequestPending</span>
+-                                                                                        }
+-                                                                                    }
+-                                                                                    else
+-                                                                                    {
+-                                                                                        <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">Exchange Ratings</span>
+-                                                                                    }*@
+-                                                                            </span>
++            else if (item.IsRequestPending == "")
++            {
++                <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU">@item.HasNewRequest</span>
++            }
++            else
++            {
++                <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">@item.IsRequestPending</span>
++            }
++        }
++        else
++        {
++            <span class="kirk-text kirk-text-body sc-fbPSWO ldKURU" style="color: rgb(112, 140, 145);">Exchange Ratings</span>
++        }*@
++</span>
+                                                                         </span>
+                                                                     </div>
+                                                                 }
+@@ -176,7 +177,7 @@
+                                                                                 }
+                                                                                 else
+                                                                                 {
+-                                                                                    <img src=@item.PublisherProfile />
++                                                                                    <img  src="~/img/@item.PublisherProfile" />
+                                                                                 }
+                                                                             </div>
+                                                                         </span>
+Index: Client/Views/User/Menu.cshtml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/Views/User/Menu.cshtml b/Client/Views/User/Menu.cshtml
+--- a/Client/Views/User/Menu.cshtml	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/Client/Views/User/Menu.cshtml	(date 1651898015357)
+@@ -132,36 +132,8 @@
+                                                         style="padding-top: 0px">
+                                                         About you
+                                                     </h2>
+-                                                    @if (Model.bio != null)
+-                                                    {
+-
+-                                                        <div class="sc-jOrMOR gIkXxY" role="presentation"><p class="sc-gsnTZi sc-gKXOVf sc-dPyBCJ GJlVl dJWFGW gtTNGS">i'm Bhavya Shah, i usually go to ahmedabad</p></div>
+-                                                    }
+-                                                    else
+-                                                    {
++                                                   
+ 
+-                                                        <button type="button"
+-                                                                class="kirk-item kirk-item--highlighted kirk-item--clickable sc-GVOUr CcFKY">
+-                                                            <span class="kirk-item-leftWrapper">
+-                                                                <span class="kirk-item-leftAddon">
+-                                                                    <svg viewBox="0 0 24 24"
+-                                                                         xmlns="http://www.w3.org/2000/svg"
+-                                                                         class="kirk-icon sc-ksZaOG foFWuq"
+-                                                                         width="24"
+-                                                                         height="24"
+-                                                                         aria-hidden="true">
+-                                                                        <path stroke-width="0"
+-                                                                              fill="#00AFF5"
+-                                                                              fill-rule="evenodd"
+-                                                                              d="M1.14 11.5a10.36 10.36 0 1120.72 0 10.36 10.36 0 01-20.72 0zM11.5 0a11.5 11.5 0 100 23 11.5 11.5 0 000-23zm.57 6.53a.57.57 0 00-1.14 0v4.4h-4.4a.57.57 0 100 1.14h4.4v4.4a.57.57 0 101.14 0v-4.4h4.4a.57.57 0 000-1.14h-4.4z"></path>
+-                                                                    </svg>
+-                                                                </span><span class="kirk-item-leftText">
+-                                                                    <span class="kirk-text kirk-text-title sc-fbPSWO ldKURU">Add a mini bio</span>
+-                                                                </span>
+-                                                            </span>
+-                                                        </button>
+-                                                    }
+-
+                                                     @if (Model.Preference != null)
+                                                     {
+ 
+@@ -263,7 +235,7 @@
+                                                         </ul>
+                                                     }
+                                                     <a class="kirk-item kirk-item--highlighted kirk-item--clickable sc-GVOUr CcFKY add-vehicle-action"
+-                                                       asp-action="Add" asp-controller="Vehicle">
++                                                       asp-action="Index" asp-controller="Vehicle">
+                                                         <span class="kirk-item-leftWrapper">
+                                                             <span class="kirk-item-leftAddon">
+                                                                 <svg viewBox="0 0 24 24"
+Index: Client/Views/PublishRide/Note.cshtml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/Views/PublishRide/Note.cshtml b/Client/Views/PublishRide/Note.cshtml
+--- a/Client/Views/PublishRide/Note.cshtml	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/Client/Views/PublishRide/Note.cshtml	(date 1651896569884)
+@@ -28,6 +28,7 @@
+                                     <div class="kirk-textarea-wrapper">
+                                         <textarea placeholder="Hello! I'm going for Mairrage and car has less Bootspace.."
+                                                   class="kirk-textarea-element"
++                                                  required
+                                                   name="rideNote"
+                                                   maxlength="10000"
+                                                   title="Anything to add about your ride?"
+Index: Client/Views/PublishRide/Departure.cshtml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/Views/PublishRide/Departure.cshtml b/Client/Views/PublishRide/Departure.cshtml
+--- a/Client/Views/PublishRide/Departure.cshtml	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/Client/Views/PublishRide/Departure.cshtml	(date 1651896458510)
+@@ -57,7 +57,7 @@
+                                                                 </svg>
+                                                             </button>
+                                                         </div>
+-                                                        <input type="text" id="Departure" name="Departure" value="" />
++                                                        <input type="text" required id="Departure" name="Departure" value="" />
+ 
+                                                     </div>
+                                                 </div>
+Index: Client/Views/User/Profile.cshtml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/Views/User/Profile.cshtml b/Client/Views/User/Profile.cshtml
+--- a/Client/Views/User/Profile.cshtml	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/Client/Views/User/Profile.cshtml	(date 1651897251469)
+@@ -42,8 +42,6 @@
+                                                 {
+                                                     <img src="~/img/avtar.png" />
+ 
+-                                                    @*<img src="https://cdn.blablacar.com/comuto3/images/avatar/pixar/passenger-m-02.svg"
+-                                                        alt="" />*@
+                                                 }
+                                                 else
+                                                 {
+@@ -95,21 +93,6 @@
+                                                                @(Model.PartnerRating > 0.0 ? Model.PartnerRating + "/5" : "Not Rated Yet")
+                                                            </span>
+                                                 </span>
+-                                            </span><span class="kirk-item-rightAddon">
+-                                                <svg viewBox="0 0 24 24"
+-                                                     xmlns="http://www.w3.org/2000/svg"
+-                                                     class="kirk-icon sc-ksdxgE eqtwsd"
+-                                                     width="24"
+-                                                     height="24"
+-                                                     aria-hidden="true">
+-                                                    <polyline fill="none"
+-                                                              stroke="#708C91"
+-                                                              stroke-width="2"
+-                                                              stroke-linecap="round"
+-                                                              stroke-linejoin="round"
+-                                                              stroke-miterlimit="10"
+-                                                              points="9 18 15 12 9 6"></polyline>
+-                                                </svg>
+                                             </span>
+                                         </a>
+                                     </li>
+Index: DataAcessLayer/ViewModels/Client/UserRideDetailsViewModel.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/DataAcessLayer/ViewModels/Client/UserRideDetailsViewModel.cs b/DataAcessLayer/ViewModels/Client/UserRideDetailsViewModel.cs
+--- a/DataAcessLayer/ViewModels/Client/UserRideDetailsViewModel.cs	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/DataAcessLayer/ViewModels/Client/UserRideDetailsViewModel.cs	(date 1651898583036)
+@@ -38,6 +38,8 @@
+ 
+         public ICollection<RidePartners> Partners { get; set; }
+ 
++        public double RatingAsPublisher { get; set; }
++
+         //For Booking
+         public bool HasRatedPubllisher { get; set; }
+         public int Seat { get; set; }
+Index: Client/Views/Home/_RidePartial.cshtml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/Views/Home/_RidePartial.cshtml b/Client/Views/Home/_RidePartial.cshtml
+--- a/Client/Views/Home/_RidePartial.cshtml	(revision a747e1e7d10bcf43d2b469fab80d05cfed4a909f)
++++ b/Client/Views/Home/_RidePartial.cshtml	(date 1651900831117)
+@@ -190,7 +190,7 @@
+                                     </span><span class="kirk-item-leftText">
+                                         <span class="kirk-text kirk-text-title sc-faUpoM gHhpVx"
+                                               data-nosnippet="true">@item.PublisherName</span><span class="kirk-text kirk-text-body sc-faUpoM gHhpVx kirk-item-body">
+-                                                <div class="sc-dUbtfd gvUPEB">
++                                                @*<div class="sc-dUbtfd gvUPEB">
+                                                     <span class="sc-htJRVC iStbxd">
+                                                         <svg viewBox="-2 -4 84 82"
+                                                              xmlns="http://www.w3.org/2000/svg"
+@@ -216,7 +216,7 @@
+                                                             <span class="sc-gsDKAQ sc-gKclnd erBbkF bEOvQm">4.7</span>
+                                                         </span>
+                                                     </span>
+-                                                </div>
++                                                </div>*@
+                                             </span>
+                                         </span>
+                                     </span>

@@ -48,7 +48,7 @@ namespace Client.Controllers
                     bool hasVehicle = JsonConvert.DeserializeObject<bool>(res);
                     if (hasVehicle == false)
                     {
-                        return RedirectToAction("Add", "Vehicle");
+                        return RedirectToAction("Index", "Vehicle");
                     }
                 }
                 //check for vehicle here
@@ -61,15 +61,20 @@ namespace Client.Controllers
         [HttpPost]
         public IActionResult Departure(string Departure, string PickUp_LatLong, string Departure_City)
         {
-            string returnUrl = HttpContext.Request.Path;
-            if (IsLogin() == true)
+            if (!String.IsNullOrEmpty(Departure))
             {
-                HttpContext.Response.Cookies.Append("Departure", Departure);
-                HttpContext.Response.Cookies.Append("DepartureLatLong", PickUp_LatLong);
-                HttpContext.Response.Cookies.Append("DepartureCity", Departure_City);
-                return RedirectToAction("Destination");
+
+                string returnUrl = HttpContext.Request.Path;
+                if (IsLogin() == true)
+                {
+                    HttpContext.Response.Cookies.Append("Departure", Departure);
+                    HttpContext.Response.Cookies.Append("DepartureLatLong", PickUp_LatLong);
+                    HttpContext.Response.Cookies.Append("DepartureCity", Departure_City);
+                    return RedirectToAction("Destination");
+                }
+                return RedirectToAction("Login", "Account", new { url = returnUrl });
             }
-            return RedirectToAction("Login", "Account", new { url = returnUrl });
+            return View();
 
         }
 

@@ -33,14 +33,13 @@
                                                 class="sc-gsnTZi sc-hTtwUo sc-jgbSNz GJlVl ipZXlI jlbwlf">
                                                 Ride plan
                                             </h1>
-                                            @if (Model.HasRatedPubllisher == false && Model.Status=="" )
+                                            @if (Model.HasRatedPubllisher == false && Model.Status == "")
                                             {
                                                 <ul>
                                                     <li>
                                                         <a class="kirk-item kirk-item--highlighted kirk-item--clickable sc-GVOUr CcFKY"
                                                            asp-action="Publisher" asp-controller="Rate" asp-route-PublisherId="@Model.PublisherId"
-                                                           asp-route-RideId="@ViewBag.RideId"
-                                                           >
+                                                           asp-route-RideId="@ViewBag.RideId">
                                                             <span class="kirk-item-leftWrapper">
                                                                 <span class="kirk-item-leftAddon">
                                                                     <svg viewBox="-2 -4 84 82"
@@ -231,8 +230,16 @@
                                                             </span>
                                                         </span><span class="kirk-item-rightAddon">
                                                             <div class="sc-fXynhf FdgvG kirk-avatar--image kirk-avatar">
-                                                                <img src="https://cdn.blablacar.com/comuto3/images/avatar/pixar/passenger-m-02.svg"
-                                                                     alt="" />
+                                                                @if (Model.PublisherProfile != null)
+                                                                {
+                                                                    <img src="~/img/@Model.PublisherProfile" />
+                                                                }
+                                                                else
+                                                                {
+
+                                                                    <img src="https://cdn.blablacar.com/comuto3/images/avatar/pixar/passenger-m-02.svg"
+                                                                         alt="" />
+                                                                }
                                                             </div>
                                                         </span><span class="kirk-item-rightAddon">
                                                             <svg viewBox="0 0 24 24"
@@ -315,7 +322,7 @@
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    <img src="@item.RiderProfile" />
+                                                                                    <img src="~/img/@item.RiderProfile" />
                                                                                 }
                                                                             </div>
                                                                         </span><span class="kirk-item-rightAddon">

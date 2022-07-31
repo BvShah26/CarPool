@@ -91,6 +91,7 @@ namespace Client.Controllers
 
                         DepartureCity = item.Departure_City,
                         DestinationCity = item.Destination_City,
+                        
 
                        
                     };
